@@ -1,10 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    lang="en"
+    th:fragment="main-layout-fragment(title, otherStaticResources, header, mainContent)"
+>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title th:replace="${title}">My Title</title>
 
-</body>
+        <script src="/assets/js/bootstrap-loader.js"></script>
+        <link rel="stylesheet" href="./assets/css/button.css" />
+
+        <!-- link style footer and header  -->
+
+        <!-- Other javascript, css source files -->
+        <th:block th:replace="${otherStaticResources} ?: ~{}"></th:block>
+    </head>
+    <body>
+        <!-- Header -->
+        <!-- nếu có header của người dùng sau khi đăng nhập vào thì đổi header tương ứng với admin hoặc seller or customer  -->
+        <div
+            th:replace="${header} ? ${header} : ~{./components/header :: header}"
+        ></div>
+
+        <!-- Main content  -->
+        <div th:replace="${mainContent} ?: ~{}"></div>
+
+        <!-- Footer  -->
+        <div th:replace="~{./components/footer :: footer}"></div>
+    </body>
 </html>
+
+<!-- mẫu áp dụng layout  -->
+<!-- <!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    lang="en"
+    th:replace="~{./layout/main-layout :: main-layout-fragment(
+        ~{::title},
+        ~{::#static-resources}, 
+        ~{./components/header2 :: header}, 
+        ~{::#main-content}
+    )}"
+>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <th:block id="static-resources">
+            <style>
+                p {
+                    color: red;
+                }
+            </style>
+        </th:block>
+    </head>
+    <body>
+        <div id="main-content">
+            <h1>Welcome to the Home Page</h1>
+            <p>This is the home page content.</p>
+        </div>
+        
+    </body>
+</html> -->

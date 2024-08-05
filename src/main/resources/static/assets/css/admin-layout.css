@@ -1,0 +1,21 @@
+@import url("constant.css");
+
+#admin-layout-navbar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#admin-layout-main-content-wrapper {
+    display: flex;
+}
+
+#admin-layout-navbar {
+    width: 14em ;
+    min-height: 100vh;
+    background-color: bisque;
+}
+
+#admin-layout-main-content {
+    width: 100%;
+    background-color: aqua;
+}
