@@ -48,12 +48,6 @@ target/
 *.iml
 *.ipr
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -72,9 +66,10 @@ build/
 .env.*
 *.env
 !.env.example
-/src/main/resources/application*.properties
-!/src/main/resources/application.properties
+**/src/main/resources/application*.properties
+!**/src/main/resources/application.properties
+
 
 # Secret
 secret/
-
+my-env/
