@@ -1,12 +1,15 @@
 @import url('./constant.css');
 
-a:hover {
+a {
     color: var(--color-orange-light) !important;
-    text-decoration: none !important;
 }
 
 input, button {
     border-radius: 0 !important;
+}
+
+button {
+    border: none !important;
 }
 
 .btn:focus {
@@ -27,6 +30,10 @@ input, button {
     color: var(--color-white);
 }
 
+.text-gray-light {
+    color: var(--color-gray-light);
+}
+
 .text-gray {
     color: var(--color-gray-medium) !important;
 }
@@ -37,4 +44,9 @@ input, button {
 
 .text-black:hover {
     color: var(--color-orange-light);
+}
+
+.form-control:focus {
+    border-color: none !important;
+    box-shadow: none !important;
 }

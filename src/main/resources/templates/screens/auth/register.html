@@ -1,0 +1,78 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{./layouts/main-layout :: main-layout-fragment(
+        ~{::title},
+        ~{::#static-resources}, 
+        ~{./components/header :: header}, 
+        ~{::#main-content}
+    )}">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Account</title>
+    <th:block id="static-resources">
+        <link rel="stylesheet" href="./assets/css/register.css">
+        <script src="./assets/js/register.js" defer></script>
+    </th:block>
+</head>
+
+<body>
+    <div id="main-content" class="background-container d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="form-container">
+                <h2 class="text-center text-uppercase text-white p-3">Tham gia ngay</h2>
+                <form id="registerForm" action="/register" method="post" novalidate onsubmit="return validateForm()">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="text-white" for="email">Email</label>
+                                <input type="email" class="form-control border-0" id="email" name="email" required>
+                                <span class="error-message" id="emailError"></span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="text-white" for="phone_number">Điện thoại</label>
+                                <input type="tel" class="form-control border-0" id="phone_number" name="phone_number" pattern="[0-9]{10}" required>
+                                <span class="error-message" id="phoneNumberError"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-white" for="full_name">Họ và tên</label>
+                        <input type="text" class="form-control border-0" id="full_name" name="full_name" required minlength="8">
+                        <span class="error-message" id="fullNameError"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="text-white" for="password">Mật khẩu</label>
+                                <input type="password" class="form-control border-0" id="password" name="password" required minlength="8">
+                                <span class="error-message" id="passwordError"></span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="text-white" for="confirm_password">Nhập lại mật khẩu</label>
+                                <input type="password" class="form-control border-0" id="confirm_password"
+                                    name="confirm_password" required minlength="8">
+                                <span class="error-message" id="confirmPasswordError"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-white" for="address">Địa chỉ</label>
+                        <input type="text" class="form-control border-0" id="address" name="address" required minlength="10">
+                        <span class="error-message" id="addressError"></span>
+                    </div>
+                    <button type="submit" class="btn btn-block text-uppercase p-3 mt-5">Đăng kí</button>
+                    <span class="d-flex align-items-center justify-content-center pt-3 text-gray-light"> 
+                        Đã có tài khoản? &nbsp; 
+                        <a class="text-orange" href="/login">Đăng nhập</a>
+                    </span>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
