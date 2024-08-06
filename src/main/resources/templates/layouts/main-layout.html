@@ -11,10 +11,11 @@
 
         <script src="/assets/js/bootstrap-loader.js"></script>
         <link rel="stylesheet" href="./assets/css/button.css" />
+        <link rel="icon" href="./assets/images/logo.png"/>
 
         <!-- link style footer and header  -->
-        <link rel="stylesheet" href="./assets/css/styles.css">
-        <link rel="stylesheet" href="/assets/css/header.css">
+        <link rel="stylesheet" href="./assets/css/footer.css">
+        <link rel="stylesheet" href="./assets/css/header.css">
 
         <!-- Other javascript, css source files -->
         <th:block th:replace="${otherStaticResources} ?: ~{}"></th:block>
@@ -39,10 +40,10 @@
 <html
     xmlns:th="http://www.thymeleaf.org"
     lang="en"
-    th:replace="~{./layout/main-layout :: main-layout-fragment(
+    th:replace="~{./layouts/main-layout :: main-layout-fragment(
         ~{::title},
         ~{::#static-resources}, 
-        ~{./components/header2 :: header}, 
+        null, 
         ~{::#main-content}
     )}"
 >

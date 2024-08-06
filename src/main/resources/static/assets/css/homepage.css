@@ -1,0 +1,123 @@
+.carousel-item {
+    position: relative;
+    width: 100%;
+    height: 800px; /* Chiều cao của thẻ div */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.height-100-slide {
+    height: 100%;
+}
+
+.home-collection {
+    max-width: 1200px;
+    padding: 80px 0px 40px 0px;
+}
+
+.homepage-banner-header{
+    height: 451px;
+    width: 585px;
+}
+
+.homepage-banner-header-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.homepage-banner-header-items-contents {
+    padding : 20px 0px;
+}
+
+.homepage-banner-header-items-contents p {
+    margin-top: 10px;
+}
+
+.homepage-banner-header-items-title {
+    color : var(--color-black);
+    font-weight: bold;
+    font-family: var(--font-geometric-extra-bold);
+    font-size: 30px;
+    margin : 20px 0px;
+} 
+
+.home-buy {
+    max-width: 1200px;
+    padding: 40px 0px 30px 0px;
+}
+
+.home-buy-items .item-background {
+    height: 300px;
+    width: 100%;
+    position: relative; 
+    box-sizing: border-box;
+}
+
+.home-buy-title {
+    text-align: center;
+    font-size: 30px;
+    font-family: var(--font-geometric-extra-bold);
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.home-buy-items .item-background img {
+    height: 300px;
+    width: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.home-buy-items .item-background .item-blur {
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    display: block;
+    width: 100%; 
+    height: 100%; 
+    top: 0px; 
+    left: 0px; 
+}
+
+.home-buy-items .item-group {
+    position: absolute;
+    top : 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-buy-items .item-group .item-group-title, .item-group-sub {
+    font-family: var(--font-extra-bold);
+    font-size: 16px;
+    color: var(--color-white);
+    margin-bottom: 10px;
+}
+
+.home-buy-items .item-group .item-group-title:hover{
+    color : var(--color-orange-light);
+}
+
+
+.home-buy-items .item-group .item-group-title {
+    font-size: 23px;
+    margin-bottom: 40px;
+}
+
+.homepage-footer-banner {
+    margin : 40px 0px;
+    width: 100%;
+    height: 768px;
+    overflow: hidden;
+    padding : 0px;
+}
+
+.homepage-banner3 {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
