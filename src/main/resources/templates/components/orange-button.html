@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Orange button</title>
+        <!-- 
+            Note : Mọi người muốn dùng chỗ nào thì import cái link stylesheet button vs cái script bootstrap bên dưới để áp css vào nhe mn
+            ( lý do là vì khi chuyển fragment thì nó chỉ chuyển cái tag <button> hoặc tag <a> thi chứ nó ko chuyển cả đường link css vs script bootstrap theo á :v )
+        -->
+        <link rel="stylesheet" href="./assets/css/button.css" />
+        <script src="./assets/js/bootstrap-loader.js"></script>
+        <!---->
+    </head>
+    <body>
+        <div
+            th:fragment="buttonFragment(buttonText, style, typeButton, linkButton)"
+        >
+            <!-- Send by POST METHOD ( BUTTON TYPE = 'SUBMIT') -->
+            <button
+                th:if="${typeButton == 'submit'}"
+                type="submit"
+                th:text="${buttonText}"
+                class="btn btn-primary orange-button"
+                th:style="${style}"
+            >
+                Click me
+            </button>
+
+            <!-- Send by GET METHOD ( BUTTON TYPE = 'Button' and have a Link to href) -->
+            <a
+                th:if="${typeButton != 'submit'}"
+                type="button"
+                title="Orange button"
+                th:text="${buttonText}"
+                th:href="${linkButton}"
+                class="btn btn-primary orange-button"
+                th:style="${style}"
+            ></a>
+        </div>
+    </body>
+</html>

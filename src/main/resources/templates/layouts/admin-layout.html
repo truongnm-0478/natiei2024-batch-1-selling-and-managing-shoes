@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    lang="en"
+    th:fragment="admin-layout-fragment(title, otherStaticResources, header, mainContent)"
+>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title th:replace="${title}">My Title</title>
+        <script src="/assets/js/bootstrap-loader.js"></script>
+        <link rel="stylesheet" href="./assets/css/button.css" />
+        <link rel="stylesheet" href="./assets/css/admin-layout.css" />
+        <!-- link style footer and header  -->
 
-</body>
+        <!-- Other javascript, css source files -->
+        <th:block th:replace="${otherStaticResources} ?: ~{}"></th:block>
+    </head>
+    <body>
+        <!-- Header -->
+        <div
+            th:replace="${header} ? ${header} : ~{./components/header :: header}"
+        ></div>
+
+        <!-- Main content  -->
+        <div id="admin-layout-main-content-wrapper">
+            <nav id="admin-layout-navbar">
+                <div th:replace="~{./components/admin-navbar :: navbar}"></div>
+            </nav>
+            <div id="admin-layout-main-content">
+                <div th:replace="${mainContent} ?: ~{}"></div>
+            </div>
+        </div>
+
+        <!-- Footer  -->
+        <div th:replace="~{./components/footer :: footer}"></div>
+    </body>
 </html>
+
+<!-- mẫu áp dụng layout  -->
+<!-- <!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    lang="en"
+    th:replace="~{./layout/admin-layout :: admin-layout-fragment(
+        ~{::title},
+        ~{::#static-resources},
+        ~{./components/header2 :: header},
+        ~{::#main-content}
+    )}"
+>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <th:block id="static-resources">
+            <style>
+                p {
+                    color: red;
+                }
+            </style>
+        </th:block>
+    </head>
+    <body>
+        <div id="main-content">
+            <h1>Welcome to the Home Page</h1>
+            <p>This is the home page content.</p>
+        </div>
+        
+        <div th:replace="~{./components/footer :: footer}"></div>
+    </body>
+</html> -->
