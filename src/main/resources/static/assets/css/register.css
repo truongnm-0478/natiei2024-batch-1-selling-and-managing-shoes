@@ -1,0 +1,38 @@
+@import url('./constant.css');
+
+.background-container {
+    height: 100vh;
+    width: 100vw;
+    background-image: url('./../images/bg/bg_comingsoon.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.form-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group img {
+    max-width: 100px;
+    height: auto;
+}
+
+.error-message {
+    color: var(--color-orange-light);
+    font-size: 0.875em;
+}
+
+.btn {
+    background-color: var(--color-orange-dark);
+    color: var(--color-white);
+}
