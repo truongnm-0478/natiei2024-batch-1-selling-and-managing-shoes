@@ -1,0 +1,40 @@
+@import url('./constant.css');
+
+a:hover {
+    color: var(--color-orange-light) !important;
+    text-decoration: none !important;
+}
+
+input, button {
+    border-radius: 0 !important;
+}
+
+.btn:focus {
+    border-color: none !important;
+    box-shadow: none !important;
+}
+
+.hr-dashed {
+    border-top: 1px dashed #000;
+}
+
+
+.background-dark {
+    background-color: var(--color-gray-dark);
+}
+
+.text-white {
+    color: var(--color-white);
+}
+
+.text-gray {
+    color: var(--color-gray-medium) !important;
+}
+
+.text-black {
+    color: var(--color-black);
+}
+
+.text-black:hover {
+    color: var(--color-orange-light);
+}
