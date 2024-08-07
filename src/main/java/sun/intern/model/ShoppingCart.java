@@ -19,13 +19,13 @@ import java.util.List;
 public class ShoppingCart extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private int quantity;
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id")
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "product_detail_id", nullable = false)
+    @JoinColumn(name = "product_detail_id")
     private ProductDetail productDetail;
 }

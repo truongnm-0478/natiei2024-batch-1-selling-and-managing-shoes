@@ -17,11 +17,11 @@ import lombok.experimental.SuperBuilder;
 public class RefreshToken extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Column(insertable=false, updatable=false)
     private String token;
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id")
     private Account account;
 }
 

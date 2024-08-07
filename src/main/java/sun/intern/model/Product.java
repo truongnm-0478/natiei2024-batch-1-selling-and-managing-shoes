@@ -26,10 +26,9 @@ import java.util.List;
 public class Product extends EntityBase{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private int price;
+    private Integer id;
     private int originPrice;
-    private int discount;
+    private Integer discount;
     private String name;
     @Enumerated(EnumType.STRING)
     private ProductGender gender;
@@ -39,7 +38,7 @@ public class Product extends EntityBase{
     // One-to-Many relationship with ProductImage
     @OneToMany(mappedBy = "product")
     private List<ProductImage> images;
-    private LocalDateTime deleteAt;
+    private LocalDateTime deletedAt;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

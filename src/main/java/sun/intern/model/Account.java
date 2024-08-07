@@ -19,7 +19,7 @@ import java.util.List;
 public class Account extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String email;
     private String displayName;
     private String password;
@@ -30,8 +30,8 @@ public class Account extends EntityBase {
     private String address;
     private String phoneNumber;
     private Boolean gender;
-    private String avatar;
-    private Boolean isActive = true;
+    private String avatarUrl;
+    private Boolean isActivated = true;
     // One-to-Many relationship with RefreshToken
     @OneToMany(mappedBy = "account",fetch = FetchType.LAZY)
     private List<RefreshToken> refreshTokens;

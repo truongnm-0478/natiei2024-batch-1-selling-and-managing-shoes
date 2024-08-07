@@ -20,7 +20,7 @@ import java.util.List;
 public class Order extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private double totalPrice;
     private String phoneNumber;
     private String address;

@@ -19,11 +19,14 @@ import java.util.List;
 public class Constant extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String type;
 
     private String value;
+
+    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    private List<Product> categoryProducts;
 
     @OneToMany(mappedBy = "style",fetch = FetchType.LAZY)
     private List<Product> styleProducts;
