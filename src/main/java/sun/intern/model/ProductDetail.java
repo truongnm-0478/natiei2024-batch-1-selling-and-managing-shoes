@@ -21,20 +21,20 @@ public class ProductDetail extends EntityBase{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(insertable=false, updatable=false)
-    private Long id;
+    private Integer id;
     private int price;
     private LocalDateTime deletedAt;
     private int quantity;
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "color_id", nullable = false)
+    @JoinColumn(name = "color_id")
     private Constant color;
 
     @ManyToOne
-    @JoinColumn(name = "size_id", nullable = false)
+    @JoinColumn(name = "size_id")
     private Constant size;
 
 }
