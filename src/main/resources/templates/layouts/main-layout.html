@@ -24,14 +24,14 @@
         <!-- Header -->
         <!-- nếu có header của người dùng sau khi đăng nhập vào thì đổi header tương ứng với admin hoặc seller or customer  -->
         <div
-            th:replace="${header} ? ${header} : ~{./components/header :: header}"
+            th:replace="${header} ? ${header} : ~{/components/header :: header}"
         ></div>
 
         <!-- Main content  -->
         <div th:replace="${mainContent} ?: ~{}"></div>
 
         <!-- Footer  -->
-        <div th:replace="~{./components/footer :: footer}"></div>
+        <div th:replace="~{/components/footer :: footer}"></div>
     </body>
 </html>
 
@@ -40,7 +40,7 @@
 <html
     xmlns:th="http://www.thymeleaf.org"
     lang="en"
-    th:replace="~{./layouts/main-layout :: main-layout-fragment(
+    th:replace="~{/layouts/main-layout :: main-layout-fragment(
         ~{::title},
         ~{::#static-resources},
         null,

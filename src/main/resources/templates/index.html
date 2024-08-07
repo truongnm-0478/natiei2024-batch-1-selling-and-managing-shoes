@@ -2,7 +2,7 @@
 <html
     xmlns:th="http://www.thymeleaf.org"
     lang="en"
-    th:replace="~{./layouts/main-layout :: main-layout-fragment(
+    th:replace="~{/layouts/main-layout :: main-layout-fragment(
         ~{::title},
         ~{::#static-resources},
         null, 
@@ -14,16 +14,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Ananas – DiscoverYOU</title>
         <th:block id="static-resources">
-            <link rel="stylesheet" href="./assets/css/homepage.css"/>
+            <link rel="stylesheet" href="/assets/css/homepage.css"/>
         </th:block>
     </head>
     <body>
         <div id="main-content">
             <div
-                th:replace="~{./screens/homepage/slide :: homepage-slider}"
+                th:replace="~{/screens/homepage/slide :: homepage-slider}"
             ></div>
             <div
-                th:replace="~{./screens/homepage/banner :: homepage-banner}"
+                th:replace="~{/screens/homepage/banner :: homepage-banner}"
             ></div>
         </div>
     </body>

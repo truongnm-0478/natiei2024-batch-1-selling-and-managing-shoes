@@ -1,9 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-</body>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  lang="en"
+  th:replace="~{/layouts/main-layout :: main-layout-fragment(
+        ~{::title},
+        ~{::#static-resources},
+        null, 
+        ~{::#main-content}
+    )}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sản phẩm - Ananas</title>
+    <th:block id="static-resources">
+      <link rel="stylesheet" href="/assets/css/product-card.css" />
+    </th:block>
+  </head>
+  <body>
+    <div id="main-content">
+      <div class="row mx-0">
+        <div class="col-sx-4 col-sm-4 col-md-4 col-lg-4">
+          <div
+            th:replace="~{/components/product-card :: product-card(
+                        id='1', 
+                        name='Vintas Public 2000s - Low Top', 
+                        image1='/assets/images/product-card-1.jpg',
+                        image2='/assets/images/product-card-2.jpg',
+                        style='Style',
+                        price='620.000 VND',
+                        originPrice='700.000 VND'
+                    )}"
+          ></div>
+        </div>
+        <div class="col-sx-4 col-sm-4 col-md-4 col-lg-4">
+          <div
+            th:replace="~{/components/product-card :: product-card(
+                          id='1', 
+                          name='Vintas Public 2000s - Low Top', 
+                          image1='/assets/images/product-card-1.jpg',
+                          image2='/assets/images/product-card-2.jpg',
+                          style='Style',
+                          price='620.000 VND',
+                          originPrice=''
+                      )}"
+          ></div>
+        </div>
+        <div class="col-sx-4 col-sm-4 col-md-4 col-lg-4">
+          <div
+            th:replace="~{/components/product-card :: product-card(
+                          id='1', 
+                          name='Vintas Public 2000s - Low Top', 
+                          image1='/assets/images/product-card-1.jpg',
+                          image2='/assets/images/product-card-2.jpg',
+                          style='Style',
+                          price='620.000 VND',
+                          originPrice='800.000 NVD'
+                      )}"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

@@ -11,5 +11,4 @@ public class SellingAndManagingShoesApplication {
     public static void main(String[] args) {
         SpringApplication.run(SellingAndManagingShoesApplication.class, args);
     }
-
 }
