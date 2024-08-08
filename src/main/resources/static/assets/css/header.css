@@ -49,6 +49,10 @@
     display: inline-block;
 }
 
+.header .menu a:hover {
+    color: var(--color-orange-light);
+}
+
 .navbar-brand {
     float: left;
     padding: 15px 10px;
@@ -89,7 +93,6 @@
     margin-right: 40px;
 }
 
-
 .header .icon-search {
     position: absolute;
     top: 6px;
@@ -116,7 +119,6 @@
 
 .menu > li {
     list-style-type: none;
-
 }
 
 .navbar-nav {
@@ -148,6 +150,10 @@
     background-color: #fff;
 }
 
+.header .nav li a:hover {
+    color : var(--color-orange-light)
+}
+
 .nav-parents ul li {
     display: flex;
     align-items: center;
@@ -157,21 +163,9 @@
     display: inline-block !important;
 }
 
-a {
-    color: #000;
-}
-
-a {
-    color: #337ab7;
-    text-decoration: none;
-}
-a {
-    background-color: transparent;
-}
-
 .header .caret {
     position: relative;
-    background: #fff url('https://ananas.vn/wp-content/themes/ananas/fe-assets/images/icon_down_black.png') no-repeat;
+    background: #fff url("https://ananas.vn/wp-content/themes/ananas/fe-assets/images/icon_down_black.png") no-repeat;
     width: 12px;
     height: 8px;
     border: none;
@@ -193,6 +187,32 @@ a {
     flex-wrap: wrap;
 }
 
+#headerSlideCarousel .carousel-inner .carousel-item {
+    height: auto;
+    padding : 10px 0px;
+}
+
+.header-slide {
+    background-color: var(--color-light-gray);
+    margin : 0px -10px;
+}
+
+.header-slide-title {
+    font-family: var(--font-semi-bold-italic);
+    font-size: 16px;
+}
+
+.header-slide-title:hover {
+    color : var(--color-black);
+}
+
+#headerSlideCarousel .carousel-control-prev .carousel-control-prev-icon {
+    background-image: url("../../assets/images/icons/left-arrow-header-slide.png");
+}
+
+#headerSlideCarousel .carousel-control-next .carousel-control-next-icon {
+    background-image: url("../../assets/images/icons/right-arrow-header-slide.png");
+}
 
 @media only screen and (max-width: 1500px) {
     .header .navbar .form-control {
@@ -201,7 +221,7 @@ a {
 }
 
 @media only screen and (max-width: 1000px) {
-    .form-header{
+    .form-header {
         width: 100%;
         display: flex;
         justify-content: flex-end;
@@ -211,6 +231,3 @@ a {
         padding-right: 80px;
     }
 }
-
-
-
