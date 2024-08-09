@@ -1,0 +1,83 @@
+a:hover {
+    cursor: pointer;
+}
+
+.product-details {
+    margin-top: 20px;
+}
+
+.breadcrumb {
+    background: var(--color-white);
+    border-bottom: 3px solid var(--color-black);
+    border-radius: 0px;
+}
+
+.breadcrumb li.line {
+    border-right: 2px solid var(--color-medium-gray);
+}
+
+.product-image {
+    text-align: center;
+}
+
+.swiper-container {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.swiper-slide img {
+    width: 100%;
+    cursor: pointer;
+}
+
+.size-select,
+.quantity-select {
+    width: 100px;
+}
+
+.color-product {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+hr.divider {
+    border: none;
+    border-top: 1px dashed var(--color-gray-medium);
+    margin: 30px 0;
+}
+
+.btn-pay {
+    background: var(--color-orange-dark);
+    color: var(--color-white);
+}
+
+.btn-oder {
+    background: var(--color-black);
+    color: var(--color-white);
+}
+
+.border-none {
+    border-radius: 0px;
+    border: none;
+}
+
+.border-dashed {
+    border-bottom: 1px dashed var(--color-gray-medium);
+}
+
+.card-header {
+    background-color: var(--color-white);
+    cursor: pointer;
+}
+
+.text-orange {
+    color: var(--color-orange-light) !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: var(--color-gray-medium);
+}
