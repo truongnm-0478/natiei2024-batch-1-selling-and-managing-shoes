@@ -1,0 +1,184 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{./layouts/main-layout :: main-layout-fragment(
+        ~{::title},
+        ~{::#static-resources},
+        ~{./components/header :: header},
+        ~{::#main-content}
+    )}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Order Form</title>
+    <th:block id="static-resources">
+        <link rel="stylesheet" href="/assets/css/pay.css"/>
+        <script src="./assets/js/ship-address.js" defer></script>
+    </th:block>
+</head>
+<body>
+<div id="main-content" class="main-cart container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 main-cart-left">
+
+            <form class="needs-validation" id="orderForm" data-gtm-form-interact-id="0" action="/payments" method="post"
+                  th:object="${payForm}"
+                  novalidate>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 title-1-1 rounded">THÔNG TIN GIAO HÀNG</div>
+                <span class="error-message" th:text="${errorMessage}"></span>
+                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 form-group">
+                    <input id="full_name" type="text" class="form-control rounded" placeholder="HỌ TÊN"
+                           th:field="*{fullName}"
+                           required/>
+                    <span id="fullNameError" class="error-message" th:if="${#fields.hasErrors('fullName')}"
+                          th:errors="*{fullName}"></span>
+                    <!--                        <span class="glyphicon" aria-hidden="true">Vui lòng nhập họ tên</span>-->
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 form-group">
+                    <div class="has-feedback">
+                        <input id="phone_number" type="text" class="form-control rounded" placeholder="Số điện thoại"
+                               name="customerPhone"
+                               th:field="*{phoneNumber}"
+                               required></input>
+                        <span id="phoneNumberError" class="error-message" th:if="${#fields.hasErrors('phoneNumber')}"
+                              th:errors="*{phoneNumber}"></span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 form-group">
+                    <div class="has-feedback">
+                        <input id="email" type="text" class="form-control rounded" placeholder="Email"
+                               name="customerEmail"
+                               th:field="*{email}"
+                               required></input>
+                        <span id="emailError" class="error-message" th:if="${#fields.hasErrors('email')}"
+                              th:errors="*{email}"></span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 form-group">
+                    <div class="has-feedback">
+                        <input id="address" type="text" class="form-control rounded" placeholder="Địa chỉ"
+                               name="customerAddress"
+                               th:field="*{address}"
+                               required></input>
+                        <span id="addressError" class="error-message" th:if="${#fields.hasErrors('address')}"
+                              th:errors="*{address}"></span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 form-group location" id="list-city">
+                    <select class="form-control rounded" th:field="*{province}" id="province" name="province"
+                            onchange="updateDistricts()">
+                        <option value="">Tỉnh/ Thành Phố</option>
+                    </select>
+                    <span id="provinceError" class="error-message" th:if="${#fields.hasErrors('province')}"
+                          th:errors="*{province}"></span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 form-group location">
+                    <select class="form-control rounded" th:field="*{district}" id="district" name="district"
+                            onchange="updateWards()">
+                        <option value="">Quận/ Huyện</option>
+                    </select>
+                    <span id="districtError" class="error-message" th:if="${#fields.hasErrors('district')}"
+                          th:errors="*{district}"></span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 form-group location">
+                    <select class="form-control rounded" th:field="*{ward}" id="ward" name="ward">
+                        <option value="">Phường/ Xã</option>
+                    </select>
+                    <span id="wardError" class="error-message" th:if="${#fields.hasErrors('ward')}"
+                          th:errors="*{ward}"></span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 form-group">
+                    <div class="ck1">
+                        <input type="checkbox" id="cb2" name="isNotification" value="true" checked=""></input>
+                        <label for="cb2"></label>
+                        Cập nhật các thông tin mới nhất về chương trình từ Ananas
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 title-1 rounded">PHƯƠNG THỨC GIAO HÀNG</div>
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-group">
+                    <div class="ck1">
+                        <input type="checkbox" id="cb3" name="shippingType" value="normal" checked="">
+                        <label for="cb3"></label>
+                        Tốc độ tiêu chuẩn (từ 2 - 5 ngày làm việc) &nbsp; &nbsp; <img class="tooltip_attach"
+                                                                                      src="https://ananas.vn/wp-content/themes/ananas/fe-assets/images/svg/icon_cham_hoi.svg">
+                    </div>
+                    <div class="tooltip-container" hidden="">Tuỳ vào địa chỉ giao hàng mà tốc độ giao hàng tiêu chuẩn
+                        sẽ khác nhau. Chúng tôi luôn cố gắng để đơn hàng đến tay bạn sớm nhất.
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 form-group title-right normal-fee">0 VNĐ</div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 title-1 rounded">PHƯƠNG THỨC THANH TOÁN</div>
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 form-group">
+                    <div class="ck1">
+                        <input type="checkbox" id="cb5" name="paymentType" class="paymentType" value="direct"
+                               checked="">
+                        <label for="cb5"></label>
+                        Thanh toán trực tiếp khi giao hàng &nbsp; &nbsp; <img class="tooltip_attach"
+                                                                              src="https://ananas.vn/wp-content/themes/ananas/fe-assets/images/svg/icon_cham_hoi.svg">
+                        &nbsp; &nbsp; <img
+                        src="https://ananas.vn/wp-content/themes/ananas/fe-assets/images/svg/icon_COD.svg">
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 main-cart-right">
+            <ul class="list-group rounded">
+                <li class="list-group-item title">ĐƠN HÀNG</li>
+                <li class="list-group-item divider"></li>
+                <li class="list-group-item text-1">
+                    <span class="title-6">Pigment Tee - Nice Nature Club - Greener Pastures</span>
+                    <span class="title-6-1">390.000 VND</span>
+                </li>
+                <li class="list-group-item text-1-1">
+                    <span class="title-6-2">Size: XL</span>
+                    <span class="title-6-3">x 1</span>
+                </li>
+                <li class="list-group-item text-1">
+                    <span class="title-6">Vintas Nauda EXT - High Top - Monk's Robe</span>
+                    <span class="title-6-1">720.000 VND</span>
+                </li>
+                <li class="list-group-item text-1-1">
+                    <span class="title-6-2">Size: 42</span>
+                    <span class="title-6-3">x 1</span>
+                </li>
+                <li class="list-group-item text-1">
+                    <span class="title-6">High Crew Socks - Ananas Daily Things - Marshmallow</span>
+                    <span class="title-6-1">95.000 VND</span>
+                </li>
+                <li class="list-group-item text-1-1">
+                    <span class="title-6-2">Size: free</span>
+                    <span class="title-6-3">x 1</span>
+                </li>
+                <li class="list-group-item divider-1"></li>
+                <li class="list-group-item text-1">
+                    <span class="title-3">Đơn hàng</span>
+                    <span class="title-3-1"><span class="current-price"> 1.205.000</span> VND</span>
+                </li>
+                <li class="list-group-item text-2-2">
+                    <span class="title-3">Giảm</span>
+                    <span class="title-4-1">- <span class="discount">0</span> VND</span>
+                </li>
+                <li class="list-group-item text-2-3">
+                    <span class="title-21">Phí vận chuyển</span>
+                    <span class="title-22"><span class="shipping-fee">0</span> VND</span>
+                </li>
+                <li class="list-group-item text-2-3 payment-fee-input">
+                    <span class="title-21">Phí thanh toán</span>
+                    <span class="title-22"><span class="card-fee">0</span> VND</span>
+                </li>
+                <li class="list-group-item divider-1"></li>
+                <li class="list-group-item">
+                    <span class="title-5">TỔNG CỘNG</span>
+                    <span class="title-5-2"><span class="total-price">1.205.000</span> VND</span>
+                </li>
+                <li class="list-group-item">
+                    <button class="btn btn-cart btn-complete-detail rounded" type="submit"
+                            onclick="document.getElementById('orderForm').submit();">
+                        HOÀN TẤT ĐẶT HÀNG
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
