@@ -1,0 +1,17 @@
+@import url('constant.css');
+
+.background-container {
+    height: 100vh;
+    width: 100vw;
+    background-image: url('./../images/bg/bg_comingsoon.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.content {
+    color: var(--color-white);
+    font-size: 60px;
+    margin: 12px;
+}
+

@@ -1,139 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Header</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
+<head>
+  <meta charset="UTF-8"/>
+  <title>Header</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+<div class="header container-fluid d-none d-md-block" th:fragment="header">
+  <div class="header-row">
+    <ul class="menu">
+      <li>
+        <a href="https://ananas.vn/search-order"
+        ><img alt="icon tra cuu don hang" src="/assets/images/icons/header/icon_tra_cuu_don_hang.svg"/> Tra cứu
+          đơn hàng</a
+        >
+      </li>
+      <li>
+        <a href="https://ananas.vn/stores"
+        ><img alt="icon tim cua cua hang" src="/assets/images/icons/header/icon_tim_cua_hang.svg"/> Tìm cửa
+          hàng</a
+        >
+      </li>
+      <li>
+        <a href="https://ananas.vn/your-wishlist"
+        ><img alt="icon heart header" src="/assets/images/icons/header/icon_heart_header.svg"/> Yêu thích</a
+        >
+      </li>
+      <div th:with="current_user = ${#ctx.session.current_user}">
+        <li th:if="${current_user == null}">
+          <a href="/login"
+          ><img
+            alt="icon login"
+            src="https://ananas.vn/wp-content/themes/ananas/fe-assets/images//svg/icon_dang_nhap.svg"
+          />
+            Đăng nhập</a
+          >
+        </li>
+        <li th:unless="${current_user == null}">
+          <a href="#" class="disable"
+          ><img
+            alt="icon login"
+            src="https://ananas.vn/wp-content/themes/ananas/fe-assets/images//svg/icon_dang_nhap.svg"
+          />
+            <span th:text="${current_user.displayName}"></span>
+          </a
+          >
+        </li>
+      </div>
+      <li>
+        <a href="https://ananas.vn/your-cart/"
+        ><img alt="icon cart" src="/assets/images/icons/header/icon-cart-8.svg"/> Giỏ hàng (<span
+          class="countProduct"
+        >6</span
+        >)</a
+        >
+      </li>
+    </ul>
+  </div>
+  <div class="header-row">
+    <div class="navbar center header-navbar">
+      <div class="nav-parents">
+        <div class="navbar-header">
+          <div class="navbar-brand">
+            <a href="https://ananas.vn"
+            ><img alt="icon logo" src="/assets/images/icons/header/ananas_logo.svg"
+            /></a>
+          </div>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="https://ananas.vn/product-list/" class="dropdown-toggle"
+            >SẢN PHẨM <span class="caret"></span
+            ></a>
+          </li>
+          <li class="line"></li>
+          <li class="dropdown">
+            <a href="https://ananas.vn/product-list/?gender=men" class="dropdown-toggle"
+            >NAM <span class="caret"></span
+            ></a>
+          </li>
 
-  <body>
-    <div class="header container-fluid d-none d-md-block" th:fragment="header">
-      <div class="header-row">
-        <ul class="menu">
-          <li>
-            <a href="https://ananas.vn/search-order"
-              ><img alt="icon tra cuu don hang" src="/assets/images/icons/header/icon_tra_cuu_don_hang.svg" /> Tra cứu
-              đơn hàng</a
-            >
+          <li class="line"></li>
+          <li class="dropdown">
+            <a href="https://ananas.vn/product-list/?gender=women" class="dropdown-toggle"
+            >NỮ <span class="caret"></span
+            ></a>
           </li>
-          <li>
-            <a href="https://ananas.vn/stores"
-              ><img alt="icon tim cua cua hang" src="/assets/images/icons/header/icon_tim_cua_hang.svg" /> Tìm cửa
-              hàng</a
-            >
-          </li>
-          <li>
-            <a href="https://ananas.vn/your-wishlist"
-              ><img alt="icon heart header" src="/assets/images/icons/header/icon_heart_header.svg" /> Yêu thích</a
-            >
-          </li>
-          <!--                <li><a href="--><!--"><img-->
-          <!--                                src="--><!--/icon_login.png"> Đăng nhập</a></li>-->
-          <li>
-            <a href="https://ananas.vn/coming-soon"
-              ><img
-                alt="icon login"
-                src="https://ananas.vn/wp-content/themes/ananas/fe-assets/images//svg/icon_dang_nhap.svg"
-              />
-              Đăng nhập</a
-            >
-          </li>
-          <li>
-            <a href="https://ananas.vn/your-cart/"
-              ><img alt="icon cart" src="/assets/images/icons/header/icon-cart-8.svg" /> Giỏ hàng (<span
-                class="countProduct"
-                >6</span
-              >)</a
-            >
+
+          <li class="line"></li>
+          <li><a href="https://ananas.vn/promotion/clearance-sale/">SALE OFF</a></li>
+          <li class="line"></li>
+          <li class="not-flex">
+            <a href="https://ananas.vn/discoveryou"
+            ><img alt="icon discover you" src="/assets/images/icons/header/DiscoverYOU.svg"
+            /></a>
           </li>
         </ul>
       </div>
-      <div class="header-row">
-        <div class="navbar center header-navbar">
-          <div class="nav-parents">
-            <div class="navbar-header">
-              <div class="navbar-brand">
-                <a href="https://ananas.vn"
-                  ><img alt="icon logo" src="/assets/images/icons/header/ananas_logo.svg"
-                /></a>
-              </div>
-            </div>
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a href="https://ananas.vn/product-list/" class="dropdown-toggle"
-                  >SẢN PHẨM <span class="caret"></span
-                ></a>
-              </li>
-              <li class="line"></li>
-              <li class="dropdown">
-                <a href="https://ananas.vn/product-list/?gender=men" class="dropdown-toggle"
-                  >NAM <span class="caret"></span
-                ></a>
-              </li>
 
-              <li class="line"></li>
-              <li class="dropdown">
-                <a href="https://ananas.vn/product-list/?gender=women" class="dropdown-toggle"
-                  >NỮ <span class="caret"></span
-                ></a>
-              </li>
-
-              <li class="line"></li>
-              <li><a href="https://ananas.vn/promotion/clearance-sale/">SALE OFF</a></li>
-              <li class="line"></li>
-              <li class="not-flex">
-                <a href="https://ananas.vn/discoveryou"
-                  ><img alt="icon discover you" src="/assets/images/icons/header/DiscoverYOU.svg"
-                /></a>
-              </li>
-            </ul>
+      <div class="form-header">
+        <form action="https://ananas.vn/search-results/?" class="navbar-form navbar-right">
+          <div class="form-group">
+            <img alt="icon search" class="icon-search" src="/assets/images/icons/header/icon_tim_kiem.svg"/>
+            <input type="text" name="key" class="form-control" value="" placeholder="Tìm kiếm"/>
           </div>
-
-          <div class="form-header">
-            <form action="https://ananas.vn/search-results/?" class="navbar-form navbar-right">
-              <div class="form-group">
-                <img alt="icon search" class="icon-search" src="/assets/images/icons/header/icon_tim_kiem.svg" />
-                <input type="text" name="key" class="form-control" value="" placeholder="Tìm kiếm" />
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <div class="header-slide">
-        <div id="headerSlideCarousel" class="carousel slide" data-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <div class="d-flex justify-content-center align-items-center">
-                <a href="#" class="header-slide-title">BUY MORE PAY LESS - ÁP DỤNG KHI MUA PHỤ KIỆN</a>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="d-flex justify-content-center align-items-center">
-                <a href="#" class="header-slide-title">FREE SHIPPING VỚI HOÁ ĐƠN TỪ 900K !</a>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="d-flex justify-content-center align-items-center">
-                <a href="#" class="header-slide-title">HÀNG 2 TUẦN NHẬN ĐỔI - GIÀY NỬA NĂM BẢO HÀNH</a>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="d-flex justify-content-center align-items-center">
-                <a href="#" class="header-slide-title">BUY 2 GET 10% OFF - ÁP DỤNG VỚI TẤT CẢ BASIC TEE</a>
-              </div>
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#headerSlideCarousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#headerSlideCarousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
+        </form>
       </div>
     </div>
-  </body>
+  </div>
+
+  <div class="header-slide">
+    <div id="headerSlideCarousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="d-flex justify-content-center align-items-center">
+            <a href="#" class="header-slide-title">BUY MORE PAY LESS - ÁP DỤNG KHI MUA PHỤ KIỆN</a>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="d-flex justify-content-center align-items-center">
+            <a href="#" class="header-slide-title">FREE SHIPPING VỚI HOÁ ĐƠN TỪ 900K !</a>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="d-flex justify-content-center align-items-center">
+            <a href="#" class="header-slide-title">HÀNG 2 TUẦN NHẬN ĐỔI - GIÀY NỬA NĂM BẢO HÀNH</a>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="d-flex justify-content-center align-items-center">
+            <a href="#" class="header-slide-title">BUY 2 GET 10% OFF - ÁP DỤNG VỚI TẤT CẢ BASIC TEE</a>
+          </div>
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#headerSlideCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#headerSlideCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </div>
+</div>
+</body>
 </html>
