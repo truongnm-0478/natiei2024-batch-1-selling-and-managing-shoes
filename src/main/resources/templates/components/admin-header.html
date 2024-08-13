@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Header</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div th:fragment="admin-header">
+      <div class="admin-header">
+        <div class="admin-page-header-search-input-wrapper">
+          <div class="admin-header-search-input-position-relative">
+            <input type="text" id="admin-header-search-input" name="name" placeholder="Nhập vào tên giày" />
+            <img alt="search icon" src="/assets/images/icons/search.png" class="admin-page-search-icon" />
+          </div>
+        </div>
+        <div class="admin-header-vr"></div>
+        <div class="admin-header-notifications">
+          <a title="bell icon" href="#"
+            ><img alt="bell icon" src="/assets/images/icons/notification.png" class="admin-header-icons"
+          /></a>
+          <a title="message icon" href="#"
+            ><img alt="chat icon" src="/assets/images/icons/chat.png" class="admin-header-icons"
+          /></a>
+        </div>
+        <div class="admin-header-vr"></div>
+        <div
+          class="dropdown admin-header-account-info-wrapper"
+          th:with="current_user = ${#ctx.session.current_user}"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+        >
+          <img
+            th:src="${current_user.avatarUrl} ? ${current_user.avatarUrl} : '/assets/images/icons/no-avatar-user.png'"
+            alt="Avatar"
+            class="avatar"
+          />
+          <p th:text="${current_user.displayName}"></p>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Thông tin cá nhân</a>
+            <a class="dropdown-item" href="#">Đăng xuất</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
