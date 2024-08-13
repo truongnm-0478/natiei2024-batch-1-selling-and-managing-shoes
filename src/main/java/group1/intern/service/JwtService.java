@@ -1,10 +1,10 @@
 package group1.intern.service;
 
 import group1.intern.bean.Credential;
-import org.springframework.security.core.userdetails.UserDetails;
+import group1.intern.model.Account;
 
 public interface JwtService {
-    UserDetails getAccountFromToken(String token);
+    Account getAccountFromToken(String token);
 
     Credential generateToken(int accountId);
 

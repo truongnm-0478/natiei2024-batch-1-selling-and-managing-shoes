@@ -10,13 +10,13 @@ import group1.intern.util.constant.CommonConstant;
 import group1.intern.util.constant.ErrorMessageConstant;
 import group1.intern.util.exception.ForbiddenException;
 import group1.intern.util.exception.UnauthorizedException;
+import group1.intern.util.util.CommonUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -26,13 +26,12 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
-
     private final JwtApplicationProperty jwtAppProperty;
     private final AccountRepository accountRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
-    public UserDetails getAccountFromToken(String token) {
+    public Account getAccountFromToken(String token) {
         Claims jwtClaims = getJwtClaims(token, TokenType.ACCESS_TOKEN);
         int accountId = Integer.parseInt(jwtClaims.getSubject());
 
@@ -57,18 +56,23 @@ public class JwtServiceImpl implements JwtService {
         int accountId = Integer.parseInt(jwtClaims.getSubject());
         Account account = accountRepository.findById(accountId)
             .orElseThrow(() -> new ForbiddenException(ErrorMessageConstant.FORBIDDEN));
-        var accountRefreshToken = refreshTokenRepository.findByAccount_Id(accountId).orElse(null);
-        if (accountRefreshToken != null && accountRefreshToken.getToken().equals(refreshToken)) {
-            String accessToken = generateAccessToken(accountId);
-            return Credential.builder()
-                .accessToken(accessToken)
-                .type(CommonConstant.JWT_TYPE)
-                .refreshToken(accountRefreshToken.getToken())
-                .expiredAt(
-                    new Timestamp(getJwtClaims(accessToken, TokenType.ACCESS_TOKEN).getExpiration().getTime()).toString())
-                .build();
-        }
-        throw new ForbiddenException(ErrorMessageConstant.REFRESH_TOKEN_NOT_FOUND);
+        var accountRefreshTokens = refreshTokenRepository.findByAccount_Id(accountId);
+        // Check if list refresh token is empty or null
+        if (CommonUtils.isEmptyOrNullList(accountRefreshTokens))
+            throw new ForbiddenException(ErrorMessageConstant.REFRESH_TOKEN_NOT_FOUND);
+        // Get refresh token from list refresh token
+        var accountRefreshToken = accountRefreshTokens.stream()
+            .filter(refreshTokenEntity -> refreshToken.equals(refreshTokenEntity.getToken()))
+            .findFirst()
+            .orElseThrow(() -> new ForbiddenException(ErrorMessageConstant.REFRESH_TOKEN_NOT_FOUND));
+        String accessToken = generateAccessToken(accountId);
+        return Credential.builder()
+            .accessToken(accessToken)
+            .type(CommonConstant.JWT_TYPE)
+            .refreshToken(accountRefreshToken.getToken())
+            .expiredAt(
+                new Timestamp(getJwtClaims(accessToken, TokenType.ACCESS_TOKEN).getExpiration().getTime()).toString())
+            .build();
     }
 
     private String generateAccessToken(int accountId) {

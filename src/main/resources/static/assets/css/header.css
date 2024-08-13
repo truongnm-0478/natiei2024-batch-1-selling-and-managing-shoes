@@ -49,6 +49,15 @@
     display: inline-block;
 }
 
+.header .menu a.disable {
+    color: var(--color-orange-light);;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    text-decoration: none;
+    display: inline-block;
+    pointer-events: none;
+}
+
 .header .menu a:hover {
     color: var(--color-orange-light);
 }
@@ -151,7 +160,7 @@
 }
 
 .header .nav li a:hover {
-    color : var(--color-orange-light)
+    color: var(--color-orange-light)
 }
 
 .nav-parents ul li {
@@ -189,12 +198,12 @@
 
 #headerSlideCarousel .carousel-inner .carousel-item {
     height: auto;
-    padding : 10px 0px;
+    padding: 10px 0px;
 }
 
 .header-slide {
     background-color: var(--color-light-gray);
-    margin : 0px -10px;
+    margin: 0px -10px;
 }
 
 .header-slide-title {
@@ -203,7 +212,7 @@
 }
 
 .header-slide-title:hover {
-    color : var(--color-black);
+    color: var(--color-black);
 }
 
 #headerSlideCarousel .carousel-control-prev .carousel-control-prev-icon {

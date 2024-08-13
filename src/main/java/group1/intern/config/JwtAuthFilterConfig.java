@@ -1,5 +1,7 @@
 package group1.intern.config;
 
+import group1.intern.bean.AccountInfo;
+import group1.intern.model.Account;
 import group1.intern.service.JwtService;
 import group1.intern.util.constant.CommonConstant;
 import group1.intern.util.constant.ErrorMessageConstant;
@@ -15,7 +17,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -40,8 +41,8 @@ public class JwtAuthFilterConfig extends OncePerRequestFilter {
             return;
         }
 
-        Cookie accessToken = WebUtils.getCookie(req, CommonConstant.ACCESS_TOKEN);
-        Cookie refreshToken = WebUtils.getCookie(req, CommonConstant.REFRESH_TOKEN);
+        Cookie accessToken = WebUtils.Cookies.getCookie(CommonConstant.ACCESS_TOKEN);
+        Cookie refreshToken = WebUtils.Cookies.getCookie(CommonConstant.REFRESH_TOKEN);
         try {
             // Check access token in the cookie
             if (accessToken == null || CommonUtils.isEmptyOrNullString(accessToken.getValue())) {
@@ -50,23 +51,48 @@ public class JwtAuthFilterConfig extends OncePerRequestFilter {
             }
 
             // Set new authentication object to the SecurityContextHolder
-            UserDetails userDetails = jwtService.getAccountFromToken(accessToken.getValue());
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, accessToken, userDetails.getAuthorities());
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            setAuthentication(accessToken.getValue(), req);
 
             filterChain.doFilter(req, resp);
         } catch (UnauthorizedException e) {
-            if (e.getMessage().equalsIgnoreCase(ErrorMessageConstant.EXPIRED_TOKEN) && refreshToken != null && CommonUtils.isNotEmptyOrNullString(refreshToken.getValue())) {
-                var credential = jwtService.refreshToken(refreshToken.getValue());
-                WebUtils.setCookie(resp, CommonConstant.ACCESS_TOKEN, credential.getAccessToken());
-                WebUtils.setCookie(resp, CommonConstant.REFRESH_TOKEN, credential.getRefreshToken());
-                resp.sendRedirect(req.getRequestURI());
-            } else {
-                WebUtils.removeCookie(resp, CommonConstant.ACCESS_TOKEN);
-                WebUtils.removeCookie(resp, CommonConstant.REFRESH_TOKEN);
-                throw e;
+            try {
+                if (e.getMessage().equalsIgnoreCase(ErrorMessageConstant.EXPIRED_TOKEN) &&
+                    refreshToken != null &&
+                    CommonUtils.isNotEmptyOrNullString(refreshToken.getValue())
+                ) {
+                    var credential = jwtService.refreshToken(refreshToken.getValue());
+                    WebUtils.Cookies.setCookie(CommonConstant.ACCESS_TOKEN, credential.getAccessToken());
+                    WebUtils.Cookies.setCookie(CommonConstant.REFRESH_TOKEN, credential.getRefreshToken());
+                    setAuthentication(credential.getAccessToken(), req);
+                    filterChain.doFilter(req, resp);
+                } else {
+                    clearDataInWeb();
+                    filterChain.doFilter(req, resp);
+                }
+            } catch (Exception ex) {
+                clearDataInWeb();
+                filterChain.doFilter(req, resp);
             }
+        } catch (Exception e) {
+            clearDataInWeb();
+            filterChain.doFilter(req, resp);
         }
+    }
+
+    private void setAuthentication(String accessToken, HttpServletRequest req) {
+        Account userDetails = jwtService.getAccountFromToken(accessToken);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, accessToken, userDetails.getAuthorities());
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+        // Set account info to session
+        var accountInfo = AccountInfo.fromAccount(userDetails);
+        WebUtils.Sessions.setAttribute(CommonConstant.CURRENT_USER, accountInfo);
+    }
+
+    private void clearDataInWeb() {
+        WebUtils.Sessions.removeAllData();
+        WebUtils.Cookies.removeCookie(CommonConstant.ACCESS_TOKEN);
+        WebUtils.Cookies.removeCookie(CommonConstant.REFRESH_TOKEN);
     }
 }

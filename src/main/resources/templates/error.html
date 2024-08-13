@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{./layouts/main-layout :: main-layout-fragment(
+        ~{::title},
+        ~{::#static-resources},
+        null,
+        ~{::#main-content}
+    )}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Error</title>
+  <th:block id="static-resources">
+    <link rel="stylesheet" href="/assets/css/error.css">
+  </th:block>
+</head>
+<body>
+<div id="main-content" class="background-container d-flex justify-content-center align-items-center h-100 w-100">
+  <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+  <h2 class="content text-capitalize font-weight-bold" th:text="${message}"></h2>
+</div>
+</body>
+</html>
