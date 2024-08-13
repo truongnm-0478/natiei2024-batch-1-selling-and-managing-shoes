@@ -13,14 +13,18 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "product_images")
-public class ProductImage extends EntityBase {
+@Table(name = "product_quantities")
+public class ProductQuantity extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String url;
+    private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_detail_id")
     private ProductDetail productDetail;
+
+    @ManyToOne
+    @JoinColumn(name = "size_id")
+    private Constant size;
 }
