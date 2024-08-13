@@ -25,18 +25,18 @@ public class Constant extends EntityBase {
 
     private String value;
 
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Product> categoryProducts;
 
-    @OneToMany(mappedBy = "style",fetch = FetchType.LAZY)
-    private List<Product> styleProducts;
-
-    @OneToMany(mappedBy = "material",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "material", fetch = FetchType.LAZY)
     private List<Product> materialProducts;
 
-    @OneToMany(mappedBy = "color",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "style", fetch = FetchType.LAZY)
+    private List<ProductDetail> styleProducts;
+
+    @OneToMany(mappedBy = "color", fetch = FetchType.LAZY)
     private List<ProductDetail> colorProducts;
 
-    @OneToMany(mappedBy = "size",fetch = FetchType.LAZY)
-    private List<ProductDetail> sizeProducts;
+    @OneToMany(mappedBy = "size", fetch = FetchType.LAZY)
+    private List<ProductQuantity> sizeProducts;
 }

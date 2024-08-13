@@ -18,7 +18,6 @@ public class RefreshToken extends EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(insertable=false, updatable=false)
     private String token;
     @ManyToOne
     @JoinColumn(name = "account_id")
