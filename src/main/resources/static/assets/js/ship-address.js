@@ -1,5 +1,6 @@
 let provinces = [];
 
+
 document.getElementById('full_name').addEventListener('blur', validateFullName);
 document.getElementById('phone_number').addEventListener('blur', validatePhoneNumber);
 document.getElementById('email').addEventListener('blur', validateEmailField);
@@ -19,8 +20,10 @@ document.getElementById('cb3').addEventListener('change', function () {
 document.getElementById('cb5').addEventListener('change', function () {
     this.checked = true;
 });
+console.log("===========================")
 
 function validateFullName() {
+    console.log("===========================")
     const fullName = document.getElementById('full_name').value;
     const fullNameError = document.getElementById('fullNameError');
     if (!fullName) {
@@ -110,11 +113,12 @@ function validateForm() {
     const errors = document.querySelectorAll('.error-message');
     for (let i = 0; i < errors.length; i++) {
         if (errors[i].textContent !== '') {
+            console.log(errors[i].textContent)
             return false;
         }
     }
 
-    return true;
+    document.getElementById('orderForm').submit();
 }
 
 function validateEmail(email) {
@@ -207,6 +211,18 @@ function updateWards() {
         }
     }
 }
+
+function formatCurrency(amount) {
+    return amount.toLocaleString('vi-VN');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    let priceElements = document.querySelectorAll('.current-price, .discount, .total-price,.price');
+    priceElements.forEach(function (element) {
+        let amount = parseInt(element.textContent.trim(), 10);
+        element.textContent = formatCurrency(amount);
+    });
+});
 
 // Gọi hàm initialize sau khi trang được tải
 document.addEventListener("DOMContentLoaded", initialize);

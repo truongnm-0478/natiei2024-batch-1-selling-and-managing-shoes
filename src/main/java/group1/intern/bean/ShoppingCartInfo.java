@@ -19,6 +19,7 @@ public class ShoppingCartInfo {
     private Integer customerId;
     private Integer productId;
     private Integer productDetailId;
+    private Integer productQuantityId;
     private int quantity;
     private String style;
     private int priceProduct;
@@ -35,6 +36,7 @@ public class ShoppingCartInfo {
             .customerId(shoppingCart.getAccount().getId())
             .productId(shoppingCart.getProductQuantity().getProductDetail().getProduct().getId())
             .productDetailId(shoppingCart.getProductQuantity().getProductDetail().getId())
+            .productQuantityId(shoppingCart.getProductQuantity().getId())
             .quantity(shoppingCart.getQuantity())
             .style(shoppingCart.getProductQuantity().getProductDetail().getStyle().getValue())
             .priceProduct(shoppingCart.getProductQuantity().getProductDetail().getPrice())

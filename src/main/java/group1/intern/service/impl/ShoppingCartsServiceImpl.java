@@ -31,6 +31,7 @@ public class ShoppingCartsServiceImpl implements ShoppingCartsService {
                 .customerId(shoppingCart.getAccount().getId())
                 .productId(shoppingCart.getProductQuantity().getProductDetail().getProduct().getId())
                 .productDetailId(shoppingCart.getProductQuantity().getProductDetail().getId())
+                .productQuantityId(shoppingCart.getProductQuantity().getId())
                 .quantity(shoppingCart.getQuantity())
                 .style(shoppingCart.getProductQuantity().getProductDetail().getStyle().getValue())
                 .priceProduct(shoppingCart.getProductQuantity().getProductDetail().getPrice())
