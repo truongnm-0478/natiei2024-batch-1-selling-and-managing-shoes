@@ -11,7 +11,7 @@ a:hover {
 }
 
 
-input, button {
+input, button, select {
     border-radius: 0 !important;
 }
 

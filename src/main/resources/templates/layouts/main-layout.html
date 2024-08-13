@@ -10,12 +10,12 @@
         <title th:replace="${title}">My Title</title>
 
         <script src="/assets/js/bootstrap-loader.js"></script>
-        <link rel="stylesheet" href="./assets/css/button.css" />
-        <link rel="icon" href="./assets/images/logo.png"/>
+        <link rel="stylesheet" href="/assets/css/button.css" />
+        <link rel="icon" href="/assets/images/logo.png"/>
 
         <!-- link style footer and header  -->
-        <link rel="stylesheet" href="./assets/css/footer.css">
-        <link rel="stylesheet" href="./assets/css/header.css">
+        <link rel="stylesheet" href="/assets/css/footer.css">
+        <link rel="stylesheet" href="/assets/css/header.css">
 
         <!-- Other javascript, css source files -->
         <th:block th:replace="${otherStaticResources} ?: ~{}"></th:block>
@@ -42,8 +42,8 @@
     lang="en"
     th:replace="~{./layouts/main-layout :: main-layout-fragment(
         ~{::title},
-        ~{::#static-resources}, 
-        null, 
+        ~{::#static-resources},
+        null,
         ~{::#main-content}
     )}"
 >
@@ -64,6 +64,6 @@
             <h1>Welcome to the Home Page</h1>
             <p>This is the home page content.</p>
         </div>
-        
+
     </body>
 </html> -->
