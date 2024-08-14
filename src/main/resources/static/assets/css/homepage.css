@@ -40,7 +40,7 @@
     font-family: var(--font-geometric-extra-bold);
     font-size: 30px;
     margin : 20px 0px;
-} 
+}
 
 .home-buy {
     max-width: 1200px;
@@ -50,7 +50,7 @@
 .home-buy-items .item-background {
     height: 300px;
     width: 100%;
-    position: relative; 
+    position: relative;
     box-sizing: border-box;
 }
 
@@ -73,10 +73,10 @@
     background-color: rgba(0, 0, 0, 0.3);
     position: absolute;
     display: block;
-    width: 100%; 
-    height: 100%; 
-    top: 0px; 
-    left: 0px; 
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
 }
 
 .home-buy-items .item-group {
@@ -120,4 +120,14 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.image-center {
+    object-fit: cover;
+    object-position: center;
+}
+
+.image-left {
+    object-fit: cover;
+    object-position: left;
 }
