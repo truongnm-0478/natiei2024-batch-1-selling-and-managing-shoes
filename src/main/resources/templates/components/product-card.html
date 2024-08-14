@@ -1,10 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Product Card</title>
+    </head>
+    <body>
+        <div th:fragment="product-card(id, name, image1, image2, style, price, originPrice)" class="product-card-wrapper">
+            <div class="product-card-image-wrapper">
+                <p hidden th:text="${id}"></p>
+                <img
+                    alt="product-card-image-1"
+                    th:src="${image1}"
+                    class="product-card-inactive product-card-image-items"
+                />
+                <img
+                    alt="product-card-image-2"
+                    th:src="${image2}"
+                    class="product-card-active product-card-image-items"
+                />
+                <div class="product-card-button">
+                    <div
+                        th:replace="~{/components/orange-button :: 
+                                            buttonFragment(
+                                                buttonText='MUA NGAY', 
+                                                style='padding : 16px 12px 6px 12px; font-size : 23px', 
+                                                typeButton='button', 
+                                                linkButton='#'
+                                            )}"
+                    ></div>
+                </div>
+            </div>
+            <div class="product-card-caption-wrapper">
+                <a href="#" class="product-card-name" th:text="${name}">product name</a>
+                <p class="product-card-style" th:text="${style}"></p>
+                <p class="product-card-price-wrapper">
+                    <span class="product-card-origin-price" th:text="${originPrice}"></span>
+                    <span class="product-card-price" th:text="${price}"></span>
+                </p>
+            </div>
+        </div>
+    </body>
 </html>

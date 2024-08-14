@@ -1,7 +1,7 @@
-<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{./layouts/main-layout :: main-layout-fragment(
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{/layouts/main-layout :: main-layout-fragment(
         ~{::title},
         ~{::#static-resources}, 
-        ~{./components/header :: header}, 
+        ~{/components/header :: header}, 
         ~{::#main-content}
     )}">
 
@@ -10,8 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register Account</title>
     <th:block id="static-resources">
-        <link rel="stylesheet" href="./assets/css/register.css">
-        <script src="./assets/js/register.js" defer></script>
+        <link rel="stylesheet" href="/assets/css/register.css">
+        <script src="/assets/js/register.js" defer></script>
     </th:block>
 </head>
 
