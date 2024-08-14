@@ -1,10 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{./layouts/main-layout :: main-layout-fragment(
+    ~{::title},
+    ~{::#static-resources},
+    null,
+    ~{::#main-content}
+)}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${productInfo.name}"></title>
+    <th:block id="static-resources">
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+        <link rel="stylesheet" href="/assets/css/product-detail.css">
+    </th:block>
 </head>
-<body>
 
+<body>
+<div id="main-content" class="container product-details">
+    <div class="row mb-5">
+        <div class="col-xs-12 col-sm-12 col-md-12 hidden-xs hidden-sm">
+            <ol class="breadcrumb px-0">
+                <li class="pr-2 line"><a href="#"><span th:text="${productInfo.category}"></span></a></li>
+                <li class="px-2">
+                    <span th:text="${productInfo.name}"></span> -
+                    <span th:text="${productInfo.style}"></span>
+                </li>
+            </ol>
+
+        </div>
+        <div class="col-md-7">
+            <div class="product-image">
+                <img id="main-image" th:src="@{${productInfo.images[0].url}}" alt="Product Image" class="img-fluid">
+            </div>
+            <div class="swiper-container product-thumbnails mt-2 position-relative" style="overflow-x: hidden;">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" th:each="image : ${productInfo.images}">
+                        <img th:src="@{${image.url}}" alt="Thumbnail"
+                             th:onclick="'changeImage(' + '\'' + @{${image.url}} + '\'' + ')'">
+                    </div>
+                </div>
+                <div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <h3 class="text-uppercase font-weight-bold">
+                <span th:text="${productInfo.name}"></span> -
+                <span th:text="${productInfo.style}"></span> -
+                <span th:text="${productInfo.material}"></span>
+            </h3>
+            <p class="my-4">Mã sản phẩm: ANS00<span th:text="${productInfo.id}"></span></p>
+            <h4 class="my-4 text-orange" th:text="${productInfo.price}"></h4>
+            <hr class="divider"/>
+            <div class="product-colors mb-3">
+                <span class="d-inline-block mr-2 color-product"
+                      th:style=" 'background-color: #' + ${productInfo.color} + ';'"
+                      title="Màu sắc: ">
+                </span>
+                <th:block th:each="product : ${productDetailInfoList}">
+                    <a th:href="${product.id}">
+                        <span class="d-inline-block mr-2 color-product"
+                              th:style=" 'background-color: #' + ${product.color} + ';'"
+                              title="Màu sắc: "></span>
+                    </a>
+                </th:block>
+            </div>
+
+            <hr class="divider"/>
+
+            <div class="row mb-3">
+                <div class="form-group col-6">
+                    <label for="size">Size</label>
+                    <select id="size" class="form-control">
+                        <option th:each="sizeQuantity : ${productInfo.sizeQuantity}"
+                                th:value="${sizeQuantity.size.value}"
+                                th:text="${sizeQuantity.size.value}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group col-6">
+                    <label for="quantity">Số lượng</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" required min="1">
+                </div>
+            </div>
+
+            <button class="btn btn-block mb-2 text-uppercase btn-oder py-3">Thêm vào giỏ hàng</button>
+            <button class="btn btn-block text-uppercase btn-pay py-3">Thanh toán</button>
+
+            <div class="accordion" id="productAccordion">
+                <div class="card border-none">
+                    <div class="card-header px-0 py-4 border-dashed" id="headingOne">
+                        <span class="mb-0 text-uppercase font-weight-bold ">
+                            <div id="toggleOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                 aria-controls="collapseOne" class="accordion-toggle ">
+                                <span class="h5">Thông tin sản phẩm</span>
+                            </div>
+                        </span>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show " aria-labelledby="headingOne"
+                         data-parent="#productAccordion">
+                        <div class="card-body px-0 ">
+                            <p>Gender: <span th:text="${productInfo.gender}"></span></p>
+                            <p>Size run: 35 – 46</p>
+                            <p>Upper: <span th:text="${productInfo.material}"></span></p>
+                            <p><span th:text="${productInfo.description.text}"></span></p>
+                            <img th:src="@{${productInfo.description.images[0]}}" alt="Size Image" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-none">
+                    <div class="card-header px-0 py-4 border-dashed" id="headingTwo">
+                        <span class="mb-0 text-uppercase font-weight-bold">
+                            <div id="toggleTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                                 aria-controls="collapseTwo" class="accordion-toggle">
+                                <span class="h5">Quy định đổi sản phẩm</span>
+                            </div>
+                        </span>
+                    </div>
+
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#productAccordion">
+                        <div class="card-body px-0">
+                            <ul class="text-justify">
+                                <li>Chỉ đổi hàng 1 lần duy nhất, mong bạn cân nhắc kĩ trước khi quyết định.</li>
+                                <li>Thời hạn đổi sản phẩm khi mua trực tiếp tại cửa hàng là 07 ngày, kể từ ngày mua. Đổi
+                                    sản phẩm khi mua online là 14 ngày, kể từ ngày nhận hàng.
+                                </li>
+                                <li>Sản phẩm đổi phải kèm hóa đơn. Bắt buộc phải còn nguyên tem, hộp, nhãn mác.</li>
+                                <li>Sản phẩm đổi không có dấu hiệu đã qua sử dụng, không giặt tẩy, bám bẩn, biến dạng.
+                                </li>
+                                <li>
+                                    Ananas chỉ ưu tiên hỗ trợ đổi size. Trong trường hợp sản phẩm hết size cần đổi, bạn
+                                    có thể đổi sang 01 sản phẩm khác:
+                                    <br/>
+                                    - Nếu sản phẩm muốn đổi ngang giá trị hoặc có giá trị cao hơn, bạn sẽ cần bù khoảng
+                                    chênh lệch tại thời điểm đổi (nếu có).
+                                    <br/>
+                                    - Nếu bạn mong muốn đổi sản phẩm có giá trị thấp hơn, chúng tôi sẽ không hoàn lại
+                                    tiền.
+                                </li>
+                                <li>
+                                    Trong trường hợp sản phẩm - size bạn muốn đổi không còn hàng trong hệ thống. Vui
+                                    lòng chọn sản phẩm khác.
+                                </li>
+                                <li>
+                                    Không hoàn trả bằng tiền mặt dù bất cứ trong trường hợp nào. Mong bạn thông cảm.
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-none">
+                    <div class="card-header px-0 py-4 border-dashed" id="headingThree">
+                        <span class="mb-0 text-uppercase font-weight-bold">
+                            <div id="toggleThree" data-toggle="collapse" data-target="#collapseThree"
+                                 aria-expanded="false"
+                                 aria-controls="collapseThree" class="accordion-toggle">
+                                <span class="h5">Thông tin sản phẩm</span>
+                            </div>
+                        </span>
+                    </div>
+
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                         data-parent="#productAccordion">
+                        <div class="card-body px-0 ">
+                            <p>Mỗi đôi giày Ananas trước khi xuất xưởng đều trải qua nhiều khâu kiểm tra. Tuy vậy, trong
+                                quá trình sử dụng, nếu nhận thấy các lỗi: gãy đế, hở đế, đứt chỉ may,...trong thời gian
+                                6 tháng từ ngày mua hàng, mong bạn sớm gửi sản phẩm về Ananas nhằm giúp chúng tôi có cơ
+                                hội phục vụ bạn tốt hơn. Vui lòng gửi sản phẩm về bất kỳ cửa hàng Ananas nào, hoặc gửi
+                                đến trung tâm bảo hành Ananas ngay trong trung tâm TP.HCM trong giờ hành chính:</p>
+                            <p>Địa chỉ: 5C Tân Cảng, P.25, Q.Bình Thạnh , TP. Hồ Chí Minh.</p>
+                            <span>Hotline: 028 2211 0067</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="/assets/js/product-detail.js"></script>
+</div>
 </body>
+
 </html>
