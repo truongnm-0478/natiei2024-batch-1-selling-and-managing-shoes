@@ -4,6 +4,7 @@ import group1.intern.bean.ProductDetailColors;
 import group1.intern.bean.ProductDetailInfo;
 import group1.intern.model.Product;
 import group1.intern.model.ProductDetail;
+import group1.intern.repository.ProductDetailCustomRepository;
 import group1.intern.repository.ProductDetailRepository;
 import group1.intern.repository.ProductRepository;
 import group1.intern.service.ProductService;
@@ -11,11 +12,15 @@ import group1.intern.util.CurrencyUtil;
 import group1.intern.util.exception.NotFoundObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -24,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductDetailRepository productDetailRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductDetailCustomRepository productDetailCustomRepository;
 
 
     @Override
@@ -76,6 +81,13 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return null;
+    }
+
+
+    @Override
+    public Page<ProductDetail> getProductsByName(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size); // PageRequest is 0-based
+        return productDetailCustomRepository.findByProductName(name, pageable);
     }
 
 }
