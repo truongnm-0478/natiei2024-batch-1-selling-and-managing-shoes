@@ -2,6 +2,7 @@ package group1.intern.controller;
 
 import group1.intern.bean.ProductDetailColors;
 import group1.intern.bean.ProductDetailInfo;
+import group1.intern.bean.ToastMessage;
 import group1.intern.model.Product;
 import group1.intern.service.ProductService;
 import group1.intern.util.exception.NotFoundObjectException;
@@ -28,8 +29,7 @@ public class ProductController {
             model.addAttribute("productDetailInfoList", productDetailColors);
             return "screens/products/show";
         } catch (NotFoundObjectException ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
-            ex.printStackTrace();
+            model.addAttribute("toastMessages", new ToastMessage("error", ex.getMessage()));
             return "screens/products/index";
         }
     }

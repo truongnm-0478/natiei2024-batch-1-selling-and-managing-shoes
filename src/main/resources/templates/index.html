@@ -5,7 +5,7 @@
     th:replace="~{/layouts/main-layout :: main-layout-fragment(
         ~{::title},
         ~{::#static-resources},
-        null, 
+        null,
         ~{::#main-content}
     )}"
 >
@@ -18,7 +18,7 @@
         </th:block>
     </head>
     <body>
-        <div id="main-content">
+    <div id="main-content">
             <div
                 th:replace="~{/screens/homepage/slide :: homepage-slider}"
             ></div>

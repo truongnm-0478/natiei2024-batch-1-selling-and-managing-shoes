@@ -4,66 +4,39 @@
     lang="en"
     th:fragment="main-layout-fragment(title, otherStaticResources, header, mainContent)"
 >
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title th:replace="${title}">My Title</title>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:replace="${title}">My Title</title>
 
-        <script src="/assets/js/bootstrap-loader.js"></script>
-        <link rel="stylesheet" href="/assets/css/button.css" />
-        <link rel="icon" href="/assets/images/logo.png"/>
+    <script src="/assets/js/bootstrap-loader.js"></script>
+    <link rel="stylesheet" href="/assets/css/button.css"/>
+    <link rel="icon" href="/assets/images/logo.png"/>
 
-        <!-- link style footer and header  -->
-        <link rel="stylesheet" href="/assets/css/footer.css">
-        <link rel="stylesheet" href="/assets/css/header.css">
+    <!-- link style footer and header  -->
+    <link rel="stylesheet" href="/assets/css/footer.css">
+    <link rel="stylesheet" href="/assets/css/header.css">
+    <link rel="stylesheet" href="/assets/css/toast.css">
 
-        <!-- Other javascript, css source files -->
-        <th:block th:replace="${otherStaticResources} ?: ~{}"></th:block>
-    </head>
-    <body>
-        <!-- Header -->
-        <!-- nếu có header của người dùng sau khi đăng nhập vào thì đổi header tương ứng với admin hoặc seller or customer  -->
-        <div
-            th:replace="${header} ? ${header} : ~{/components/header :: header}"
-        ></div>
+    <!-- Other javascript, css source files -->
+    <th:block th:replace="${otherStaticResources} ?: ~{}"></th:block>
+    <script src="/assets/js/toast.js"></script>
 
-        <!-- Main content  -->
-        <div th:replace="${mainContent} ?: ~{}"></div>
+</head>
+<body>
+    <div th:if="${toastMessages != null}">
+        <script th:inline="javascript">
+            const toastMessages = /*[[${toastMessages}]]*/ [];
+            showToast(toastMessages.type, toastMessages.content);
+        </script>
+    </div>
+    <!-- Header -->
+    <div th:replace="${header} ? ${header} : ~{/components/header :: header}"></div>
 
-        <!-- Footer  -->
-        <div th:replace="~{/components/footer :: footer}"></div>
-    </body>
+    <!-- Main content  -->
+    <div th:replace="${mainContent} ?: ~{}"></div>
+
+    <!-- Footer  -->
+    <div th:replace="~{/components/footer :: footer}"></div>
+</body>
 </html>
-
-<!-- mẫu áp dụng layout  -->
-<!-- <!DOCTYPE html>
-<html
-    xmlns:th="http://www.thymeleaf.org"
-    lang="en"
-    th:replace="~{/layouts/main-layout :: main-layout-fragment(
-        ~{::title},
-        ~{::#static-resources},
-        null,
-        ~{::#main-content}
-    )}"
->
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-        <th:block id="static-resources">
-            <style>
-                p {
-                    color: red;
-                }
-            </style>
-        </th:block>
-    </head>
-    <body>
-        <div id="main-content">
-            <h1>Welcome to the Home Page</h1>
-            <p>This is the home page content.</p>
-        </div>
-
-    </body>
-</html> -->

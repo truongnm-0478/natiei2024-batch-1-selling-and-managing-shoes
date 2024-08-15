@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Toast Component</title>
+    <script src="/assets/js/bootstrap-loader.js"></script>
+    <style>
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Khoảng cách giữa các toast */
+        }
+
+        /*.toast {*/
+        /*    background: #333;*/
+        /*    color: #fff;*/
+        /*    padding: 10px 20px;*/
+        /*    border-radius: 5px;*/
+        /*    opacity: 0;*/
+        /*    transition: opacity 0.3s ease, transform 0.3s ease;*/
+        /*    transform: translateY(10px);*/
+        /*}*/
+
+        /*.toast.show {*/
+        /*    opacity: 1;*/
+        /*    transform: translateY(0);*/
+        /*}*/
+
+        /*.toast.success {*/
+        /*    background: #28a745;*/
+        /*}*/
+
+        /*.toast.error {*/
+        /*    background: #dc3545;*/
+        /*}*/
+
+        /*.toast.info {*/
+        /*    background: #17a2b8;*/
+        /*}*/
+    </style>
+</head>
+<body>
+
+<div th:fragment="toastFragment(messageType, messageContent)" style="position: absolute">
+    <div th:if="${messageContent != null}" class="toast-container" style="background-color: #4e73df">
+        <span th:text="${messageContent}"></span>
+
+<!--        <div th:class="'toast align-items-center text-bg-' + ${messageType} + ' border-0'" role="alert"-->
+<!--             aria-live="assertive" aria-atomic="true" data-bs-delay="5000" data-bs-autohide="true">-->
+<!--            <div class="d-flex">-->
+<!--                <div class="toast-body">-->
+<!--                    <span th:text="${messageContent}"></span>-->
+<!--                </div>-->
+<!--                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</div>
+
+</body>
+</html>
