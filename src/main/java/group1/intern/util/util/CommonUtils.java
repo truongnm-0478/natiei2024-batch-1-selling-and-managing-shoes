@@ -3,7 +3,9 @@ package group1.intern.util.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import group1.intern.repository.base.WhereElements;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
@@ -11,9 +13,39 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @NoArgsConstructor
 public class CommonUtils {
+
+    /*
+     * JPA
+     */
+    public static String getSortClause(Sort sort, String prefix) {
+        if (sort == null || sort.isEmpty() || sort.isUnsorted()) return "";
+        return " ORDER BY " + sort.stream().map(
+            order -> (isNotEmptyOrNullString(prefix) ? String.format("%s.%s", prefix, order.getProperty()) : order.getProperty()) + " " + order.getDirection()
+        ).reduce((a, b) -> a + ", " + b).orElse("");
+    }
+
+    public static String getWhereClause(List<WhereElements> whereElements, String prefix) {
+        if (whereElements == null || whereElements.isEmpty()) return "";
+        final String tmp = isNotEmptyOrNullString(prefix) ? prefix + "." : "";
+        AtomicInteger index = new AtomicInteger(1);
+        String clause = whereElements.stream().map(
+                e -> {
+                    var key = e.getType().isLikeIgnoreCaseType() ? String.format("LOWER(%s%s)", tmp, e.getKey()) : String.format("%s%s", tmp, e.getKey());
+                    return String.format("%s %s %s",
+                        key,
+                        e.getType().getValue(),
+                        "?" + index.getAndIncrement()
+                    );
+                }
+            )
+            .reduce((a, b) -> a + " AND " + b).orElse("");
+        return " WHERE " + clause;
+    }
+
     /*
      * Encoder and decoder
      */

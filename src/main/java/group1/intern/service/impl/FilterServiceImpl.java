@@ -3,18 +3,18 @@ package group1.intern.service.impl;
 import group1.intern.bean.ProductFilterInfo;
 import group1.intern.model.Constant;
 import group1.intern.model.ProductDetail;
-import group1.intern.repository.ProductsCustomRepository;
+import group1.intern.repository.customization.ProductDetailsCustomRepository;
 import group1.intern.service.FilterService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class FilterServiceImpl implements FilterService {
-    @Autowired
-    private ProductsCustomRepository repo;
+    private ProductDetailsCustomRepository repo;
 
     @Override
     public List<ProductFilterInfo> getProductFilterInfos(List<Constant> constants) {

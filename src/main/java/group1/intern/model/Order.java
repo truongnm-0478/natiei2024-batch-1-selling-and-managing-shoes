@@ -1,14 +1,15 @@
 package group1.intern.model;
 
+import group1.intern.model.Enum.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import group1.intern.model.Enum.OrderStatus;
 
 import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -31,6 +32,6 @@ public class Order extends EntityBase {
     private Account account;
 
     // One-to-Many relationship with OrderDetail
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
 }

@@ -37,7 +37,7 @@ public class ProductDetail extends EntityBase {
     private ProductDescription description;
     private LocalDateTime deletedAt;
 
-    @OneToMany(mappedBy = "productDetail", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "productDetail", fetch = FetchType.LAZY)
     private List<ProductImage> images;
 
     @OneToMany(mappedBy = "productDetail", fetch = FetchType.LAZY)
