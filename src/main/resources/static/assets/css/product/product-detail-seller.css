@@ -1,0 +1,83 @@
+@import url('../constant.css');
+
+a {
+    color: var(--color-blue-light);
+}
+
+.product-image {
+    text-align: center;
+}
+
+.swiper-container {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.swiper-slide img {
+    width: 100%;
+    cursor: pointer;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: var(--color-blue-light);
+}
+
+.label {
+    /* font-weight: bold; */
+    font-weight: 550;
+}
+
+.value {
+    color: #333;
+}
+
+.discount {
+    color: #d9534f;
+}
+
+.final-price {
+    font-weight: bold;
+    color: var(--color-blue-light);
+}
+
+.color-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.color-box {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ccc;
+}
+
+.color-box:hover {
+    cursor: pointer;
+}
+
+.size-table {
+    width: 100px;
+}
+
+hr.divider {
+    border: none;
+    border-top: 1px dashed var(--color-gray-medium);
+}
+
+.badge-danger {
+    font-size: 14px;
+    background-color: var(--color-orange-dark);
+    min-width: 50px !important;
+}
+.icon {
+    width: 18px;
+}
+
+.action {
+    position: absolute;
+    right: 10px;
+}
+

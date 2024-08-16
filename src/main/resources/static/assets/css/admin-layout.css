@@ -40,7 +40,7 @@ button {
 .admin-header-search-input-position-relative {
     position: relative;
     width: 70%;
-    
+
 }
 
 #admin-header-search-input {
@@ -177,6 +177,5 @@ button {
 
 #admin-layout-main-content {
     width: 82%;
-    background-color: #f1f1f1;
     margin-left: 18%;
 }
