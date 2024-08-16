@@ -1,6 +1,7 @@
 package group1.intern.controller;
 
 import group1.intern.bean.AccountRegistration;
+import group1.intern.bean.ToastMessage;
 import group1.intern.service.AuthService;
 import group1.intern.util.exception.BadRequestException;
 import group1.intern.util.exception.DuplicateEmailException;
@@ -39,12 +40,12 @@ public class RegisterController {
         try {
             authService.register(accountRegistration);
         } catch (DuplicateEmailException | BadRequestException ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
+            model.addAttribute("toastMessages", new ToastMessage("error", ex.getMessage()));
             return "screens/auth/register";
         }
 
-        model.addAttribute("message", "Đăng kí thành công");
-        return "redirect:/login";
+        model.addAttribute("toastMessages", new ToastMessage("success", "Đăng kí thành công"));
+        return "screens/auth/register";
     }
 
 }

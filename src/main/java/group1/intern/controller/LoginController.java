@@ -2,6 +2,7 @@ package group1.intern.controller;
 
 import group1.intern.bean.AccountInfo;
 import group1.intern.bean.LoginRequest;
+import group1.intern.bean.ToastMessage;
 import group1.intern.model.Account;
 import group1.intern.service.AuthService;
 import group1.intern.util.constant.CommonConstant;
@@ -52,13 +53,13 @@ public class LoginController {
             // Redirect to previous URL
             return redirectPreviousUrl();
         } catch (BadCredentialsException ex) {
-            model.addAttribute("errorMessage", "Địa chỉ email hoặc mật khẩu không chính xác!");
+            model.addAttribute("toastMessages", new ToastMessage("error", "Địa chỉ email hoặc mật khẩu không chính xác!"));
             return "screens/auth/login";
         } catch (InternalAuthenticationServiceException ex) {
-            model.addAttribute("errorMessage", "Tài khoản không tồn tại!");
+            model.addAttribute("toastMessages", new ToastMessage("error", "Tài khoản không tồn tại!"));
             return "screens/auth/login";
         } catch (DisabledException ex) {
-            model.addAttribute("errorMessage", "Tài khoản đã bị khóa!");
+            model.addAttribute("toastMessages", new ToastMessage("error", "Tài khoản đã bị khóa!"));
             return "screens/auth/login";
         }
     }
