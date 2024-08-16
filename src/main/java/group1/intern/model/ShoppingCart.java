@@ -24,6 +24,6 @@ public class ShoppingCart extends EntityBase {
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "product_detail_id")
-    private ProductDetail productDetail;
+    @JoinColumn(name = "product_quantity_id")
+    private ProductQuantity productQuantity;
 }

@@ -1,22 +1,45 @@
-package group1.intern.repository.impl;
+package group1.intern.repository.customization.impl;
 
 import group1.intern.model.Constant;
 import group1.intern.model.Product;
 import group1.intern.model.ProductDetail;
-import group1.intern.repository.ProductsCustomRepository;
+import group1.intern.repository.base.BaseRepository;
+import group1.intern.repository.base.WhereClauseType;
+import group1.intern.repository.base.WhereElements;
+import group1.intern.repository.customization.ProductDetailsCustomRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ProductsCustomRepositoryImpl implements ProductsCustomRepository {
+@RequiredArgsConstructor
+public class ProductDetailsCustomRepositoryImpl implements ProductDetailsCustomRepository {
+    private final BaseRepository<ProductDetail> baseRepository;
+
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
+
+    @Override
+    public BaseRepository<ProductDetail> getRepository() {
+        return baseRepository;
+    }
+
+    @Override
+    public Page<ProductDetail> findByProductName(String name, Pageable pageable) {
+        return baseRepository.fetchAllDataWithPagination(
+            List.of(
+                new WhereElements("product.name", "%" + name + "%", WhereClauseType.LIKE_IGNORE_CASE)
+            ),
+            pageable);
+    }
 
     @Override
     public List<ProductDetail> findProductByFilter(List<Constant> constants) {

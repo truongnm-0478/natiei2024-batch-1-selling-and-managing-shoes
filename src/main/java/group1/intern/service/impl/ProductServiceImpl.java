@@ -2,39 +2,31 @@ package group1.intern.service.impl;
 
 import group1.intern.bean.ProductDetailColors;
 import group1.intern.bean.ProductDetailInfo;
-import group1.intern.model.Product;
 import group1.intern.model.ProductDetail;
-import group1.intern.repository.ProductDetailCustomRepository;
 import group1.intern.repository.ProductDetailRepository;
-import group1.intern.repository.ProductRepository;
+import group1.intern.repository.customization.ProductDetailsCustomRepository;
 import group1.intern.service.ProductService;
 import group1.intern.util.CurrencyUtil;
 import group1.intern.util.exception.NotFoundObjectException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-
-    @Autowired
-    private ProductDetailRepository productDetailRepository;
-
-    @Autowired
-    private ProductDetailCustomRepository productDetailCustomRepository;
-
+    private final ProductDetailRepository productDetailRepository;
+    private final ProductDetailsCustomRepository productDetailCustomRepository;
 
     @Override
     public ProductDetailInfo getProductDetailById(Integer id) {
-        Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(id);
+        Optional<ProductDetail> productDetailOptional = productDetailCustomRepository.findByIdWithRelationship(id);
 
         if (productDetailOptional.isEmpty()) {
             throw new NotFoundObjectException("Không tìm thấy sản phẩm với id: " + id);
