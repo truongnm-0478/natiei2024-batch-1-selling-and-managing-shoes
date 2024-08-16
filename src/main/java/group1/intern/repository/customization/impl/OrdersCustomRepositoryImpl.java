@@ -24,7 +24,7 @@ public class OrdersCustomRepositoryImpl implements OrdersCustomRepository {
     }
 
     @Override
-    public Page<Order> findAllByAccount_Id(Integer accountId, Pageable pageable) {
+    public Page<Order> findAllByAccountId(Integer accountId, Pageable pageable) {
         return baseRepository.fetchAllDataWithPagination(
             List.of(
                 new WhereElements("account.id", accountId, WhereClauseType.EQUAL)
@@ -34,7 +34,7 @@ public class OrdersCustomRepositoryImpl implements OrdersCustomRepository {
     }
 
     @Override
-    public Page<Order> findAllByAccount_IdAndStatus(Integer accountId, OrderStatus status, Pageable pageable) {
+    public Page<Order> findAllByAccountIdAndStatus(Integer accountId, OrderStatus status, Pageable pageable) {
         return baseRepository.fetchAllDataWithPagination(
             List.of(
                 new WhereElements("account.id", accountId, WhereClauseType.EQUAL),

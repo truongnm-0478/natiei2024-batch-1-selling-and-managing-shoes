@@ -82,12 +82,12 @@ CREATE TABLE product_quantities (
 CREATE TABLE shopping_carts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     account_id INT,
-    product_detail_id INT,
+    product_quantity_id INT,
     quantity INT,
     created_at DATETIME DEFAULT (now()),
     updated_at DATETIME,
     FOREIGN KEY (account_id) REFERENCES accounts(id),
-    FOREIGN KEY (product_detail_id) REFERENCES product_details(id)
+    FOREIGN KEY (product_quantity_id) REFERENCES product_quantities(id)
 );
 CREATE TABLE orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -103,13 +103,13 @@ CREATE TABLE orders (
 CREATE TABLE order_details (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
-    product_detail_id INT,
+    product_quantity_id INT,
     price INT,
     count INT,
     created_at DATETIME DEFAULT (now()),
     updated_at DATETIME,
     FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (product_detail_id) REFERENCES product_details(id)
+    FOREIGN KEY (product_quantity_id) REFERENCES product_quantities(id)
 );
 
 -- Index

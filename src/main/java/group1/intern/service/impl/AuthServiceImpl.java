@@ -12,12 +12,12 @@ import group1.intern.service.AuthService;
 import group1.intern.service.JwtService;
 import group1.intern.util.exception.BadRequestException;
 import group1.intern.util.exception.DuplicateEmailException;
-import group1.intern.util.util.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Credential login(LoginRequest loginRequest) {
@@ -46,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
             throw new DuplicateEmailException("Email đã tồn tại: " + accountRegistration.getEmail());
         }
 
-        String encodedPassword = CommonUtils.encodeBase64(accountRegistration.getPassword());
+        String encodedPassword = passwordEncoder.encode(accountRegistration.getPassword());
 
         Account account = Account.builder()
             .email(accountRegistration.getEmail())

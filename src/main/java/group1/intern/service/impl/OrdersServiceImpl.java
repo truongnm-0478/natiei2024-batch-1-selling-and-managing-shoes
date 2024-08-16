@@ -19,8 +19,8 @@ public class OrdersServiceImpl implements OrdersService {
     public Page<OrderInfo> getOrders(@Nullable Integer accountId, @Nullable OrderStatus status, Pageable pageable) {
         if (accountId != null) {
             var orders = status != null
-                ? orderCustomRepository.findAllByAccount_IdAndStatus(accountId, status, pageable)
-                : orderCustomRepository.findAllByAccount_Id(accountId, pageable);
+                ? orderCustomRepository.findAllByAccountIdAndStatus(accountId, status, pageable)
+                : orderCustomRepository.findAllByAccountId(accountId, pageable);
             return orders.map(OrderInfo::fromEntity);
         }
         return null;
