@@ -6,7 +6,7 @@
         <title>Product Card</title>
     </head>
     <body>
-        <div th:fragment="product-card(id, name, image1, image2, style, price, originPrice)" class="product-card-wrapper">
+        <div th:fragment="product-card(id, name, image1, image2, material, style, price, originPrice, quantity)" class="product-card-wrapper">
             <div class="product-card-image-wrapper">
                 <p hidden th:text="${id}"></p>
                 <img
@@ -19,23 +19,32 @@
                     th:src="${image2}"
                     class="product-card-active product-card-image-items"
                 />
-                <div class="product-card-button">
+                <div th:if="${quantity > 0}" class="product-card-button">
                     <div
                         th:replace="~{/components/orange-button :: 
                                             buttonFragment(
                                                 buttonText='MUA NGAY', 
                                                 style='padding : 16px 12px 6px 12px; font-size : 23px', 
                                                 typeButton='button', 
-                                                linkButton='#'
+                                                linkButton='/products/' + ${id}
                                             )}"
                     ></div>
                 </div>
+                <div th:if="${quantity == 0}" class="product-card-overlay">
+                    <span class="fs-6 fs-sm-5 fs-md-4 fs-lg-3 fs-xl-2">HẾT HÀNG</span>
+                </div>
             </div>
             <div class="product-card-caption-wrapper">
-                <a href="#" class="product-card-name" th:text="${name}">product name</a>
+                <a th:href="'/products/'+${id}" class="product-card-name fs-6 fs-sm-5 fs-md-4 fs-lg-3 fs-xl-2">
+                    <span th:text="${name}"></span>
+                    <span> - </span>
+                    <span th:text="${material}"></span>
+                </a>
                 <p class="product-card-style" th:text="${style}"></p>
                 <p class="product-card-price-wrapper">
-                    <span class="product-card-origin-price" th:text="${originPrice}"></span>
+                    <span class="product-card-origin-price" 
+                          th:if="${originPrice != price}" 
+                          th:text="${originPrice}"></span>
                     <span class="product-card-price" th:text="${price}"></span>
                 </p>
             </div>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class SearchController {
             size,
             page,
             5,
-            query
+            buildQueryString(query)
         );
 
         modelAndView.addObject("paginationHelper", paginationHelper);
@@ -51,5 +52,11 @@ public class SearchController {
         modelAndView.addObject("products", productsDetailList);
 
         return modelAndView;
+    }
+
+    private String buildQueryString(String query){
+        return UriComponentsBuilder.fromUriString("/search-results")
+            .queryParam("key", query)
+            .toUriString();
     }
 }

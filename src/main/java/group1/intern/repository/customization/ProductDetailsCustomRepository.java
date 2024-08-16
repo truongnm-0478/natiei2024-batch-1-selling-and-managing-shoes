@@ -8,8 +8,14 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface ProductDetailsCustomRepository extends CustomRepository<ProductDetail, Integer, BaseRepository<ProductDetail>> {
-    Page<ProductDetail> findByProductName(String name, Pageable pageable);
+public interface ProductDetailsCustomRepository
+                extends CustomRepository<ProductDetail, Integer, BaseRepository<ProductDetail>> {
+        Page<ProductDetail> findByProductName(String name, Pageable pageable);
 
-    List<ProductDetail> findProductByFilter(List<Constant> constants);
+        Page<ProductDetail> findProductByFilter(
+                        List<Integer> listStyleId,
+                        List<Integer> listCategoryId,
+                        List<Integer> listMaterialId,
+                        List<Integer> listColorId,
+                        int genderFilter, Pageable pageable);
 }

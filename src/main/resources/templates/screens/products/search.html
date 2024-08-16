@@ -8,9 +8,9 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Document</title>
+  <title>Search</title>
   <th:block id="static-resources">
-    <link rel="stylesheet" href="/assets/product/css/search-product.css"/>
+    <link rel="stylesheet" href="/assets/css/product/search-product.css"/>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // TODO: add API to get wish list (if database have) :)
@@ -30,7 +30,7 @@
         var noProductBtn = document.querySelector(".no-product-btn .btn");
         if (noProductBtn) {
           noProductBtn.addEventListener("click", function () {
-            window.location.href = '/product-list';
+            window.location.href = '/products';
           });
         }
       });

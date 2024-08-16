@@ -1,571 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar</title>
-    <link rel="stylesheet" href="./assets/css/sidebar.css">
-    <scrip type="text/javascript" src="../../static/assets/js/sidebar.js"></script>
-</head>
-
-<body>
-    <div class="prd1-cont container-fluid">
-        <div class="row">
-            <div class="sidebar  col-sm-12 col-md-3 col-lg-3 prd1-left hidden-xs hidden-sm" th:fragment="sidebar">
-                <div class="row left-type">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" data-id="men,women" class=""><a href="#all" aria-controls="home"
-                                role="tab" data-toggle="tab">TẤT CẢ</a></li>
-                        <li role="presentation" class="type-divider"></li>
-                        <li role="presentation" data-id="men" class=""><a href="#men" aria-controls="profile" role="tab"
-                                data-toggle="tab">NAM</a></li>
-                        <li role="presentation" class="type-divider"></li>
-                        <li data-id="women" role="presentation" class=""><a href="#women" aria-controls="profile"
-                                role="tab" data-toggle="tab">NỮ</a></li>
-                    </ul>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sidebar</title>
+    </head>
+    <body>
+        <div class="prd1-cont d-none d-lg-flex col-lg-3" th:fragment="product-list-sidebar">
+            <div class="row w-100 custom-padding-left">
+                <div class="sidebar col-sm-12 col-md-3 col-lg-3 prd1-left hidden-xs hidden-sm" th:fragment="sidebar">
+                    <div class="row left-type">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" data-id="men,women">
+                                <a
+                                    href="#all"
+                                    role="tab"
+                                    data-toggle="tab"
+                                    data-gender="1"
+                                    th:class="${filterGender == 1} ? 'active-gender'"
+                                    >TẤT CẢ</a
+                                >
+                            </li>
+                            <li role="presentation" class="type-divider"></li>
+                            <li role="presentation" data-id="men" class="">
+                                <a
+                                    href="#men"
+                                    role="tab"
+                                    data-toggle="tab"
+                                    data-gender="2"
+                                    th:class="${filterGender == 2} ? 'active-gender'"
+                                    >NAM</a
+                                >
+                            </li>
+                            <li role="presentation" class="type-divider"></li>
+                            <li data-id="women" role="presentation" class="">
+                                <a
+                                    href="#women"
+                                    role="tab"
+                                    data-toggle="tab"
+                                    data-gender="3"
+                                    th:class="${filterGender == 3} ? 'active-gender'"
+                                    >NỮ</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row left-divider"></div>
+                    <div class="row left-tree">
+                        <ul class="nav">
+                            <li class="first-lvl">
+                                <label class="tree-toggle nav-header orange">
+                                    KIỂU DÁNG <span class="caret caret-active"></span>
+                                </label>
+                                <ul class="nav tree" th:each="style : ${styles}">
+                                    <li>
+                                        <label th:class="${#strings.contains(filterStyles, style.id)} ? 'active'">
+                                            <input
+                                                name="cbStyle"
+                                                class="cb-item"
+                                                type="checkbox"
+                                                th:value="${style.id}"
+                                                hidden=""
+                                            />
+                                            <span th:text="${style.value}"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-divider"></li>
+                            <li class="first-lvl">
+                                <label class="tree-toggle nav-header orange">
+                                    DÒNG SẢN PHẨM <span class="caret caret-active"></span>
+                                </label>
+                                <ul class="nav tree" th:each="category : ${categories}">
+                                    <li>
+                                        <label
+                                            th:class="${#strings.contains(filterCategories, category.id)} ? 'active'"
+                                        >
+                                            <input
+                                                name="cbCategory"
+                                                class="cb-item"
+                                                type="checkbox"
+                                                th:value="${category.id}"
+                                                hidden=""
+                                            />
+                                            <span th:text="${category.value}"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-divider"></li>
+                            <li class="first-lvl">
+                                <label class="tree-toggle nav-header orange">
+                                    CHẤT LIỆU <span class="caret caret-active"></span>
+                                </label>
+                                <ul class="nav tree" th:each="material : ${materials}">
+                                    <li>
+                                        <label th:class="${#strings.contains(filterMaterials, material.id)} ? 'active'">
+                                            <input
+                                                name="cbMaterial"
+                                                class="cb-item"
+                                                type="checkbox"
+                                                th:value="${material.id}"
+                                                hidden=""
+                                            />
+                                            <span th:text="${material.value}"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-divider"></li>
+                            <li class="first-lvl">
+                                <label class="tree-toggle nav-header orange">
+                                    MÀU SẮC <span class="caret caret-active"></span>
+                                </label>
+                                <ul class="nav tree">
+                                    <li class="cb-color" th:each="color : ${colors}">
+                                        <label
+                                            th:class="${#strings.contains(filterColors, color.id)} ? 'mx-2 my-1 active' : 'mx-2 my-1'"
+                                        >
+                                            <span
+                                                class="bg-color"
+                                                th:style="'background-color: #' + ${color.value}"
+                                            ></span>
+                                            <input
+                                                name="cbColor"
+                                                class="cb-item"
+                                                type="checkbox"
+                                                th:value="${color.id}"
+                                                hidden=""
+                                            />
+                                        </label>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-divider"></li>
+                        </ul>
+                    </div>
+                    <div class="selected-filters"></div>
                 </div>
-                <div class="row left-divider"></div>
-                <div class="row left-tree">
-                    <ul class="nav">
-                        <li class="first-lvl">
-                            <label label-default="" class="tree-toggle nav-header orange">KIỂU DÁNG <span
-                                    class="caret caret-active"></span></label>
-                            <ul class="nav tree">
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="low-top"
-                                            hidden="">Low
-                                        Top
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="high-top"
-                                            hidden="">High
-                                        Top <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="slip-on"
-                                            hidden="">Slip-on
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="mid-top"
-                                            hidden="">Mid
-                                        Top
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="mule"
-                                            hidden="">Mule
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-divider"></li>
-                        <li class="first-lvl">
-                            <label label-default="" class="tree-toggle nav-header orange">GIÁ <span
-                                    class="caret caret-active"></span></label>
-                            <ul class="nav tree">
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="500-599k"
-                                            hidden="">500k -
-                                        599k <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="600k"
-                                            hidden="">&gt;
-                                        600k
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="400-499k"
-                                            hidden="">400k -
-                                        499k <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="300-399k"
-                                            hidden="">300k -
-                                        399k <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="200-299k"
-                                            hidden="">200k -
-                                        299k <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="200k-range-price"
-                                            hidden="">&lt; 200k <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-divider"></li>
-                        <li class="first-lvl">
-                            <label label-default="" class="tree-toggle nav-header orange">BỘ SƯU TẬP <span
-                                    class="caret caret-active"></span></label>
-                            <ul class="nav tree">
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="randomly"
-                                            hidden="">Randomly <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="public-2000s"
-                                            hidden="">Public 2000s <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox"
-                                            value="ananas-global-goal" hidden="">Ananas Global Goal <span
-                                            class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="vivu"
-                                            hidden="">Vivu
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox"
-                                            value="ananas-daily-things" hidden="">Ananas Daily Things <span
-                                            class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="nauda"
-                                            hidden="">Nauda
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox"
-                                            value="ananas-music-fest-2023" hidden="">Ananas Music Fest 2023 <span
-                                            class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="go-skate"
-                                            hidden="">Go
-                                        Skate <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="tom"
-                                            hidden="">Tomo
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox"
-                                            value="ananas-puppet-club" hidden="">Ananas Puppet Club <span
-                                            class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="2-blues"
-                                            hidden="">2.Blues
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox"
-                                            value="ananas-outline-typo" hidden="">Ananas Outline Typo <span
-                                            class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="discover-ananas"
-                                            hidden="">Discover Ananas <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="jazico"
-                                            hidden="">Jazico
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="track-6-isee"
-                                            hidden="">I.S.E.E <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="soda-pop"
-                                            hidden="">Soda
-                                        Pop <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="landforms"
-                                            hidden="">Landforms <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="solid-colors"
-                                            hidden="">SC
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox"
-                                            value="ananas-copy-store-bag" hidden="">Ananas "Copy" Store Bag <span
-                                            class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="workaday"
-                                            hidden="">Workaday <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="evergreen-pack"
-                                            hidden="">Evergreen <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="raw" hidden="">RAW
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="polka-dots"
-                                            hidden="">Polka Dots <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="living-journey"
-                                            hidden="">Living Journey <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="retrospective"
-                                            hidden="">Retrospective <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="aunter"
-                                            hidden="">Aunter
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="monoguso"
-                                            hidden="">Monoguso <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="ruler"
-                                            hidden="">Ruler
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="flannel-pack"
-                                            hidden="">Flannel <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="class-e"
-                                            hidden="">Class E
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="loveplus"
-                                            hidden="">Love+
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox"
-                                            value="ananas-doraemon-50years" hidden="">Ananas x Doraemon 50 Years <span
-                                            class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="irrelevant"
-                                            hidden="">Irrelevant <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="unnamed"
-                                            hidden="">Unnamed
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="discoveryou"
-                                            hidden="">DiscoverYou <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="ananas-symbol"
-                                            hidden="">Ananas Symbol <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="ananas-typo-logo"
-                                            hidden="">Ananas Typo Logo <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="og" hidden="">OG
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="all-suede"
-                                            hidden="">All
-                                        Suede <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="ananas-lucky-luke"
-                                            hidden="">Ananas x Lucky Luke <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="corluray"
-                                            hidden="">Corluray <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="mister"
-                                            hidden="">Mister
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="simple-life"
-                                            hidden="">Simple Life <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="mono-black"
-                                            hidden="">Mono
-                                        Black <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="hook-n-loop"
-                                            hidden="">Hook n' Loop <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="bumper-gum"
-                                            hidden="">Bumper Gum <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-divider"></li>
-                        <li class="first-lvl">
-                            <label label-default="" class="tree-toggle nav-header orange">CHẤT LIỆU <span
-                                    class="caret caret-active"></span></label>
-                            <ul class="nav tree">
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="canvas"
-                                            hidden="">Canvas
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="suede"
-                                            hidden="">Suede
-                                        |
-                                        Da lộn <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="leather"
-                                            hidden="">Leather
-                                        | Da <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="cotton"
-                                            hidden="">Cotton
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="taslan"
-                                            hidden="">Taslan
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="knit"
-                                            hidden="">Knit
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="ripstop"
-                                            hidden="">Ripstop
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="single-jersey"
-                                            hidden="">Single Jersey <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="flannel"
-                                            hidden="">Flannel
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="acrylic"
-                                            hidden="">Acrylic
-                                        <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="corduroy"
-                                            hidden="">Corduroy <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input name="cbStatus" class="cb-item" type="checkbox" value="polyester"
-                                            hidden="">Polyester <span class="glyphicon"></span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-divider"></li>
-                        <li class="first-lvl">
-                            <label label-default="" class="tree-toggle nav-header orange">MÀU SẮC <span
-                                    class="caret caret-active"></span></label>
-                            <ul class="nav tree">
-                                <li class="cb-color">
-                                    <label><span class="bg-color" style="background-color: #a49c8e;"></span>
-                                        <input name="cbColor" type="checkbox" value="goat" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #Multicolor;"></span>
-                                        <input name="cbColor" type="checkbox" value="multi-color" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #fefbef;"></span>
-                                        <input name="cbColor" type="checkbox" value="offwhite" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #455851;"></span>
-                                        <input name="cbColor" type="checkbox" value="pineneedle" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #006964;"></span>
-                                        <input name="cbColor" type="checkbox" value="teal-color" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #ebd0a2;"></span>
-                                        <input name="cbColor" type="checkbox" value="beige" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #c3c3c3;"></span>
-                                        <input name="cbColor" type="checkbox" value="grey" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #1c487c;"></span>
-                                        <input name="cbColor" type="checkbox" value="navy" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #865439;"></span>
-                                        <input name="cbColor" type="checkbox" value="brown" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #ffffff;"></span>
-                                        <input name="cbColor" type="checkbox" value="white" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #6d9951;"></span>
-                                        <input name="cbColor" type="checkbox" value="green" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #8a5ca0;"></span>
-                                        <input name="cbColor" type="checkbox" value="violet" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #f1778a;"></span>
-                                        <input name="cbColor" type="checkbox" value="pink" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #f5d255;"></span>
-                                        <input name="cbColor" type="checkbox" value="yellow" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #e9662c;"></span>
-                                        <input name="cbColor" type="checkbox" value="orange" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #c10013;"></span>
-                                        <input name="cbColor" type="checkbox" value="red" hidden=""></label>
-                                    <label><span class="bg-color" style="background-color: #464646;"></span>
-                                        <input name="cbColor" type="checkbox" value="black" hidden=""></label>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-divider"></li>
-                    </ul>
-                </div>
-                <div class="selected-filters"></div>
             </div>
+            <script type="text/javascript" src="/assets/js/sidebar.js"></script>
         </div>
-    </div>
-</body>
-
+    </body>
 </html>
