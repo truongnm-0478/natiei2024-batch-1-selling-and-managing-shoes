@@ -1,63 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Admin Sidebar</title>
-    <link rel="stylesheet" href="/assets/css/admin-sidebar.css" />
-  </head>
-  <body>
-    <div th:fragment="admin-sidebar">
-      <nav class="sidebar">
-        <img alt="website logo" src="/assets/images/icons/logo-website.svg" class="admin-page-sidebar-logo-website" />
-        <hr class="admin-page-sidebar-hr" />
+    <link rel="stylesheet" href="/assets/css/admin-sidebar.css"/>
+</head>
+<body>
+<div th:fragment="admin-sidebar">
+    <nav class="sidebar">
+        <img alt="website logo" src="/assets/images/icons/logo-website.svg" class="admin-page-sidebar-logo-website"/>
+        <hr class="admin-page-sidebar-hr"/>
         <ul th:with="current_user = ${#ctx.session.current_user}">
-          <li>
-            <a
-              th:href="@{/admin/statistic}"
-              th:class="${currentPage == 'statistic-management'} ? 'active-sidebar-button' : ''"
-            >
+            <li>
+                <a
+                    th:href="@{/admin/statistic}"
+                    th:class="${currentPage == 'statistic-management'} ? 'active-sidebar-button' : ''"
+                >
               <span
-                ><img alt="icon statistic" src="/assets/images/icons/statistic-icon.svg" class="sidebar-icons"
+              ><img alt="icon statistic" src="/assets/images/icons/statistic-icon.svg" class="sidebar-icons"
               /></span>
-              Thống kê
-            </a>
-          </li>
-          <li>
-            <a
-              th:href="@{/admin/product-mangament}"
-              th:class="${currentPage == 'product-management'} ? 'active-sidebar-button' : ''"
-            >
+                    Thống kê
+                </a>
+            </li>
+            <li>
+                <a
+                    th:href="@{/admin/product-mangament}"
+                    th:class="${currentPage == 'product-management'} ? 'active-sidebar-button' : ''"
+                >
               <span
-                ><img alt="icon product management" src="/assets/images/icons/shoes-icon.svg" class="sidebar-icons"
+              ><img alt="icon product management" src="/assets/images/icons/shoes-icon.svg" class="sidebar-icons"
               /></span>
-              Quản lý sản phẩm
-            </a>
-          </li>
-          <li>
-            <a
-              th:href="@{/admin/bill-management}"
-              th:class="${currentPage == 'bill-management'} ? 'active-sidebar-button' : ''"
-            >
+                    Quản lý sản phẩm
+                </a>
+            </li>
+            <li>
+                <a
+                    th:href="@{/admin/bill-management}"
+                    th:class="${currentPage == 'bill-management'} ? 'active-sidebar-button' : ''"
+                >
               <span
-                ><img alt="icon bill management" src="/assets/images/icons/bill-icon.svg" class="sidebar-icons"
+              ><img alt="icon bill management" src="/assets/images/icons/bill-icon.svg" class="sidebar-icons"
               /></span>
-              Quản lý hóa đơn
-            </a>
-          </li>
-          <li th:if="${#strings.toString(current_user.role)  == 'ADMIN'}">
-            <a
-              th:href="@{/admin/account-management}"
-              th:class="${currentPage == 'account-management'} ? 'active-sidebar-button' : ''"
-            >
+                    Quản lý hóa đơn
+                </a>
+            </li>
+            <li th:if="${#strings.toString(current_user.role)  == 'ADMIN'}">
+                <a
+                    th:href="@{/admin/account-management}"
+                    th:class="${currentPage == 'account-management'} ? 'active-sidebar-button' : ''"
+                >
               <span
-                ><img alt="icon account management" src="/assets/images/icons/account-icon.svg" class="sidebar-icons"
+              ><img alt="icon account management" src="/assets/images/icons/account-icon.svg" class="sidebar-icons"
               /></span>
-              Quản lý tài khoản
-            </a>
-          </li>
+                    Quản lý tài khoản
+                </a>
+            </li>
         </ul>
-      </nav>
-    </div>
-  </body>
+    </nav>
+</div>
+</body>
 </html>
