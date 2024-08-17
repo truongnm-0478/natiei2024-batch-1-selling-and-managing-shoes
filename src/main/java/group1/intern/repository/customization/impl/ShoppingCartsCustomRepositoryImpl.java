@@ -30,4 +30,13 @@ public class ShoppingCartsCustomRepositoryImpl implements ShoppingCartsCustomRep
             ), pageable
         );
     }
+
+    @Override
+    public List<ShoppingCart> findAllByAccountId(Integer accountId) {
+        return baseRepository.fetchAllDataWithoutPagination(
+            List.of(
+                new WhereElements("account.id", accountId, WhereClauseType.EQUAL)
+            ), null
+        );
+    }
 }
