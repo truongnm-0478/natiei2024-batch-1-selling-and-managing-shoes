@@ -39,8 +39,7 @@ public class ProductDetailsBaseRepository implements BaseRepository<ProductDetai
                 case "quantities":
                     if (!isFirstQuery) {
                         query
-                            .append(" LEFT JOIN FETCH pd.quantities pq LEFT JOIN FETCH pq.size")
-                        ;
+                            .append(" LEFT JOIN FETCH pd.quantities pq LEFT JOIN FETCH pq.size");
                         result = fetchAllDataWithFirstQuery(whereElements, query.toString(), sort, null);
                         isFirstQuery = true;
                     } else {
@@ -65,8 +64,7 @@ public class ProductDetailsBaseRepository implements BaseRepository<ProductDetai
                 case "images":
                     if (!isFirstQuery) {
                         query
-                            .append(" LEFT JOIN FETCH pd.images")
-                        ;
+                            .append(" LEFT JOIN FETCH pd.images");
                         result = fetchAllDataWithFirstQuery(whereElements, query.toString(), sort, null);
                         isFirstQuery = true;
                     } else {

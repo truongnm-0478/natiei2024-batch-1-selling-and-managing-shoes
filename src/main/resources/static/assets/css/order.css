@@ -1,0 +1,76 @@
+@import url('constant.css');
+
+.card-list {
+    gap: 14px;
+}
+
+.order-status {
+    color: var(--color-orange-dark);
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.text-orange {
+    color: var(--color-orange-dark);
+}
+
+.list-group .active {
+    background-color: var(--color-orange-dark);
+    color: white;
+    border-color: var(--color-orange-dark);
+    font-weight: bold;
+}
+
+/* pagination */
+.pagination-bottom {
+    margin: 60px 0px 60px 0px;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.pagination-bottom ul {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 15px;
+}
+
+.pagination-bottom ul li {
+    display: inline-block;
+    margin-bottom: 4px;
+    font-weight: 400;
+}
+
+.pagination-bottom a {
+    display: inline-block;
+    text-decoration: none;
+    height: 26px;
+}
+
+.pagination-bottom ul li a {
+    color: gray;
+    text-align: center;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    border: 1px solid #e6e6e6;
+}
+
+.pagination-bottom ul li.active a, .pagination-bottom ul li.active span {
+    background: var(--color-orange-light);
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+.pagination-bottom ul li a, .pagination-bottom ul li span {
+    color: gray;
+    text-align: center;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 37px;
+    border-radius: 50%;
+    border: 1px solid #e6e6e6;
+}

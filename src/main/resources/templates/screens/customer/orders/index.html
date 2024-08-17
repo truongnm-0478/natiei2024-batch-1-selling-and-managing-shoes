@@ -1,0 +1,124 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{./layouts/main-layout :: main-layout-fragment(
+        ~{::title},
+        ~{::#static-resources},
+        null,
+        ~{::#main-content}
+    )}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management</title>
+    <th:block id="static-resources">
+        <link rel="stylesheet" href="/assets/css/order.css">
+        <script src="/assets/js/order.js" defer></script>
+    </th:block>
+</head>
+<body>
+<div id="main-content" class="container">
+    <div class="row justify-content-center align-items-start">
+        <div class="my-3 px-4 col-12 col-md-3">
+            <div class="list-group" id="list-tab">
+                <a class="list-group-item list-group-item-action border-1 rounded mb-3 text-center"
+                   href="/orders?status=all">Tất cả</a>
+                <a class="list-group-item list-group-item-action border-1 rounded mb-3 text-center"
+                   href="/orders?status=wait">Chờ xác nhận</a>
+                <a class="list-group-item list-group-item-action border-1 rounded mb-3 text-center"
+                   href="/orders?status=confirm">Đang giao</a>
+                <a class="list-group-item list-group-item-action border-1 rounded text-center mb-3"
+                   href="/orders?status=reject">Đã hủy</a>
+                <a class="list-group-item list-group-item-action border-1 rounded text-center mb-3"
+                   href="/orders?status=cancel">Bị từ chối</a>
+                <a class="list-group-item list-group-item-action border-1 rounded text-center mb-3"
+                   href="/orders?status=received">Đã nhận</a>
+                <a class="list-group-item list-group-item-action border-1 rounded text-center"
+                   href="/orders?status=done">Đã hoàn thành</a>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(orderInfos)}" class="center col my-3 p-0 ml-3"
+             style="font-weight: bold; font-size: 1.5rem">
+            <p>Bạn chưa có đơn hàng nào. Hãy nhanh tay đặt hàng ngay!</p>
+        </div>
+
+        <div class="card-list d-flex flex-column my-3 p-0 col-12 col-md-9 p-0 m-0">
+            <div class="p-0 m-0" th:each="orderInfo : ${orderInfos}">
+                <div class="container p-0">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <img src="/assets/images/icons/header/ananas_logo.svg" alt="logo" width="85"
+                                         height="32">
+                                </div>
+                                <div>
+                                    <span class="order-status" th:text="${orderInfo.status}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-0 m-0 mw-100" th:each="orderDetail : ${orderInfo.getOrderDetailInfos()}">
+                            <div class="card-body pb-2">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <img class="img-fluid rounded"
+                                             th:alt="${orderDetail.productDetailInfo.name}"
+                                             th:src="${orderDetail.productDetailInfo.images[0].url}">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <h4 class="mb-3 text-capitalize mt-3 mt-md-0">
+                                            <span th:text="${orderDetail.productDetailInfo.name}"></span> -
+                                            <span th:text="${orderDetail.productDetailInfo.style}"></span> -
+                                            <span th:text="${orderDetail.productDetailInfo.material}"></span>
+                                        </h4>
+                                        <div
+                                            class="d-flex flex-row justify-content-between align-items-center text-orange">
+                                            <div>
+                                                <p class="mb-2 text-muted" th:text="'Size: ' + ${orderDetail.size}"></p>
+                                                <p class="text-muted"
+                                                   th:text="'Số lượng:' + ${orderDetail.quantity}"></p>
+                                            </div>
+                                            <div class="d-flex">
+                                                <p class="text-black-50" style="text-decoration: line-through"
+                                                   th:if="${orderDetail.productDetailInfo.discount}!=0"
+                                                   th:text="${orderDetail.productDetailInfo.price}"></p>
+                                                <p class="ml-2" th:text="${orderDetail.price}"></p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center mt-2">
+                            <div class="d-flex flex-wrap mr-2" style="gap: 5px">
+                                <button class="btn btn-danger rounded btn-sm"
+                                        th:if="${orderInfo.status} == 'Chờ xác nhận'">Hủy đơn hàng
+                                </button>
+                            </div>
+                            <h5>Thành tiền: <span class="text-orange font-weight-bold"
+                                                  th:text="${orderInfo.totalPrice}"></span></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row center">
+        <nav aria-label="Page navigation" class="pagination-bottom">
+            <ul>
+                <li th:if="${paginationHelper.prevPageUrl}">
+                    <a th:href="@{${paginationHelper.prevPageUrl}}">&lt;</a>
+                </li>
+                <li th:each="pageNumber : ${paginationHelper.pageNumbers}"
+                    th:classappend="${pageNumber == page} ? 'active' : ''">
+                    <a th:href="@{${paginationHelper.getPageUrl(pageNumber)}}"
+                       th:text="${pageNumber}">1</a>
+                </li>
+                <li th:if="${paginationHelper.nextPageUrl}">
+                    <a th:href="@{${paginationHelper.nextPageUrl}}">&gt;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

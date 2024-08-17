@@ -22,11 +22,11 @@ public class OrderDetail extends EntityBase {
     @Column(name = "count")
     private int quantity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "product_detail_id")
-    private ProductDetail productDetail;
+    @JoinColumn(name = "product_quantity_id")
+    private ProductQuantity productQuantity;
 }
