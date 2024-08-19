@@ -18,104 +18,60 @@
 <body>
 <div id="main-content" class="main-cart container-fluid">
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 main-cart-left">
+        <div th:if="${#lists.isEmpty(shoppingCarts)}" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 prd-search">
+            <div class="row center search-string">
+                <h1>GIỎ HÀNG CỦA BẠN</h1>
+            </div>
+            <div class="row divider-2"></div>
+            <div class="row prd1-right-items">
+                <div class="center no-product">
+                    <p>Bạn đang không có sản phẩm nào trong giỏ hàng!</p>
+                </div>
+                <div class="no-product-btn center">
+                    <button onclick="location.pathname='/products'" class="btn btn-lg back-to-product-list orange-button text-uppercase">
+                        Quay lại mua hàng
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div th:if="${not #lists.isEmpty(shoppingCarts)}" class="col-xs-12 col-sm-12 col-md-12 col-lg-8 main-cart-left">
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 title-1">GIỎ HÀNG</div>
-                <div class="row w-full">
+                <div th:each="cartProduct, index :${shoppingCarts}" class="row w-full">
                     <div class="col-12 col-sm-12 col-md-8 col-lg-9 item-2">
                         <div class="media">
                             <div class="media-left">
-                                <a href="https://ananas.vn/product-detail/aet00002/">
+                                <a th:href="${cartProduct.getProductURL()}">
                                     <img class="media-object"
-                                         src="https://ananas.vn/wp-content/uploads/Pro_AET00002_1-500x500.jpg"
+                                         th:src="${cartProduct.getImages().get(0).getUrl()}"
                                          height="283" width="283" data-holder-rendered="true">
                                 </a>
                             </div>
                             <div class="media-body">
                                 <div>
-                                    <a href="https://ananas.vn/product-detail/aet00002/">
-                                        <h4 class="media-heading">Pigment Tee - Nice Nature Club - Greener Pastures</h4>
+                                    <a th:href="${cartProduct.getProductURL()}">
+                                        <h4 th:text="${cartProduct.getName() + ' - ' + cartProduct.getStyle() }" class="media-heading"></h4>
                                     </a>
                                     <h5 class="price">
-                                        <span class="saleoff"><strong>Giá:</strong> 460.000 VND</span>
-                                        <span class="normal">720.000 VND</span>
+                                        <span class="saleoff"><strong th:text="${'Giá: ' + cartProduct.getDiscountPriceFormated()}"></strong></span>
+                                        <span th:if = "${cartProduct.discount != null and cartProduct.discount > 0}" class="normal" th:text="${cartProduct.getOriginPriceFormated()}"></span>
                                     </h5>
                                 </div>
                                 <div class="row bottom">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Size</label>
-                                            <select class="form-control select-form" id="exampleFormControlSelect1">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect2">Số lượng</label>
-                                            <select class="form-control select-form" id="exampleFormControlSelect2">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-3 item-2-1">
-                        <div class="price">2.340.000 VND</div>
-                        <div class="status">Còn hàng</div>
-                        <div class="button">
-                            <button class="btn btn-light addToWishList">
-                                <img src="/assets/images/icons/cart/Heart.svg">
-                            </button>
-                            <button class="btn btn-dark remove-product-in-cart">
-                                <img src="/assets/images/icons/cart/Trash_bin.svg">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 item-divider ">
+                                    <div class="form-group">
+                                        <label for="select-size">Size</label>
+                                        <select class="form-control select-form" id="select-size">
+                                            <<option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>>
+                                        </select>
 
-                    </div>
-                </div>
-                <div class="row w-full">
-                    <div class="col-12 col-sm-12 col-md-8 col-lg-9 item-2">
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="https://ananas.vn/product-detail/aet00002/">
-                                    <img class="media-object"
-                                         src="https://ananas.vn/wp-content/uploads/Pro_AET00002_1-500x500.jpg"
-                                         height="283" width="283" data-holder-rendered="true">
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <div>
-                                    <a href="https://ananas.vn/product-detail/aet00002/">
-                                        <h4 class="media-heading">Pigment Tee - Nice Nature Club - Greener Pastures</h4>
-                                    </a>
-                                    <h5 class="price">
-                                        <span class="saleoff"><strong>Giá:</strong> 460.000 VND</span>
-                                        <span class="normal">720.000 VND</span>
-                                    </h5>
-                                </div>
-                                <div class="row bottom">
-                                    <div class="form-group">
-                                        <label for="exampleFormControlSelect1">Size</label>
-                                        <select class="form-control select-form" id="exampleFormControlSelect1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleFormControlSelect2">Số lượng</label>
-                                        <select class="form-control select-form" id="exampleFormControlSelect2">
+                                        <label for="select-quantity">Số lượng</label>
+                                        <select class="form-control select-form" id="select-quantity">
                                             <option>1</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -128,7 +84,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-sm-12 col-md-4 col-lg-3 item-2-1">
-                        <div class="price">2.340.000 VND</div>
+                        <div th:text="${cartProduct.getTotalDiscountPriceFormated()}" class="price"></div>
                         <div class="status">Còn hàng</div>
                         <div class="button">
                             <button class="btn btn-light addToWishList">
@@ -138,6 +94,8 @@
                                 <img src="/assets/images/icons/cart/Trash_bin.svg">
                             </button>
                         </div>
+                    </div>
+                    <div th:if="${!index.last}" class="col-12 col-sm-12 col-md-12 col-lg-12 item-divider ">
                     </div>
                 </div>
             </div>
@@ -154,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-12 col-lg-4 main-cart-right">
+        <div th:if="${not #lists.isEmpty(shoppingCarts)}" class="col-12 col-sm-12 col-md-12 col-lg-4 main-cart-right">
             <ul class="list-group">
                 <li class="list-group-item title">ĐƠN HÀNG</li>
                 <li class="list-group-item divider"></li>
@@ -170,16 +128,16 @@
                 <li class="list-group-item divider-1"></li>
                 <li class="list-group-item text-1">
                     <span class="title-3">Đơn hàng</span>
-                    <span class="title-3-1 totalPriceOfCart">4.320.000 VND</span>
+                    <span th:text="${totalOriginPrice}" class="title-3-1 totalPriceOfCart"></span>
                 </li>
                 <li class="list-group-item text-2">
                     <span class="title-3">Giảm</span>
-                    <span class="title-4-1 totalDiscountOfCart">1.560.000 VND</span>
+                    <span th:text="${totalDiscountPrice}" class="title-4-1 totalDiscountOfCart"></span>
                 </li>
                 <li class="list-group-item divider-1"></li>
                 <li class="list-group-item">
                     <span class="title-5">TẠM TÍNH</span>
-                    <span class="title-5-1 tempPrice">2.760.000 VND</span>
+                    <span th:text="${finalPrice}" class="title-5-1 tempPrice"></span>
                 </li>
                 <li class="list-group-item">
                     <button data-href="shipping-infomation/" class="btn btn-cart to-checkout">
@@ -191,5 +149,4 @@
     </div>
 </div>
 </body>
-
 </html>

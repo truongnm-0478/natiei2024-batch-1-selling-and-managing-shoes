@@ -70,25 +70,27 @@
 
             <hr class="divider"/>
 
-            <div class="row mb-3">
-                <div class="form-group col-6">
-                    <label for="size">Size</label>
-                    <select id="size" class="form-control">
-                        <option th:each="sizeQuantity : ${productInfo.sizeQuantity}"
-                                th:value="${sizeQuantity.size.value}"
-                                th:text="${sizeQuantity.size.value}"></option>
-                    </select>
+            <form th:action="@{/carts}" th:object="${cartForm}" method="post">
+                <div class="row mb-3">
+                    <div class="form-group col-6">
+                        <label for="size">Size</label>
+                        <select id="size" class="form-control" th:field="*{productQuantity.id}" onchange="updateMaxQuantity()">
+                            <option th:each="sizeQuantity : ${productInfo.sizeQuantity}"
+                                    th:value="${sizeQuantity.id}"
+                                    th:data-max-quantity="${sizeQuantity.quantity}"
+                                    th:text="${sizeQuantity.size.value}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label for="quantity">Số lượng</label>
+                        <input type="number" class="form-control" id="quantity" th:field="*{quantity}" required min="1" max="1">
+                    </div>
                 </div>
 
-                <div class="form-group col-6">
-                    <label for="quantity">Số lượng</label>
-                    <input
+                <button class="btn btn-block mb-2 text-uppercase btn-order py-3" type="submit">Thêm vào giỏ hàng</button>
+            </form>
 
-                        type="number" class="form-control" id="quantity" name="quantity" required min="1">
-                </div>
-            </div>
-
-            <button class="btn btn-block mb-2 text-uppercase btn-oder py-3">Thêm vào giỏ hàng</button>
             <button class="btn btn-block text-uppercase btn-pay py-3">Thanh toán</button>
 
             <div class="accordion" id="productAccordion">
@@ -184,6 +186,7 @@
     </div>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="/assets/js/product-detail.js"></script>
+
 </div>
 </body>
 
