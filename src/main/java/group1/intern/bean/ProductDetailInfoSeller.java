@@ -9,13 +9,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductDetailInfo {
+public class ProductDetailInfoSeller {
     private Integer id;
     private Integer productId;
     private String name;
@@ -29,6 +28,7 @@ public class ProductDetailInfo {
     private String color;
     private List<ProductImage> images;
     private List<ProductQuantity> sizeQuantity;
+    private String originPrice;
+    private Integer totalQuantity;
     private String discountedPrice;
 }
-
