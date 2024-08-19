@@ -4,14 +4,55 @@
     gap: 14px;
 }
 
-.order-status {
+.account-info {
+    cursor: pointer;
+}
+
+.order-status-active {
     color: var(--color-orange-dark);
     font-size: 1.25rem;
     font-weight: bold;
 }
 
+.order-status-disabled {
+    color: var(--color-gray-dark);
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.text-cancel {
+    color: var(--color-white) !important;
+    background: var(--color-gray-dark) !important;
+}
+
+.text-cancel:hover {
+    color: var(--color-white) !important;
+    background: var(--color-gray-dark) !important;
+}
+
+.text-cancel:active {
+    color: var(--color-white) !important;
+    background: var(--color-gray-dark) !important;
+}
+
+.text-confirm {
+    color: var(--color-white) !important;
+    background: var(--color-orange-dark) !important;
+}
+
+.text-confirm:hover {
+    color: var(--color-white) !important;
+    background: var(--color-orange-dark) !important;
+}
+
+.text-confirm:active {
+    color: var(--color-white) !important;
+    background: var(--color-orange-dark) !important;
+}
+
 .text-orange {
     color: var(--color-orange-dark);
+    background-color: transparent !important;
 }
 
 .list-group .active {
