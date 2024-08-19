@@ -24,19 +24,19 @@
 
 </head>
 <body>
-    <div th:if="${toastMessages != null}">
-        <script th:inline="javascript">
-            const toastMessages = /*[[${toastMessages}]]*/ [];
-            showToast(toastMessages.type, toastMessages.content);
-        </script>
-    </div>
-    <!-- Header -->
-    <div th:replace="${header} ? ${header} : ~{/components/header :: header}"></div>
+<div th:if="${toastMessages != null}">
+    <script th:inline="javascript">
+        var toastMessages = /*[[${toastMessages}]]*/ [];
+        showToast(toastMessages.type, toastMessages.content);
+    </script>
+</div>
+<!-- Header -->
+<div th:replace="${header} ? ${header} : ~{/components/header :: header}"></div>
 
-    <!-- Main content  -->
-    <div th:replace="${mainContent} ?: ~{}"></div>
+<!-- Main content  -->
+<div th:replace="${mainContent} ?: ~{}"></div>
 
-    <!-- Footer  -->
-    <div th:replace="~{/components/footer :: footer}"></div>
+<!-- Footer  -->
+<div th:replace="~{/components/footer :: footer}"></div>
 </body>
 </html>

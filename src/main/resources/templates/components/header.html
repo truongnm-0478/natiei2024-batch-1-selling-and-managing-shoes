@@ -10,6 +10,7 @@
     <div class="header-row">
         <ul class="menu">
             <li th:with="current_user = ${#ctx.session.current_user}">
+                <!--  Unauthorized user  -->
                 <a th:if="${current_user == null}" href="/login">
                     <img
                         alt="icon login"
@@ -17,13 +18,29 @@
                     />
                     Đăng nhập
                 </a>
-                <a th:unless="${current_user == null}" href="#" class="disable">
-                    <img
-                        alt="icon login"
-                        src="https://ananas.vn/wp-content/themes/ananas/fe-assets/images//svg/icon_dang_nhap.svg"
-                    />
-                    <span th:text="${current_user.displayName}"></span>
-                </a>
+                <!--  Authorized user  -->
+                <div th:unless="${current_user == null}" class="dropdown p-0 m-0">
+                    <button class="btn btn-secondary p-0 m-0 bg-transparent border-0" role="button"
+                            id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img
+                            alt="icon login"
+                            src="https://ananas.vn/wp-content/themes/ananas/fe-assets/images//svg/icon_dang_nhap.svg"
+                        />
+                        <a href="#" class="disable p-0 m-0" th:text="${current_user.displayName}"></a>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item text-dark py-2" style="font-size: 1rem" href="#">Thông tin cá
+                            nhân</a>
+                        <a th:if="${current_user.role != 0}" class="dropdown-item text-dark py-2"
+                           style="font-size: 1rem"
+                           th:href="${current_user.role == 1} ? '/customer/orders?status=all' : '/seller/orders?status=all'">Quản
+                            lý đơn
+                            hàng</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-dark py-2" style="font-size: 1rem" href="/log-out">Đăng xuất</a>
+                    </div>
+                </div>
             </li>
             <li>
                 <a href="#"
@@ -32,15 +49,6 @@
                 >0</span
                 >)</a
                 >
-            </li>
-            <li th:if="${#ctx.session.current_user != null}">
-                <a href="/orders?status=all">
-                    <img
-                        alt="icon order"
-                        src="/assets/images/icons/header/icon_tra_cuu_don_hang.svg"
-                    />
-                    Đơn hàng
-                </a>
             </li>
         </ul>
     </div>

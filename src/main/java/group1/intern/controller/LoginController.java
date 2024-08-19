@@ -18,15 +18,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/login")
 @RequiredArgsConstructor
 public class LoginController {
     private final AuthService authService;
 
-    @GetMapping("")
+    @GetMapping("/login")
     public String view(Model model) {
         if (WebUtils.Sessions.getAttribute(CommonConstant.CURRENT_USER, AccountInfo.class) != null) {
             return redirectPreviousUrl();
@@ -35,7 +33,7 @@ public class LoginController {
         return "screens/auth/login";
     }
 
-    @PostMapping("")
+    @PostMapping("/login")
     public String login(
         @ModelAttribute("loginRequest") LoginRequest loginRequest,
         Model model
@@ -64,9 +62,16 @@ public class LoginController {
         }
     }
 
+    @GetMapping("/log-out")
+    public String logout() {
+        WebUtils.Cookies.removeCookie(CommonConstant.ACCESS_TOKEN);
+        WebUtils.Cookies.removeCookie(CommonConstant.REFRESH_TOKEN);
+        WebUtils.Sessions.removeAttribute(CommonConstant.CURRENT_USER);
+        return "redirect:/";
+    }
+
     private String redirectPreviousUrl() {
         var previousUrl = WebUtils.Sessions.getAttribute(CommonConstant.PREVIOUS_GET_URL, String.class);
-        System.out.println("previousUrl: " + previousUrl);
         if (CommonUtils.isNotEmptyOrNullString(previousUrl) && !previousUrl.contains("/login") && !previousUrl.contains("/register")) {
             return String.format("redirect:%s", previousUrl);
         }
