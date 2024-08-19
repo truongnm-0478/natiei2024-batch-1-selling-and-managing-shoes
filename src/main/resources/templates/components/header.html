@@ -26,12 +26,9 @@
                 </a>
             </li>
             <li>
-                <a href="#"
-                ><img alt="icon cart" src="/assets/images/icons/header/icon-cart-8.svg"/> Giỏ hàng (<span
-                    class="countProduct"
-                >0</span
-                >)</a
-                >
+                <a href="/carts">
+                    <img alt="icon cart" src="/assets/images/icons/header/icon-cart-8.svg"/> Giỏ hàng
+                </a>
             </li>
             <li th:if="${#ctx.session.current_user != null}">
                 <a href="/orders?status=all">

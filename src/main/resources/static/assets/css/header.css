@@ -231,9 +231,7 @@
 
 @media only screen and (max-width: 1000px) {
     .form-header {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
+        display: none;
     }
 
     .nav-parents {
