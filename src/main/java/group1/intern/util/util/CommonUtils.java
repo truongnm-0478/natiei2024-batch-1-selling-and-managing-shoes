@@ -4,11 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import group1.intern.repository.base.WhereElements;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -18,6 +23,31 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @NoArgsConstructor
 public class CommonUtils {
+
+    public static String getURLBase(HttpServletRequest request) {
+        URL requestURL = null;
+        try {
+            requestURL = new URL(request.getRequestURL().toString());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        String port = requestURL.getPort() == -1 ? "" : ":" + requestURL.getPort();
+        return requestURL.getProtocol() + "://" + requestURL.getHost() + port;
+    }
+
+    public static List<String> extractQueryParamsFromURL(String url, String... paramNames) {
+        List<String> result = new ArrayList<>();
+        if (isEmptyOrNullList(paramNames)) return result;
+
+        // Use UriComponentsBuilder to parse the URI and extract query parameters
+        URI uri = URI.create(url);
+        var uriComponents = UriComponentsBuilder.fromUri(uri).build();
+        for (var paramName : paramNames) {
+            var value = uriComponents.getQueryParams().getFirst(paramName);
+            if (isNotEmptyOrNullString(value)) result.add(value);
+        }
+        return result;
+    }
 
     /*
      * JPA

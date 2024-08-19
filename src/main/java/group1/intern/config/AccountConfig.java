@@ -21,9 +21,9 @@ public class AccountConfig {
         return email -> {
             if (email != null && !email.isBlank()) {
                 return repo.findByEmail(email)
-                    .orElseThrow(() -> new NotFoundObjectException("Account not found"));
+                    .orElseThrow(() -> new NotFoundObjectException("Tài khoản không tồn tại"));
             }
-            throw new NotFoundObjectException("Account not found");
+            throw new NotFoundObjectException("Tài khoản không tồn tại");
         };
     }
 

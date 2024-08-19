@@ -1,7 +1,6 @@
 package group1.intern.bean;
 
 import group1.intern.model.Account;
-import group1.intern.model.Enum.AccountRole;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,7 +14,7 @@ public class AccountInfo {
     private Integer id;
     private String email;
     private String displayName;
-    private AccountRole role;
+    private int role;
     private String fullName;
     private LocalDate dateOfBirth;
     private String address;
@@ -28,7 +27,7 @@ public class AccountInfo {
         return AccountInfo.builder()
             .id(account.getId())
             .email(account.getEmail())
-            .role(account.getRole())
+            .role(account.getRole().getIndex())
             .address(account.getAddress())
             .phoneNumber(account.getPhoneNumber())
             .dateOfBirth(account.getDateOfBirth())

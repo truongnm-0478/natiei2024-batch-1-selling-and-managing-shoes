@@ -45,4 +45,9 @@ public class OrderInfo {
             case DONE -> "Giao hàng thành công";
         };
     }
+
+    public boolean isDisabled() {
+        return status.equals("Bị từ chối") || status.equals("Đã hủy");
+    }
+
 }

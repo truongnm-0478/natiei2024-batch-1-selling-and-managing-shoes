@@ -1,5 +1,6 @@
 package group1.intern.aop;
 
+import group1.intern.util.util.CommonUtils;
 import group1.intern.util.util.WebUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -50,12 +51,12 @@ public class GetMappingAspect {
         for (int i = 0; i < parameterAnnotations.length; i++) {
             for (Annotation annotation : parameterAnnotations[i]) {
                 if (annotation instanceof PathVariable pathVariable) {
-                    String variableName = pathVariable.value();
+                    String variableName = CommonUtils.isNotEmptyOrNullString(pathVariable.value()) ? pathVariable.value() : pathVariable.name();
                     pathVariables.put(variableName, args[i]);
                     continue;
                 }
                 if (annotation instanceof RequestParam requestParam) {
-                    String paramName = requestParam.value();
+                    String paramName = CommonUtils.isNotEmptyOrNullString(requestParam.value()) ? requestParam.value() : requestParam.name();
                     requestParams.put(paramName, args[i]);
                 }
             }
