@@ -1,0 +1,56 @@
+.display-name {
+    margin-top: 20px;
+}
+
+/* If you want to style the logo image */
+.profile-img {
+    margin-top: 25px;
+}
+
+.avatar-img img {
+    width: 150px; /* Kích thước cố định theo chiều rộng */
+    height: 150px; /* Kích thước cố định theo chiều cao */
+    object-fit: cover; /* Cắt ảnh để phù hợp với kích thước mà không làm biến dạng */
+}
+
+.avatar-img {
+    padding: 0 45px 0 0;
+}
+
+.file-upload {
+    padding-left: 65px;
+}
+
+.tab li {
+    padding-right: 15px;
+}
+
+@media (min-width: 992px) {
+    .col-md-12 {
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .col-md-12 {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+.col-md-12 {
+    width: 100%;
+}
+
+.form-control {
+    width: 100%;
+}
+
+#datepicker {
+    width: 70%;
+}
+
+.container {
+    margin-bottom: 30px;
+}

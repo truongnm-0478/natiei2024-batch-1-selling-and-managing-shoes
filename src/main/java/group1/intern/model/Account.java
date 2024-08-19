@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +33,7 @@ public class Account extends EntityBase implements UserDetails {
     @Enumerated(EnumType.STRING)
     private AccountRole role;
     private String fullName;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateOfBirth;
     private String address;
     private String phoneNumber;

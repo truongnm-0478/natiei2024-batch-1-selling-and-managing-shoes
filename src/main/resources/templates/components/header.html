@@ -30,7 +30,9 @@
                         <a href="#" class="disable p-0 m-0" th:text="${current_user.fullName}"></a>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item text-dark py-2" style="font-size: 1rem" href="#">Thông tin cá
+                        <a th:unless="${current_user.role == 0}" style="font-size: 1rem"
+                           class="dropdown-item text-dark py-2" href="/profiles">Thông
+                            tin cá
                             nhân</a>
                         <a th:if="${current_user.role != 0}" class="dropdown-item text-dark py-2"
                            style="font-size: 1rem"
@@ -47,6 +49,11 @@
                     <img alt="icon cart" src="/assets/images/icons/header/icon-cart-8.svg"/> Giỏ hàng
                 </a>
             </li>
+            <!--            <li>-->
+            <!--                <a href="/profiles">-->
+            <!--                    <img alt="icon profile" src="/assets/images/icons/account-icon.svg/"> Hồ sơ-->
+            <!--                </a>-->
+            <!--            </li>-->
         </ul>
     </div>
     <div class="header-row">
