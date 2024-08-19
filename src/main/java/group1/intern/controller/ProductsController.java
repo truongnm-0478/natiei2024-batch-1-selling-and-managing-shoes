@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -27,6 +28,7 @@ import group1.intern.service.FilterService;
 import group1.intern.util.util.PaginationUtil;
 
 @Controller
+@RequestMapping("/products")
 public class ProductsController {
 
     @Autowired
@@ -38,7 +40,7 @@ public class ProductsController {
     @Autowired
     private FilterService filterService;
 
-    @GetMapping("/products")
+    @GetMapping
     public String index(
             @RequestParam(name = "filterStyleString", required = false, defaultValue = "") String filterStyleString,
             @RequestParam(name = "filterCategoryString", required = false, defaultValue = "") String filterCategoryString,
@@ -122,7 +124,7 @@ public class ProductsController {
                 .toUriString();
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/{id}")
     public String showProductDetail(@PathVariable("id") Integer id, Model model) {
         try {
             ProductDetailInfo productInfo = productService.getProductDetailById(id);

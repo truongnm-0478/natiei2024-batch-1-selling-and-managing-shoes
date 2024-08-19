@@ -52,7 +52,11 @@
                 <span th:text="${productInfo.material}"></span>
             </h3>
             <p class="my-4">Mã sản phẩm: ANS00<span th:text="${productInfo.id}"></span></p>
-            <h4 class="my-4 text-orange" th:text="${productInfo.price}"></h4>
+            <h4 th:if="${productInfo.discount == 0}" class="my-4 text-orange" th:text="${productInfo.price}"></h4>
+            <div th:if="${productInfo.discount > 0}" class="d-flex">
+                <h4 class="my-4 text-orange" th:text="${productInfo.discountedPrice}"></h4>
+                <h6 class="my-4 text-strikethrough ml-3" th:text="${productInfo.price}"></h6>
+            </div>
             <hr class="divider"/>
             <div class="product-colors mb-3">
                 <span class="d-inline-block mr-2 color-product"

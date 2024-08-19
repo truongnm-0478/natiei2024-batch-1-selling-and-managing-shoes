@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title th:text="${productInfo.name}"></title>
     <th:block id="static-resources">
         <script src="/assets/js/bootstrap-loader.js"></script>
 
@@ -22,146 +22,111 @@
 </head>
 
 <body>
-    <div id="main-content" class="container-fluid p-2">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-white">
-                <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Chi tiết sản phẩm</li>
-            </ol>
-        </nav>
-        <div class="row">
-            <div class="col-md-5" >
-                <div class="product-image">
-                    <img id="main-image" src="https://ananas.vn/wp-content/uploads/Pro_AV00205_1.jpeg" alt="Product Image" class="img-fluid">
-                </div>
-                <div class="swiper-container product-thumbnails mt-2 position-relative" style="overflow-x: hidden;">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="https://ananas.vn/wp-content/uploads/Pro_AV00205_1.jpeg" alt="Thumbnail"
-                                 onclick="changeImage('https://ananas.vn/wp-content/uploads/Pro_AV00205_1.jpeg')">
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="https://ananas.vn/wp-content/uploads/Pro_AV00205_2.jpeg" alt="Thumbnail"
-                                 onclick="changeImage('https://ananas.vn/wp-content/uploads/Pro_AV00205_2.jpeg')">
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="https://ananas.vn/wp-content/uploads/Pro_AV00205_3.jpeg" alt="Thumbnail"
-                                 onclick="changeImage('https://ananas.vn/wp-content/uploads/Pro_AV00205_3.jpeg')">
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="https://ananas.vn/wp-content/uploads/Pro_AV00205_4.jpeg" alt="Thumbnail"
-                                 onclick="changeImage('https://ananas.vn/wp-content/uploads/Pro_AV00205_4.jpeg')">
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="https://ananas.vn/wp-content/uploads/Pro_AV00205_5.jpeg" alt="Thumbnail"
-                                 onclick="changeImage('https://ananas.vn/wp-content/uploads/Pro_AV00205_5.jpeg')">
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="https://ananas.vn/wp-content/uploads/Pro_AV00205_6.jpeg" alt="Thumbnail"
-                                 onclick="changeImage('https://ananas.vn/wp-content/uploads/Pro_AV00205_6.jpeg')">
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="https://ananas.vn/wp-content/uploads/Pro_AV00205_7.jpeg" alt="Thumbnail"
-                                 onclick="changeImage('https://ananas.vn/wp-content/uploads/Pro_AV00205_7.jpeg')">
-                        </div>
-                    </div>
-                    <div>
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                    </div>
-                </div>
+<div id="main-content" class="container-fluid p-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Chi tiết sản phẩm</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-md-5" >
+            <div class="product-image">
+                <img id="main-image" th:src="@{${productInfo.images[0].url}}" alt="Product Image" class="img-fluid">
             </div>
-            <div class="col-md-7 px-5">
-                <h3 class="row text-uppercase mb-4">Vintas Vivu - Low Top - Warm Sand</h3>
-                <div class="row mb-3">
-                    <div class="col-4 label p-0">Giới tính:</div>
-                    <div class="col-8 value">UNISEX</div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-4 label p-0">Kiểu dáng:</div>
-                    <div class="col-8 value">Low top</div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-4 label p-0">Tổng số lượng:</div>
-                    <div class="col-8 value">200</div>
-                </div>
-                <hr class="row divider my-4">
-                <div class="row mb-3">
-                    <div class="col-4 label p-0">Giá nhập:</div>
-                    <div class="col-8 value">150.000 VND</div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-4 label p-0">Giá bán:</div>
-                    <div class="col-8 value">200.000 VND</div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-4 label p-0">Giảm giá:</div>
-                    <div class="col-8 discount">
-                        <span class="badge badge-danger">20%</span>
+            <div class="swiper-container product-thumbnails mt-2 position-relative" style="overflow-x: hidden;">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" th:each="image : ${productInfo.images}">
+                        <img th:src="@{${image.url}}" alt="Thumbnail"
+                             th:onclick="'changeImage(' + '\'' + @{${image.url}} + '\'' + ')'">
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-4 label p-0">Giá sau khi giảm:</div>
-                    <div class="col-8 final-price">280.000 VND</div>
-                </div>
-                <hr class="row divider my-4">
-                <div class="row">
-                    <div class="col-4 label p-0">Màu sắc:</div>
-                    <div class="col-8 value color-container">
-                        <div class="color-box" style="background-color: #c0ab8e;"></div>
-                        <div class="color-box" style="background-color: #7d6a45;"></div>
-                    </div>
-                </div>
-                <hr class="row divider my-4">
-                <div class="row">
-                    <div class="col-4 label px-0 mb-2">Số lượng theo size:</div>
-                    <table class="table table-bordered overflow-x-auto">
-                        <thead>
-                            <tr>
-                                <th>Size</th>
-                                <th>37</th>
-                                <th>38</th>
-                                <th>39</th>
-                                <th>40</th>
-                                <th>41</th>
-                                <th>42</th>
-                                <th>43</th>
-                                <th>44</th>
-                                <th>45</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>SL</th>
-                                <td>10</td>
-                                <td>25</td>
-                                <td>15</td>
-                                <td>8</td>
-                                <td>5</td>
-                                <td>10</td>
-                                <td>25</td>
-                                <td>15</td>
-                                <td>8</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <hr class="row divider my-4">
-                <div class="row position-relative">
-                    <div class="action pb-3" >
-                        <button class="btn btn-warning">
-                            Sửa
-                        </button>
-                        <button class="btn btn-danger">
-                            Xoá
-                        </button>
-                    </div>
+                <div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
                 </div>
             </div>
         </div>
-        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-        <script src="/assets/js/product-detail.js"></script>
-        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <div class="col-md-7 px-5">
+            <h3 class="row text-uppercase mb-4" th:text="${productInfo.name}"></h3>
+            <div class="row mb-3">
+                <div class="col-4 label p-0">Giới tính:</div>
+                <div class="col-8 value" th:text="${productInfo.gender}"></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4 label p-0">Kiểu dáng:</div>
+                <div class="col-8 value" th:text="${productInfo.style}"></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4 label p-0">Tổng số lượng:</div>
+                <div class="col-8 value" th:text="${productInfo.totalQuantity}"></div>
+            </div>
+            <hr class="row divider my-4">
+            <div class="row mb-3">
+                <div class="col-4 label p-0">Giá nhập:</div>
+                <div class="col-8 value" th:text="${productInfo.originPrice}"></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4 label p-0">Giá bán:</div>
+                <div class="col-8 value" th:text="${productInfo.price}"></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4 label p-0">Giảm giá:</div>
+                <div class="col-8 discount">
+                    <span class="badge badge-danger"><span th:text="${productInfo.discount}"></span> %</span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4 label p-0">Giá sau khi giảm:</div>
+                <div class="col-8 final-price" th:text="${productInfo.discountedPrice}"></div>
+            </div>
+            <hr class="row divider my-4">
+            <div class="row">
+                <div class="col-4 label p-0">Màu sắc:</div>
+                <div class="col-8 value color-container">
+                    <div class="color-box" th:style="'background-color: #' + ${productInfo.color} + ';'"></div>
+                    <th:block th:each="product : ${productDetailColors}">
+                        <a th:href="@{/seller/products/{id}(id=${product.id})}">
+                            <div class="color-box" th:style="'background-color: #' + ${product.color} + ';'"></div>
+                        </a>
+                    </th:block>
+                </div>
+            </div>
+            <hr class="row divider my-4">
+            <div class="row">
+                <div class="col-4 label px-0 mb-2">Số lượng theo size:</div>
+                <table class="table table-bordered overflow-x-auto">
+                    <thead>
+                    <tr>
+                        <th>Size</th>
+                        <!-- Lặp qua danh sách size để tạo các cột size -->
+                        <th th:each="sizeQuantity : ${productInfo.sizeQuantity}" th:text="${sizeQuantity.size.value}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>SL</th>
+                        <td th:each="sizeQuantity : ${productInfo.sizeQuantity}" th:text="${sizeQuantity.quantity}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr class="row divider my-4">
+            <div class="row position-relative">
+                <div class="action pb-3" >
+                    <button class="btn btn-warning">
+                        Sửa
+                    </button>
+                    <button class="btn btn-danger">
+                        Xoá
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="/assets/js/product-detail.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+</div>
 </body>
 </html>

@@ -79,6 +79,10 @@ hr.divider {
     color: var(--color-orange-light) !important;
 }
 
+.text-strikethrough {
+    text-decoration: line-through;
+}
+
 .swiper-button-next,
 .swiper-button-prev {
     color: var(--color-gray-medium);
