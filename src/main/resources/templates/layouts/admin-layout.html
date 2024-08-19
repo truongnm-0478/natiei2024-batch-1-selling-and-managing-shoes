@@ -8,28 +8,30 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:replace="${title}">My Title</title>
+
     <script src="/assets/js/bootstrap-loader.js"></script>
     <link rel="stylesheet" href="/assets/css/button.css"/>
     <link rel="stylesheet" href="/assets/css/admin-layout.css"/>
     <link rel="icon" href="/assets/images/logo.png"/>
+    <link rel="stylesheet" href="/assets/css/toast.css">
 
     <!-- Other javascript, css source files -->
     <th:block th:replace="${otherStaticResources} ?: ~{}"></th:block>
     <script src="/assets/js/toast.js"></script>
 </head>
 <body>
-    <div th:if="${toastMessages != null}">
-        <script th:inline="javascript">
-            const toastMessages = /*[[${toastMessages}]]*/ [];
-            showToast(toastMessages.type, toastMessages.content);
-        </script>
+<div th:if="${toastMessages != null}">
+    <script th:inline="javascript">
+        var toastMessages = /*[[${toastMessages}]]*/ [];
+        showToast(toastMessages.type, toastMessages.content);
+    </script>
+</div>
+<div id="admin-layout-main-content-wrapper">
+    <div th:replace="/components/admin-sidebar :: admin-sidebar"></div>
+    <div id="admin-layout-main-content">
+        <div th:replace="/components/admin-header :: admin-header"></div>
+        <div th:replace="${mainContent} ?: ~{}"></div>
     </div>
-    <div id="admin-layout-main-content-wrapper">
-        <div th:replace="/components/admin-sidebar :: admin-sidebar"></div>
-        <div id="admin-layout-main-content">
-            <div th:replace="/components/admin-header :: admin-header"></div>
-            <div th:replace="${mainContent} ?: ~{}"></div>
-        </div>
-    </div>
+</div>
 </body>
 </html>

@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Data
@@ -22,6 +23,7 @@ public class OrderInfo {
     private String status;
     private AccountInfo account;
     private List<OrderDetailInfo> orderDetailInfos;
+    private String createdAt;
 
     public static OrderInfo fromEntity(Order order) {
         return OrderInfo.builder()
@@ -32,6 +34,7 @@ public class OrderInfo {
             .status(OrderInfo.getStatus(order.getStatus()))
             .account(AccountInfo.fromAccount(order.getAccount()))
             .orderDetailInfos(order.getOrderDetails().stream().map(OrderDetailInfo::fromEntity).toList())
+            .createdAt(order.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
             .build();
     }
 

@@ -8,6 +8,23 @@
     cursor: pointer;
 }
 
+.table-responsive {
+    overflow: visible;
+}
+
+.bg-gray-text-white {
+    background: var(--color-gray-light) !important;
+    color: var(--color-black);
+}
+
+.link-blue {
+    color: var(--color-blue-light);
+}
+
+.table tr:hover {
+    background: var(--color-gray-light);
+}
+
 .order-status-active {
     color: var(--color-orange-dark);
     font-size: 1.25rem;
@@ -101,6 +118,12 @@
 
 .pagination-bottom ul li.active a, .pagination-bottom ul li.active span {
     background: var(--color-orange-light);
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+.admin .pagination-bottom ul li.active a, .pagination-bottom ul li.active span {
+    background: var(--color-blue-light);
     color: #fff;
     border: 1px solid transparent;
 }
