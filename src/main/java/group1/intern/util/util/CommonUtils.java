@@ -11,6 +11,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -267,5 +268,11 @@ public class CommonUtils {
             otp.append(randomNumber);
         }
         return otp.toString();
+    }
+    public static String formatToVND(int amount) {
+        NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
+        numberFormat.setGroupingUsed(true);
+        String formattedNumber = numberFormat.format(amount);
+        return formattedNumber + " VND";
     }
 }

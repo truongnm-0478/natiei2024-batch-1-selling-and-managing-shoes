@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,10 +44,16 @@ public class OrdersController {
 
         // create pagination helper
         List<OrderInfo> orderInfos = orderInfoPage.getContent();
-        PaginationUtil paginationHelper = new PaginationUtil((int) orderInfoPage.getTotalElements(), 20, page, 5, null, "/order");
+        PaginationUtil paginationHelper = new PaginationUtil((int) orderInfoPage.getTotalElements(), 20, page, 5, buildQueryString());
         model.addAttribute("paginationHelper", paginationHelper);
         model.addAttribute("page", page);
         model.addAttribute("orderInfos", orderInfos);
         return "screens/customer/orders/index";
+    }
+    private String buildQueryString() {
+        return UriComponentsBuilder.fromUriString("/order")
+                .build()
+                .encode()
+                .toUriString();
     }
 }

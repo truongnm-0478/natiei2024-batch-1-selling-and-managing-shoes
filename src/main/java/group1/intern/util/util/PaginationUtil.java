@@ -11,25 +11,14 @@ public class PaginationUtil {
     private final int itemsPerPage;
     private final int currentPage;
     private final int midRange;
-    private final String baseUrl;
-    private final String query;
+    private final String buildQueryString;
 
-    public PaginationUtil(int totalItems, int itemsPerPage, int currentPage, int midRange, String query) {
+    public PaginationUtil(int totalItems, int itemsPerPage, int currentPage, int midRange, String buildQueryString) {
         this.totalItems = totalItems;
         this.itemsPerPage = itemsPerPage;
         this.currentPage = currentPage;
         this.midRange = midRange;
-        this.query = query;
-        this.baseUrl = null;
-    }
-
-    public PaginationUtil(int totalItems, int itemsPerPage, int currentPage, int midRange, String query, String baseUrl) {
-        this.totalItems = totalItems;
-        this.itemsPerPage = itemsPerPage;
-        this.currentPage = currentPage;
-        this.midRange = midRange;
-        this.query = query;
-        this.baseUrl = baseUrl;
+        this.buildQueryString = buildQueryString;
     }
 
     public int getTotalPages() {
@@ -81,11 +70,10 @@ public class PaginationUtil {
     }
 
     public String getPageUrl(int pageNumber) {
-        var uri = UriComponentsBuilder.fromUriString(CommonUtils.isEmptyOrNullString(baseUrl) ? "/search-results" : baseUrl)
-            .queryParam("page", pageNumber);
-        if (CommonUtils.isNotEmptyOrNullString(query)) uri.queryParam("key", query);
-
-        return uri.toUriString();
+        if(buildQueryString.contains("?")){
+            return buildQueryString + "&page=" + pageNumber;
+        }
+        return buildQueryString + "?page=" + pageNumber;
     }
 
     public String getPrevPageUrl() {

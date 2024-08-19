@@ -7,6 +7,7 @@ import group1.intern.repository.base.BaseRepository;
 import group1.intern.repository.base.WhereClauseType;
 import group1.intern.repository.base.WhereElements;
 import group1.intern.repository.customization.ProductDetailsCustomRepository;
+import group1.intern.model.Enum.ProductGender;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -14,6 +15,9 @@ import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -35,61 +39,38 @@ public class ProductDetailsCustomRepositoryImpl implements ProductDetailsCustomR
     @Override
     public Page<ProductDetail> findByProductName(String name, Pageable pageable) {
         return baseRepository.fetchAllDataWithPagination(
-            List.of(
-                new WhereElements("product.name", "%" + name + "%", WhereClauseType.LIKE_IGNORE_CASE)
-            ),
-            pageable);
+                List.of(
+                        new WhereElements("product.name", "%" + name + "%", WhereClauseType.LIKE_IGNORE_CASE)),
+                pageable);
     }
 
     @Override
-    public List<ProductDetail> findProductByFilter(List<Constant> constants) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ProductDetail> cq = cb.createQuery(ProductDetail.class);
-        Root<ProductDetail> pd = cq.from(ProductDetail.class);
-        Join<ProductDetail, Product> p = pd.join("product"); // Assuming you have a proper mapping between ProductDetail and Product
+    public Page<ProductDetail> findProductByFilter(
+            List<Integer> listStyleId,
+            List<Integer> listCategoryId,
+            List<Integer> listMaterialId,
+            List<Integer> listColorId,
+            int genderFilter, 
+            Pageable pageable) {
 
-        List<Predicate> predicates = new ArrayList<>();
 
-        List<Integer> listStyleId = new ArrayList<>();
-        List<Integer> listCategoryId = new ArrayList<>();
-        List<Integer> listMaterialId = new ArrayList<>();
-        List<Integer> listColorId = new ArrayList<>();
-
-        for (Constant constant : constants) {
-            switch (constant.getType()) {
-                case "Style":
-                    listStyleId.add(constant.getId());
-                    break;
-                case "Category":
-                    listCategoryId.add(constant.getId());
-                    break;
-                case "Material":
-                    listMaterialId.add(constant.getId());
-                    break;
-                case "Color":
-                    listColorId.add(constant.getId());
-                    break;
-            }
+        List<WhereElements> whereElements = new ArrayList<>();
+        if (!listStyleId.isEmpty())
+            whereElements.add(new WhereElements("style.id", listStyleId, WhereClauseType.IN));
+        if (!listCategoryId.isEmpty())
+            whereElements.add(new WhereElements("product.category.id", listCategoryId, WhereClauseType.IN));
+        if (!listMaterialId.isEmpty())
+            whereElements.add(new WhereElements("product.material.id", listMaterialId, WhereClauseType.IN));
+        if (!listColorId.isEmpty())
+            whereElements.add(new WhereElements("color.id", listColorId, WhereClauseType.IN));
+        switch (genderFilter) {
+            case 2:
+                whereElements.add(new WhereElements("gender", ProductGender.MALE, WhereClauseType.EQUAL));
+                break;
+            case 3:
+                whereElements.add(new WhereElements("gender", ProductGender.FEMALE, WhereClauseType.EQUAL));
+                break;
         }
-
-        if (!listStyleId.isEmpty()) {
-            predicates.add(pd.get("style").get("id").in(listStyleId));
-        }
-        if (!listCategoryId.isEmpty()) {
-            predicates.add(p.get("category").get("id").in(listCategoryId));
-        }
-        if (!listMaterialId.isEmpty()) {
-            predicates.add(p.get("material").get("id").in(listMaterialId));
-        }
-        if (!listColorId.isEmpty()) {
-            predicates.add(pd.get("color").get("id").in(listColorId));
-        }
-
-        if (!predicates.isEmpty()) {
-            cq.where(cb.and(predicates.toArray(new Predicate[0])));
-        }
-
-        TypedQuery<ProductDetail> query = em.createQuery(cq);
-        return query.getResultList();
+        return baseRepository.fetchAllDataWithPagination(whereElements, pageable);
     }
 }

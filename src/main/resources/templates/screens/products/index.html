@@ -1,65 +1,65 @@
 <!DOCTYPE html>
 <html
-  xmlns:th="http://www.thymeleaf.org"
-  lang="en"
-  th:replace="~{/layouts/main-layout :: main-layout-fragment(
+    xmlns:th="http://www.thymeleaf.org"
+    lang="en"
+    th:replace="~{/layouts/main-layout :: main-layout-fragment(
         ~{::title},
         ~{::#static-resources},
         null, 
         ~{::#main-content}
     )}"
 >
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sản phẩm - Ananas</title>
-    <th:block id="static-resources">
-      <link rel="stylesheet" href="/assets/css/product/product-card.css" />
-    </th:block>
-  </head>
-  <body>
-    <div id="main-content">
-      <div class="row mx-0">
-        <div class="col-sx-4 col-sm-4 col-md-4 col-lg-4">
-          <div
-            th:replace="~{/components/product-card :: product-card(
-                        id='1', 
-                        name='Vintas Public 2000s - Low Top', 
-                        image1='/assets/images/product-card-1.jpg',
-                        image2='/assets/images/product-card-2.jpg',
-                        style='Style',
-                        price='620.000 VND',
-                        originPrice='700.000 VND'
-                    )}"
-          ></div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sản phẩm - Ananas</title>
+        <th:block id="static-resources">
+            <link rel="stylesheet" href="/assets/css/product/product-card.css" />
+            <link rel="stylesheet" href="/assets/css/sidebar.css">
+            <link rel="stylesheet" href="/assets/css/product/product-list.css">
+        </th:block>
+    </head>
+    <body>
+        <div id="main-content" class="product-list-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div th:replace="~{/components/sidebar :: product-list-sidebar}"></div>
+                    <!-- <button class="sidebar-toggle btn btn-primary w-100 d-lg-none d-md-block" id="sidebarToggle">☰</button> -->
+                    <div class="product-list-main-content col-sx-12 col-sm-12 col-md-12 col-lg-9">
+                        <div class="product-list-banner-wrapper">
+                            <img alt="product list banner" src="/assets/images/product-list-banner.jpg" class="product-list-banner"/>
+                        </div>
+                        <div class="product-list-items-wrapper">
+                            <div class="row mx-0 w-9">
+                                <div class="col-sx-4 col-sm-4 col-md-4 col-lg-4" th:each="productDetail : ${productDetails}">
+                                    <div
+                                    th:replace="~{/components/product-card :: product-card(
+                                                id=${productDetail.id}, 
+                                                name=${productDetail.name}, 
+                                                image1=${productDetail.images[0].url},
+                                                image2=${productDetail.images[1].url},
+                                                material=${productDetail.material},
+                                                style=${productDetail.style},
+                                                price=${productDetail.discountPrice},
+                                                originPrice=${productDetail.price},
+                                                quantity=${productDetail.sumQuantity}
+                                            )}"
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pagination">
+                            <a th:if="${pagination.prevPageUrl != null}" th:href="${pagination.prevPageUrl}" class="pagination-link">Previous</a>
+                            <a th:each="pageNumber : ${pagination.pageNumbers}"
+                            th:href="@{${pagination.getPageUrl(pageNumber)}}"
+                            th:text="${pageNumber}"
+                            th:class="'pagination-link ' + (${currentPage == pageNumber} ? 'active-page' : 'disabled-page')"></a>
+                            <a th:if="${pagination.nextPageUrl != null}" th:href="${pagination.nextPageUrl}" class="pagination-link">Next</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-sx-4 col-sm-4 col-md-4 col-lg-4">
-          <div
-            th:replace="~{/components/product-card :: product-card(
-                          id='1', 
-                          name='Vintas Public 2000s - Low Top', 
-                          image1='/assets/images/product-card-1.jpg',
-                          image2='/assets/images/product-card-2.jpg',
-                          style='Style',
-                          price='620.000 VND',
-                          originPrice=''
-                      )}"
-          ></div>
-        </div>
-        <div class="col-sx-4 col-sm-4 col-md-4 col-lg-4">
-          <div
-            th:replace="~{/components/product-card :: product-card(
-                          id='1', 
-                          name='Vintas Public 2000s - Low Top', 
-                          image1='/assets/images/product-card-1.jpg',
-                          image2='/assets/images/product-card-2.jpg',
-                          style='Style',
-                          price='620.000 VND',
-                          originPrice='800.000 NVD'
-                      )}"
-          ></div>
-        </div>
-      </div>
-    </div>
-  </body>
+    </body>
 </html>
+

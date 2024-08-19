@@ -1847,3 +1847,16 @@ INSERT INTO product_quantities (id, quantity, product_detail_id, size_id) VALUES
 INSERT INTO product_quantities (id, quantity, product_detail_id, size_id) VALUES (918, 276, 92, 8);
 INSERT INTO product_quantities (id, quantity, product_detail_id, size_id) VALUES (919, 276, 92, 9);
 INSERT INTO product_quantities (id, quantity, product_detail_id, size_id) VALUES (920, 276, 92, 10);
+
+
+UPDATE product_details
+SET discount = 20
+WHERE id%4 = 0;
+
+UPDATE product_details
+SET discount = 10
+WHERE id%5 = 0;
+
+UPDATE product_details
+SET discount = 5
+WHERE id%3 = 0;

@@ -24,8 +24,9 @@ public class ProductFilterInfo {
     private String category;
     private String style;
     private String material;
-    private Integer price;
+    private String price;
+    private String discountPrice;
     private String color;
     private List<ProductImage> images;
-    private List<ProductQuantity> sizeQuantity;
+    private int sumQuantity;
 }
