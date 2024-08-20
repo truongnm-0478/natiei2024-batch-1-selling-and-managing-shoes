@@ -50,7 +50,8 @@ public class GlobalControllerExceptionHandler {
     public String handleMaxSizeException(MaxUploadSizeExceededException exc, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("message", "File is too large!");
         return "redirect:/uploadStatus";
-      
+    }
+
     // Unsupported action
     @ExceptionHandler(IllegalArgumentException.class)
     public String handleIllegalArgumentException(IllegalArgumentException e, Model model) {

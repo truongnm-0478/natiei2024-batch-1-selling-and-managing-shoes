@@ -36,7 +36,7 @@ public class ProductsController {
 
     @Autowired
     private ProductService productService;
-    
+
     @Autowired
     private ConstantService constantService;
 
@@ -125,7 +125,7 @@ public class ProductsController {
 
         List<Integer> filterStyles = new ArrayList<>();
         List<Integer> filterMaterials = new ArrayList<>();
-        
+
         if(!filterStyle.isEmpty() && Integer.parseInt(filterStyle) != -1){
             filterStyles.add(Integer.parseInt(filterStyle));
         }
