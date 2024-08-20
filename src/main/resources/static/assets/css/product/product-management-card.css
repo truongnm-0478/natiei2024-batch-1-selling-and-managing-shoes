@@ -1,0 +1,97 @@
+@import url("../constant.css");
+
+.pm-card-wrapper {
+    border-radius: 10px;
+    width: 95%;
+    overflow: hidden;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+    background-color: var(--color-gray-light);
+    padding: 10px 0px;
+    transition: transform 0.3s ease;
+}
+
+.pm-card-wrapper a:hover {
+    color : var(--color-black)
+}
+
+.pm-card-wrapper:hover {
+    transform: scale(1.03);
+}
+
+.pm-card-marker {
+    width: 10px;
+    background-color: var(--color-blue-lighter);
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.pm-image {
+    aspect-ratio: 1/1;
+    object-fit: contain;
+    margin-right: 5px;
+    width: 20%;
+}
+
+.pm-card-main-content-title {
+    color : var(--color-blue-light);
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-family: var(--font-geometric-extra-bold);
+    margin-bottom: 10px;
+}
+
+.pm-card-info-wrapper { 
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.pm-card-info-items-wrapper {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pm-card-info-items {
+    margin : 5px 0px;
+    display: flex;
+}
+
+.pm-card-info-items-image {
+    width: 20px;
+    height: 20px;
+    margin: 0px 5px;
+}
+
+.pm-card-info-items-title {
+    font-weight: bold;
+}
+
+.pm-card-price {
+    color: var(--color-blue-dark);
+    font-weight: bold;
+    top : 20px;
+    right: 10px;
+    padding : 5px 20px;
+    border: 1px solid var(--color-blue-dark);
+    border-radius: 20px;
+}
+
+.pm-card-delete-button {
+    height: 35px;
+    width: 35px;
+    bottom: 20px;
+    right: 10px;
+}
+
+.pm-card-main-content-wrapper {
+    width: 65%;
+}
+
+.pm-card-content-wrapper {
+    width: 95%;
+    margin-left: 20px;
+}

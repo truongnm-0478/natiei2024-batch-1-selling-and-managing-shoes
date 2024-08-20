@@ -1,7 +1,5 @@
 package group1.intern.repository.customization.impl;
 
-import group1.intern.model.Constant;
-import group1.intern.model.Product;
 import group1.intern.model.ProductDetail;
 import group1.intern.repository.base.BaseRepository;
 import group1.intern.repository.base.WhereClauseType;
@@ -10,14 +8,10 @@ import group1.intern.repository.customization.ProductDetailsCustomRepository;
 import group1.intern.model.Enum.ProductGender;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

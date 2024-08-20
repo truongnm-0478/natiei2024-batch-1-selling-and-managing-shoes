@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<html
-    xmlns:th="http://www.thymeleaf.org"
-    lang="en"
-    th:replace="~{/layouts/admin-layout :: admin-layout-fragment(
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{./layouts/admin-layout :: admin-layout-fragment(
         ~{::title},
         ~{::#static-resources},
         ~{::#main-content}
-    )}"
->
+    )}">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="${productInfo.name}"></title>
     <th:block id="static-resources">
         <script src="/assets/js/bootstrap-loader.js"></script>
@@ -25,12 +21,12 @@
 <div id="main-content" class="container-fluid p-2">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white">
-            <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
+            <li class="breadcrumb-item"><a href="/seller/products">Sản phẩm</a></li>
             <li class="breadcrumb-item active" aria-current="page">Chi tiết sản phẩm</li>
         </ol>
     </nav>
     <div class="row">
-        <div class="col-md-5" >
+        <div class="col-md-5">
             <div class="product-image">
                 <img id="main-image" th:src="@{${productInfo.images[0].url}}" alt="Product Image" class="img-fluid">
             </div>
@@ -100,20 +96,22 @@
                     <tr>
                         <th>Size</th>
                         <!-- Lặp qua danh sách size để tạo các cột size -->
-                        <th th:each="sizeQuantity : ${productInfo.sizeQuantity}" th:text="${sizeQuantity.size.value}"></th>
+                        <th th:each="sizeQuantity : ${productInfo.sizeQuantity}"
+                            th:text="${sizeQuantity.size.value}"></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <th>SL</th>
-                        <td th:each="sizeQuantity : ${productInfo.sizeQuantity}" th:text="${sizeQuantity.quantity}"></td>
+                        <td th:each="sizeQuantity : ${productInfo.sizeQuantity}"
+                            th:text="${sizeQuantity.quantity}"></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <hr class="row divider my-4">
             <div class="row position-relative">
-                <div class="action pb-3" >
+                <div class="action pb-3">
                     <button class="btn btn-warning">
                         Sửa
                     </button>

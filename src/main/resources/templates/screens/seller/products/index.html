@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    lang="en"
+    th:replace="~{/layouts/admin-layout :: admin-layout-fragment(
+        ~{::title},
+        ~{::#static-resources},
+        ~{::#main-content}
+    )}"
+>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Product management</title>
+        <th:block id="static-resources">
+            <link rel="stylesheet" href="/assets/css/product/product-management.css" />
+            <link rel="stylesheet" href="/assets/css/product/product-management-card.css" />
+        </th:block>
+    </head>
+    <body>
+        <div id="main-content" class="product-management-wrapper">
+            <div class="product-management-header-wrapper">
+                <div class="product-management-search-input-container">
+                    <input
+                        type="text"
+                        id="product-management-search-input"
+                        name="name"
+                        placeholder="Nhập vào tên giày"
+                        th:value="${queryProduct} ? ${queryProduct}"
+                    />
+                    <img
+                        alt="search icon"
+                        src="/assets/images/icons/search.png"
+                        class="product-management-search-icon"
+                    />
+                </div>
+                <div class="product-management-header-vr"></div>
+                <div class="product-management-sort-by-items">
+                    <p class="product-management-selector-titles d-none d-xl-block"><strong>Kiểu dáng : </strong></p>
+                    <select
+                        title="product-management-style-select"
+                        id="product-style-select"
+                        class="form-select product-header-selectors"
+                    >
+                        <option value="-1" th:selected="${filterStyle == '-1'}">
+                            Tất cả
+                        </option>
+                        <option
+                            th:each="style : ${styles}"
+                            th:value="${style.id}"
+                            th:selected="${filterStyle == #strings.toString(style.id)}"
+                        >
+                            <span th:text="${style.value}"></span>
+                        </option>
+                    </select>
+                </div>
+                <div class="product-management-sort-by-items">
+                    <p class="product-management-selector-titles d-none d-xl-block"><strong>Chất liệu : </strong></p>
+                    <select
+                        title="product-management-material-select"
+                        id="product-material-select"
+                        class="form-select product-header-selectors"
+                    >
+                        <option
+                            value="-1"
+                            th:selected="${filterMaterial == '-1'}"
+                        >
+                            Tất cả
+                        </option>
+                        <option
+                            th:each="material : ${materials}"
+                            th:value="${material.id}"
+                            th:selected="${filterMaterial == #strings.toString(material.id)}"
+                        >
+                            <span th:text="${material.value}"></span>
+                        </option>
+                    </select>
+                </div>
+                <div class="product-management-header-vr"></div>
+                <a href="#" class="btn product-management-add-button"
+                    ><img alt="plus icon" class="product-magement-add-icon" src="/assets/images/icons/products-seller/plus-icon.svg"
+                /></a>
+            </div>
+            <div class="product-management-hr"></div>
+            <h2 class="product-management-main-title">
+                Hiện đang có <span th:text="${totalPages}"></span> sản phẩm đang có trong kho
+            </h2>
+
+            <div class="d-flex flex-column w-100 product-management-item-wrapper align-items-center">
+                <div th:each="productDetail : ${productDetails}" class="w-100 d-flex justify-content-center">
+                    <!-- <p th:text="${productDetail.originP}"></p> -->
+                    <div
+                        th:replace="~{/components/product-management-card :: product-management-card(
+                                                                                            id=${productDetail.id},
+                                                                                            name=${productDetail.name},
+                                                                                            image=${productDetail.images[0].url},
+                                                                                            originPrice=${productDetail.originPrice},
+                                                                                            discount=${productDetail.discount},
+                                                                                            style=${productDetail.style},
+                                                                                            material=${productDetail.material},
+                                                                                            gender=${productDetail.gender},
+                                                                                            sumQuantity=${productDetail.sumQuantity},
+                                                                                            color=${productDetail.color},
+                                                                                            category=${productDetail.category},
+                                                                                            price=${productDetail.price}
+                        )}"
+                    ></div>
+                </div>
+            </div>
+            <div class="pagination">
+                <a th:if="${pagination.prevPageUrl != null}" th:href="${pagination.prevPageUrl}" class="pagination-link"
+                    >Previous</a
+                >
+                <a
+                    th:each="pageNumber : ${pagination.pageNumbers}"
+                    th:href="@{${pagination.getPageUrl(pageNumber)}}"
+                    th:text="${pageNumber}"
+                    th:class="'pagination-link ' + (${currentPagination == pageNumber} ? 'active-page' : 'disabled-page')"
+                ></a>
+                <a th:if="${pagination.nextPageUrl != null}" th:href="${pagination.nextPageUrl}" class="pagination-link"
+                    >Next</a
+                >
+            </div>
+            <script type="text/javascript" src="/assets/js/products-admin.js"></script>
+        </div>
+    </body>
+</html>
