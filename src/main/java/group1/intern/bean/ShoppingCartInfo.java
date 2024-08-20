@@ -33,6 +33,7 @@ public class ShoppingCartInfo {
     private List<ProductImage> images;
     private ProductQuantity sizeQuantity;
     private ProductDetail productDetail;
+    private List<ProductQuantity> quantities;
 
     public static ShoppingCartInfo fromShoppingCart(ShoppingCart shoppingCart) {
         return ShoppingCartInfo.builder()

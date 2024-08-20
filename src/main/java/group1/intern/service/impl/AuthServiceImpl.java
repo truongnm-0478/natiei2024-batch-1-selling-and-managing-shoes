@@ -57,6 +57,7 @@ public class AuthServiceImpl implements AuthService {
             .address(accountRegistration.getAddress())
             .phoneNumber(accountRegistration.getPhoneNumber())
             .gender(true)
+            .isActivated(true)
             .build();
 
         try {
