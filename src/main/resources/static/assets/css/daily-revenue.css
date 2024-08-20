@@ -1,0 +1,32 @@
+.container {
+    padding: 20px;
+}
+.date-picker {
+    margin-bottom: 20px;
+    width: 15%;
+    border-radius:20%;
+    border: 1px solid var(--color-medium-gray);
+}
+.container-card{
+    display: flex;
+    justify-content: space-around;
+}
+.info-card {
+    border: 1px solid var(--color-medium-gray);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    margin-right: 20px;
+    background-color: var(--color-whit);
+    display: inline-block;
+    vertical-align: top;
+}
+.info-card span {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+}
+.info-card .value {
+    font-size: 30px;
+    color: var(--color-blue-dark);
+}

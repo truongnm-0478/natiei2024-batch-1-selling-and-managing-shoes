@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Revenue</title>
+    <th:block id="daily-revenue">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+        <link rel="stylesheet" href="/assets/css/daily-revenue.css">
+    </th:block>
+</head>
+
+<body>
+    <div class="container" th:fragment="daily-revenue">
+        <!-- Date Picker -->
+        <input type="date" id="date-picker" class="form-control date-picker"/>
+        <script th:inline="javascript">
+            var today = new Date();
+            var formattedDate = today.toISOString().split('T')[0];
+            function fetchRevenueData() {
+                var date = document.getElementById('date-picker').value;
+                fetch(`/daily-revenue?date=` + date)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('total-orders').textContent = data.orderCount;
+                        document.getElementById('current-revenue').textContent = data.currentRevenue;
+                        document.getElementById('predicted-revenue').textContent = data.predictedRevenue;
+                    });
+            }
+            document.getElementById("date-picker").value = formattedDate;
+            document.getElementById('date-picker').addEventListener('change', fetchRevenueData);
+            window.onload = fetchRevenueData;
+        </script>
+        <div class="container-card">
+            <!-- Info Cards -->
+            <div class="info-card">
+                <span>Số lượng đơn hàng</span>
+                <div>&nbsp</div>
+                <div class="value" id="total-orders">0</div>
+            </div>
+            <div class="info-card">
+                <span>Doanh thu hiện tại</span>
+                <div>VND</div>
+                <div class="value" id="current-revenue">0</div>
+            </div>
+            <div class="info-card">
+                <span>Doanh thu dự tính</span>
+                <div>VND</div>
+                <div class="value" id="predicted-revenue">0</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

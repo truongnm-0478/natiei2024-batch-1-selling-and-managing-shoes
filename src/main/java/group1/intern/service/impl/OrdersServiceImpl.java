@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,5 +62,30 @@ public class OrdersServiceImpl implements OrdersService {
         var order = ordersRepository.findById(orderId).orElseThrow(() -> new BadRequestException(notFound));
         order.setStatus(orderStatus);
         ordersRepository.save(order);
+    }
+    @Override
+    public long countByDate(LocalDate date) {
+        return ordersRepository.findAll().stream()
+            .filter(order -> order.getUpdatedAt().toLocalDate().equals(date))
+            .count();
+    }
+
+    @Override
+    public double sumTotalPriceByDate(LocalDate date) {
+        return ordersRepository.findAll().stream()
+            .filter(order -> order.getUpdatedAt().toLocalDate().equals(date) && OrderStatus.DONE.equals(order.getStatus()))
+            .mapToDouble(order -> order.getTotalPrice())
+            .sum();
+    }
+
+    @Override
+    public double sumEstimatedRevenueByDate(LocalDate date) {
+        return ordersRepository.findAll().stream()
+            .filter(order -> order.getUpdatedAt().toLocalDate().equals(date) &&
+                             (OrderStatus.CONFIRM.equals(order.getStatus()) ||
+                            		 OrderStatus.RECEIVED.equals(order.getStatus()) ||
+                            		 OrderStatus.DONE.equals(order.getStatus())))
+            .mapToDouble(order -> order.getTotalPrice())
+            .sum();
     }
 }

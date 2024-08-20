@@ -1,5 +1,8 @@
 package group1.intern.model;
 
+
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,4 +32,5 @@ public class OrderDetail extends EntityBase {
     @ManyToOne
     @JoinColumn(name = "product_quantity_id")
     private ProductQuantity productQuantity;
+
 }
