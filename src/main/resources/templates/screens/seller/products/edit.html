@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{./layouts/admin-layout :: admin-layout-fragment(
+        ~{::title},
+        ~{::#static-resources},
+        ~{::#main-content}
+    )}">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <th:block id="static-resources">
+        <script src="/assets/js/bootstrap-loader.js"></script>
+        <link rel="stylesheet" href="/assets/css/product/product-edit.css">
+    </th:block>
+</head>
+
+<body>
+<div id="main-content" class="container-fluid p-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="breadcrumb-item"><a href="#">Sản phẩm</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa sản phẩm</li>
+        </ol>
+    </nav>
+    <div class="col">
+        <div class="edit-info row" style="display: flex; justify-content: center">
+            <h2 class="mb-5">Chỉnh sửa thông tin</h2>
+            <form id="product-detail-edit-form" th:action="@{/seller/products/{id}/update-info(id=${productInfo.id})}" method="post">
+                <input type="hidden" name="id" th:value="${productInfo.id}"/>
+                <input type="hidden" name="productId" th:value="${productInfo.productId}"/>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="name">Tên sản phẩm:</label>
+                        <input type="text" id="name" name="name" class="form-control" th:value="${productInfo.name}" required/>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="gender">Giới tính</label>
+                        <select id="gender" class="form-control" th:field="*{productInfo.gender}">
+                            <option value="" disabled>Chọn giới tính</option>
+                            <option th:each="genderEnum : ${T(group1.intern.model.Enum.ProductGender).values()}"
+                                    th:value="${genderEnum.name()}"
+                                    th:text="${genderEnum.name()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="color">Màu sắc:</label>
+                        <div class="input-group">
+                            <input type="text" id="color" name="color" class="form-control"
+                                   th:value="${productInfo.color}"
+                                   oninput="document.getElementById('colorPreview').style.backgroundColor = this.value" required/>
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="colorPreview"
+                                      th:style="'background-color: #' + ${productInfo.color} + '; width: 40px; border-color: #' + ${productInfo.color} + ';'">&nbsp;</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="category">Phân loại:</label>
+                        <input list="category-options" id="category" name="category" class="form-control" th:value="${productInfo.category}" required/>
+                        <datalist id="category-options">
+                            <option th:each="category : ${availableCategories}" th:value="${category}">Category</option>
+                        </datalist>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="style">Phong cách:</label>
+                        <input list="style-options" id="style" name="style" class="form-control" th:value="${productInfo.style}" required/>
+                        <datalist id="style-options">
+                            <option th:each="style : ${availableStyles}" th:value="${style}">Style</option>
+                        </datalist>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="material">Chất liệu:</label>
+                        <input list="material-options" id="material" name="material" class="form-control" th:value="${productInfo.material}" required/>
+                        <datalist id="material-options">
+                            <option th:each="material : ${availableMaterials}" th:value="${material}">Material</option>
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="price">Giá bán:</label>
+                        <div class="input-group">
+                            <input type="text" id="price" name="price" class="form-control" th:value="${productInfo.price}" required/>
+                            <div class="input-group-append">
+                                <span class="input-group-text">VND</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="originPrice">Giá nhập:</label>
+                        <div class="input-group">
+                            <input type="number" id="originPrice" class="form-control" th:field="*{productInfo.originPrice}" placeholder="Enter the origin price" />
+                            <div class="input-group-append">
+                                <span class="input-group-text">VND</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="discount">Giảm giá:</label>
+                        <div class="input-group">
+                            <input type="number" id="discount" name="discount" class="form-control" th:value="${productInfo.discount}" required/>
+                            <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Số lượng sản phẩm theo size:</label>
+                    <div class="form-row">
+                        <div th:each="sq, iterStat : ${productInfo.sizeQuantity}" class="form-group col-md-4 mb-3">
+                            <input type="hidden" th:name="'sizeQuantity[' + ${iterStat.index} + '].id'" th:value="${sq.id}"/>
+                            <input type="hidden" th:name="'sizeQuantity[' + ${iterStat.index} + '].size'" th:value="${sq.size.id}" readonly/>
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" th:text="${sq.size.value}">Size</span>
+                                </div>
+                                <input type="number" th:name="'sizeQuantity[' + ${iterStat.index} + '].quantity'" class="form-control" th:value="${sq.quantity}" required/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="position: absolute; right: 2px">Cập nhật thông tin</button>
+            </form>
+        </div>
+        <h2 class="row text-center mt-5 p-3" style="display: flex; justify-content: center; align-items: center">Chỉnh sửa hình ảnh</h2>
+        <div class="edit-img row pt-3 pb-5">
+            <div class="product-img d-flex justify-content-between py-3" id="image-gallery">
+                <!-- Form to upload a new image -->
+                <form class="file-upload-form mr-2" id="product-edit-form" th:action="@{/seller/products/{id}/update-images(id=${productInfo.id})}" method="POST" enctype="multipart/form-data">
+                    <label for="file" class="file-upload-label">
+                        <div class="file-upload-design">
+                            <svg viewBox="0 0 640 512" height="1em">
+                                <path
+                                    d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z"
+                                ></path>
+                            </svg>
+                            <p>Drag and Drop</p>
+                            <p>or</p>
+                            <span class="browse-button">Browse file</span>
+                        </div>
+                        <input id="file" type="file" name="imagesToAdd" multiple/>
+                    </label>
+                </form>
+
+                <!-- Existing images -->
+                <div th:each="image : ${productImages}" class="img-item mr-2" th:data-image-id="${image.id}">
+                    <div class="close">
+                        <div class="line one"></div>
+                        <div class="line two"></div>
+                    </div>
+                    <img th:src="${image.url}" alt="Product Image">
+                </div>
+            </div>
+            <button id="submit-button" type="button" class="btn btn-primary mt-2" style="position: absolute; right: 2px; bottom: 10px">
+                Cập nhật hình ảnh
+            </button>
+        </div>
+    </div>
+
+    <!--  Model confirm  -->
+    <div class="modal fade" id="confirmConfirmModal" tabindex="-1" role="dialog"
+         aria-labelledby="confirmConfirmModalContent" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center align-items-center d-flex flex-column border-0">
+                    <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75"
+                         width="75">
+                    <h5 class="modal-title mt-2 font-weight-bold"
+                        id="confirmConfirmModalContent">Xác nhận thay đổi</h5>
+                </div>
+                <div class="modal-body center d-flex flex-column border-0 py-0">
+                    <p class="text-center">Bạn có chắc chắn muốn thay đổi không?</p>
+                </div>
+                <div class="modal-footer border-0 d-flex flex-row">
+                    <a href="#" class="btn btn-secondary row w-100 m-0 border-0 text-cancel"
+                       data-dismiss="modal">Hủy</a>
+                    <div class="p-0 mx-2"></div>
+                    <a href="#" data-dismiss="modal" class="btn btn-primary border-0 row w-100 m-0 text-confirm"
+                       id="confirm-save-changes">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/product-edit.js"></script>
+</div>
+</body>
+</html>
