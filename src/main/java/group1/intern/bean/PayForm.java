@@ -33,12 +33,4 @@ public class PayForm {
 
     @NotBlank(message = "Phường/ Xã không được để trống")
     private String ward;
-
-    private Boolean isNotification;
-
-    @NotBlank(message = "Vui lòng chọn phương thức giao hàng")
-    private String shippingType;
-
-    @NotBlank(message = "Vui lòng chọn phương thức thanh toán")
-    private String paymentType;
 }
