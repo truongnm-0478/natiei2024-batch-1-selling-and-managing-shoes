@@ -83,12 +83,11 @@
             </div>
             <div class="product-management-hr"></div>
             <h2 class="product-management-main-title">
-                Hiện đang có <span th:text="${totalPages}"></span> sản phẩm đang có trong kho
+                Hiện đang có <span th:text="${totalProducts}"></span> sản phẩm đang có trong kho
             </h2>
 
             <div class="d-flex flex-column w-100 product-management-item-wrapper align-items-center">
                 <div th:each="productDetail : ${productDetails}" class="w-100 d-flex justify-content-center">
-                    <!-- <p th:text="${productDetail.originP}"></p> -->
                     <div
                         th:replace="~{/components/product-management-card :: product-management-card(
                                                                                             id=${productDetail.id},

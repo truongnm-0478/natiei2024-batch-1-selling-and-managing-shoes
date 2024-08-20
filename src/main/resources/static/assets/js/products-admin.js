@@ -21,8 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (searchQuery) {
             queryParams.push(`queryProduct=${searchQuery}`);
+        }else {
+            queryParams.push(`page=${currentPage}`);
         }
-        queryParams.push(`page=${currentPage}`);     
 
         const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
         console.log(queryString)
@@ -31,5 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     productStyleSelect.addEventListener("change", applyFilters);
     productMaterialSelect.addEventListener("change", applyFilters);
-    
+    productSearchInput.addEventListener("keypress", function (e) {
+        if (e.key === 'Enter') {
+            applyFilters();
+        }
+    });
 });

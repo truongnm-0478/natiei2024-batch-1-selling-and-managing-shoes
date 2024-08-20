@@ -31,6 +31,7 @@ public class FilterServiceImpl implements FilterService {
                         List<Integer> listMaterialId,
                         List<Integer> listColorId,
                         int genderFilter,
+                        String query,
                         Pageable pageable) {
 
                 Page<ProductDetail> productDetailsPage = repo.findProductByFilter(
@@ -39,6 +40,7 @@ public class FilterServiceImpl implements FilterService {
                                 listMaterialId,
                                 listColorId,
                                 genderFilter,
+                                query,
                                 pageable);
 
                 return productDetailsPage.map(productDetail -> ProductFilterInfo.builder()

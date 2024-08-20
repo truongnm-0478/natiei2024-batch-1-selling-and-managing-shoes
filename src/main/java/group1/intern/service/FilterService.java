@@ -14,5 +14,6 @@ public interface FilterService {
             List<Integer> listMaterialId,
             List<Integer> listColorId,
             int genderFilter,
+            String query,
             Pageable pageable);
 }
