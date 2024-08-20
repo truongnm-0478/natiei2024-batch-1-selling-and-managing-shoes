@@ -10,4 +10,6 @@ public interface OrdersCustomRepository extends CustomRepository<Order, Integer,
     Page<Order> findAllByAccountId(Integer accountId, Pageable pageable);
 
     Page<Order> findAllByAccountIdAndStatus(Integer accountId, OrderStatus status, Pageable pageable);
+
+    Page<Order> findAllByStatus(OrderStatus status, Pageable pageable);
 }

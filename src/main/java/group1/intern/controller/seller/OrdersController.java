@@ -1,7 +1,7 @@
-package group1.intern.controller.customer;
+package group1.intern.controller.seller;
 
 import group1.intern.annotation.CurrentAccount;
-import group1.intern.annotation.PreAuthorizeCustomer;
+import group1.intern.annotation.PreAuthorizeSeller;
 import group1.intern.bean.OrderInfo;
 import group1.intern.bean.ToastMessage;
 import group1.intern.model.Account;
@@ -23,10 +23,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-@Controller("customer-orders-controller")
-@RequestMapping("/customer/orders")
+@Controller("seller-orders-controller")
+@RequestMapping("/seller/orders")
 @RequiredArgsConstructor
-@PreAuthorizeCustomer
+@PreAuthorizeSeller
 public class OrdersController {
     private final OrdersService ordersService;
 
@@ -34,16 +34,15 @@ public class OrdersController {
     public String index(
         @RequestParam(value = "status", required = false) String status,
         Model model,
-        @CurrentAccount Account account,
         @RequestParam(value = "page", required = false, defaultValue = "1") int page
     ) {
         var statusEnum = CommonUtils.isNotEmptyOrNullString(status)
             ? Arrays.stream(OrderStatus.values()).filter(e -> e.name().equalsIgnoreCase(status)).findFirst().orElse(null)
             : null;
-        var models = getOrders(account.getId(), statusEnum, page, 20);
+        var models = getOrders(null, statusEnum, page, 20);
         model.addAllAttributes(models);
 
-        return "screens/customer/orders/index";
+        return "screens/seller/orders/index";
     }
 
     @PatchMapping("/{id}")
@@ -67,16 +66,16 @@ public class OrdersController {
 
         // Get status, page and set to model
         var currentUrl = WebUtils.Sessions.getAttribute(CommonConstant.CURRENT_GET_URL, String.class);
-        if (currentUrl == null || !currentUrl.contains("/customer/orders"))
-            currentUrl = "/customer/orders?status=all&page=1";
+        if (currentUrl == null || !currentUrl.contains("/seller/orders"))
+            currentUrl = "/seller/orders?status=all&page=1";
         var params = CommonUtils.extractQueryParamsFromURL(currentUrl, "status", "page");
         var models = getOrders(
-            account.getId(),
+            null,
             Arrays.stream(OrderStatus.values()).filter(e -> e.name().equalsIgnoreCase(params.get(0))).findFirst().orElse(null),
             Integer.parseInt(params.get(1)),
             20);
         model.addAllAttributes(models);
-        return "screens/customer/orders/index";
+        return "screens/seller/orders/index";
     }
 
     private Map<String, ?> getOrders(Integer accountId, OrderStatus status, int page, int pageSize) {
@@ -90,7 +89,7 @@ public class OrdersController {
             (int) orderInfoPage.getTotalElements(),
             pageSize, page,
             5,
-            UriComponentsBuilder.fromUriString("/customer/orders")
+            UriComponentsBuilder.fromUriString("/seller/orders")
                 .queryParam("status", status != null ? status.name().toLowerCase() : "all")
                 .build().encode().toUriString());
 

@@ -43,4 +43,14 @@ public class OrdersCustomRepositoryImpl implements OrdersCustomRepository {
             pageable
         );
     }
+
+    @Override
+    public Page<Order> findAllByStatus(OrderStatus status, Pageable pageable) {
+        return baseRepository.fetchAllDataWithPagination(
+            List.of(
+                new WhereElements("status", status, WhereClauseType.EQUAL)
+            ),
+            pageable
+        );
+    }
 }

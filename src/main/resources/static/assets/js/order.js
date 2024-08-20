@@ -17,8 +17,8 @@ function setData(orderId, orderStatus) {
     order_status = orderStatus
 }
 
-function sendChangeStatusRequest() {
-    const url = `customer/orders/${order_id}`;
+function sendChangeStatusRequest(baseUrl) {
+    const url = `${baseUrl}/${order_id}`;
 
     fetch(url, {
         method: 'PATCH',

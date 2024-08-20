@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{./layouts/admin-layout :: admin-layout-fragment(
+        ~{::title},
+        ~{::#static-resources},
+        ~{::#main-content}
+    )}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management</title>
+    <th:block id="static-resources">
+        <link rel="stylesheet" href="/assets/css/order.css">
+        <script src="/assets/js/order.js" defer></script>
+    </th:block>
+</head>
+<body id="main-content">
+<div class="container-fluid py-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+            <li class="link-blue breadcrumb-item active" aria-current="page">Quản lý hóa đơn</li>
+        </ol>
+    </nav>
+    <div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="bg-gray-text-white text-center" style="background: orange">
+                <tr>
+                    <th scope="col" class="col-1 col-md-1">Mã đơn hàng</th>
+                    <th scope="col" class="col-3 col-md-3">Sản phẩm</th>
+                    <th scope="col" class="col-3 col-md-3">Người đặt</th>
+                    <th scope="col" class="col-1 col-md-1">
+                        <button class="btn font-weight-bold p-0 m-0 bg-transparent border-0 dropdown-toggle"
+                                role="button"
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Trạng thái
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item text-dark px-2 pb-2"
+                               href="/seller/orders?status=all">Tất cả</a>
+                            <a class="dropdown-item text-dark px-2 pb-2"
+                               href="/seller/orders?status=wait">Chờ xác nhận</a>
+                            <a class="dropdown-item text-dark px-2 pb-2"
+                               href="/seller/orders?status=confirm">Đang giao</a>
+                            <a class="dropdown-item text-dark px-2 pb-2"
+                               href="/seller/orders?status=reject">Bị từ chối</a>
+                            <a class="dropdown-item text-dark px-2 pb-2"
+                               href="/seller/orders?status=cancel">Đã hủy</a>
+                            <a class="dropdown-item text-dark px-2 pb-2"
+                               href="/seller/orders?status=received">Đã nhận</a>
+                            <a class="dropdown-item text-dark px-2 pb-2"
+                               href="/seller/orders?status=done">Đã hoàn thành</a>
+                        </div>
+                    </th>
+                    <th scope="col" class="col-1 col-md-1">Tổng tiền</th>
+                    <th scope="col" class="col-1 col-md-1">Thời gian đặt</th>
+                    <th scope="col" class="col-1 col-md-1">Hành động</th>
+                </tr>
+                </thead>
+                <tbody th:each="orderInfo,iter : ${orderInfos}">
+                <tr>
+                    <th scope="row">
+                        <a href="#" th:text="${orderInfo.id}"></a>
+                    </th>
+                    <td>
+                        <div class="border-0 p-0 m-0" th:each="orderDetail : ${orderInfo.getOrderDetailInfos()}">
+                            <div class="mb-2">
+                                <img class="img-fluid rounded mr-2" width="32" height="32"
+                                     th:alt="${orderDetail.productDetailInfo.name}"
+                                     th:src="${orderDetail.productDetailInfo.images[0].url}">
+                                <a href="#">
+                                    <span th:text="${orderDetail.productDetailInfo.name}"></span> -
+                                    <span th:text="${orderDetail.productDetailInfo.style}"></span> -
+                                    <span th:text="${orderDetail.productDetailInfo.material}"></span>
+                                    <span class="font-weight-bold" th:text="'x ' + ${orderDetail.quantity}"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span th:text="${orderInfo.account.fullName}"></span> -
+                        <span th:text="${orderInfo.account.phoneNumber}"></span> -
+                        <span th:text="${orderInfo.account.address}"></span>
+                    </td>
+                    <td class="text-center" th:text="${orderInfo.status}"></td>
+                    <td th:text="${orderInfo.totalPrice}"></td>
+                    <td th:text="${orderInfo.createdAt}"></td>
+                    <td>
+                        <button
+                            data-toggle="modal" data-target="#cancelConfirmModal"
+                            th:onclick="'setData(' + ${orderInfo.id} + ',' + '\'reject\'' + ')'"
+                            th:if="${orderInfo.status == 'Chờ xác nhận'}"
+                            class="btn-sm btn-danger border-0 rounded w-100">Hủy
+                        </button>
+                        <button
+                            data-toggle="modal" data-target="#confirmConfirmModal"
+                            th:onclick="'setData(' + ${orderInfo.id} + ',' + '\'confirm\'' + ')'"
+                            th:if="${orderInfo.status == 'Chờ xác nhận'}"
+                            class="btn-sm btn-success mt-2 border-0 rounded w-100">Chấp nhận
+                        </button>
+                        <button
+                            data-toggle="modal" data-target="#doneConfirmModal"
+                            th:onclick="'setData(' + ${orderInfo.id} + ',' + '\'done\'' + ')'"
+                            th:if="${orderInfo.status == 'Đã nhận'}"
+                            class="btn-sm btn-success border-0 rounded w-100">Hoàn thành
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${#lists.isEmpty(orderInfos)}" class="d-flex justify-content-center col my-4 p-0"
+             style="font-weight: bold; font-size: 1.5rem">
+            <p>Bạn chưa có đơn hàng nào. Hãy nhanh tay đặt hàng ngay!</p>
+        </div>
+    </div>
+    <div class="justify-content-center d-flex admin">
+        <nav aria-label="Page navigation" class="pagination-bottom admin">
+            <ul>
+                <li th:if="${paginationHelper.prevPageUrl}">
+                    <a th:href="@{${paginationHelper.prevPageUrl}}">&lt;</a>
+                </li>
+                <li th:each="pageNumber : ${paginationHelper.pageNumbers}"
+                    th:classappend="${pageNumber == page} ? 'active' : ''">
+                    <a th:href="@{${paginationHelper.getPageUrl(pageNumber)}}"
+                       th:text="${pageNumber}">1</a>
+                </li>
+                <li th:if="${paginationHelper.nextPageUrl}">
+                    <a th:href="@{${paginationHelper.nextPageUrl}}">&gt;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- cancel confirm modal -->
+    <div class="modal fade" id="cancelConfirmModal" tabindex="-1" role="dialog"
+         aria-labelledby="cancelConfirmModalContent" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center align-items-center d-flex flex-column border-0">
+                    <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75"
+                         width="75">
+                    <h5 class="modal-title mt-2 font-weight-bold text-orange"
+                        id="cancelConfirmModalContent">Xác nhận hủy đơn hàng</h5>
+                </div>
+                <div class="modal-body center d-flex flex-column border-0 py-0">
+                    <p class="text-center">Bạn có chắc chắn muốn hủy đơn hàng này không?</p>
+                </div>
+                <div class="modal-footer border-0 d-flex flex-row">
+                    <a href="#" class="btn btn-secondary row w-100 m-0 border-0 text-cancel"
+                       data-dismiss="modal">Hủy</a>
+                    <div class="p-0 mx-2"></div>
+                    <a href="#" data-dismiss="modal" class="btn btn-primary border-0 row w-100 m-0 text-confirm"
+                       th:onclick="'sendChangeStatusRequest(' + '\'/seller/orders\'' + ')'">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm confirm modal -->
+    <div class="modal fade" id="confirmConfirmModal" tabindex="-1" role="dialog"
+         aria-labelledby="confirmConfirmModalContent" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center align-items-center d-flex flex-column border-0">
+                    <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75"
+                         width="75">
+                    <h5 class="modal-title mt-2 font-weight-bold text-orange"
+                        id="confirmConfirmModalContent">Xác nhận đơn hàng</h5>
+                </div>
+                <div class="modal-body center d-flex flex-column border-0 py-0">
+                    <p class="text-center">Bạn có chắc chắn muốn xác nhận giao đơn hàng này không?</p>
+                </div>
+                <div class="modal-footer border-0 d-flex flex-row">
+                    <a href="#" class="btn btn-secondary row w-100 m-0 border-0 text-cancel"
+                       data-dismiss="modal">Hủy</a>
+                    <div class="p-0 mx-2"></div>
+                    <a href="#" data-dismiss="modal" class="btn btn-primary border-0 row w-100 m-0 text-confirm"
+                       th:onclick="'sendChangeStatusRequest(' + '\'/seller/orders\'' + ')'">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- done confirm modal -->
+    <div class="modal fade" id="doneConfirmModal" tabindex="-1" role="dialog"
+         aria-labelledby="doneConfirmModalContent" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center align-items-center d-flex flex-column border-0">
+                    <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75" width="75">
+                    <h5 class="modal-title mt-2 font-weight-bold text-orange"
+                        id="doneConfirmModalContent">Xác nhận hoàn thành đơn hàng</h5>
+                </div>
+                <div class="modal-body center d-flex flex-column border-0 py-0">
+                    <p class="text-center">Hãy hoàn thành đơn hàng khi người giao hàng đã giao đến khách hàng của
+                        bạn</p>
+                </div>
+                <div class="modal-footer border-0 d-flex flex-row">
+                    <a href="#" class="btn btn-secondary row w-100 m-0 border-0 text-cancel"
+                       data-dismiss="modal">Hủy</a>
+                    <div class="p-0 mx-2"></div>
+                    <a href="#" data-dismiss="modal" class="btn btn-primary border-0 row w-100 m-0 text-confirm"
+                       th:onclick="'sendChangeStatusRequest(' + '\'/seller/orders\'' + ')'">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

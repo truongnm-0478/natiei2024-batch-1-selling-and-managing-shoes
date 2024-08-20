@@ -33,7 +33,9 @@ public class OrdersServiceImpl implements OrdersService {
                 : orderCustomRepository.findAllByAccountId(accountId, pageable);
             return orders.map(OrderInfo::fromEntity);
         }
-        return null;
+        return status != null
+            ? orderCustomRepository.findAllByStatus(status, pageable).map(OrderInfo::fromEntity)
+            : orderCustomRepository.findAllWithRelationship(pageable).map(OrderInfo::fromEntity);
     }
 
     @Override
