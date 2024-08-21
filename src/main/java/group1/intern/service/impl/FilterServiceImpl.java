@@ -52,6 +52,7 @@ public class FilterServiceImpl implements FilterService {
                                 .style(productDetail.getStyle().getValue())
                                 .material(productDetail.getProduct().getMaterial().getValue())
                                 .price(CommonUtils.formatToVND(productDetail.getPrice()))
+                                .originPrice(CommonUtils.formatToVND(productDetail.getOriginPrice()))
                                 .discountPrice(CommonUtils.formatToVND(productDetail.getPrice()
                                                 * (100 - productDetail.getDiscount()) / 100))
                                 .color(productDetail.getColor().getValue())

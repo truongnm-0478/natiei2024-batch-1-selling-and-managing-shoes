@@ -2,7 +2,6 @@ package group1.intern.bean;
 
 import group1.intern.model.Embeddables.ProductDescription;
 import group1.intern.model.ProductImage;
-import group1.intern.model.ProductQuantity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +25,7 @@ public class ProductFilterInfo {
     private String material;
     private String price;
     private String discountPrice;
+    private String originPrice;
     private String color;
     private List<ProductImage> images;
     private int sumQuantity;

@@ -1,7 +1,7 @@
 package group1.intern.controller.seller;
 
 import group1.intern.annotation.CurrentAccount;
-import group1.intern.annotation.PreAuthorizeSeller;
+import group1.intern.annotation.PreAuthorizeAllWithoutCustomer;
 import group1.intern.bean.OrderInfo;
 import group1.intern.bean.ToastMessage;
 import group1.intern.model.Account;
@@ -26,7 +26,7 @@ import java.util.Map;
 @Controller("seller-orders-controller")
 @RequestMapping("/seller/orders")
 @RequiredArgsConstructor
-@PreAuthorizeSeller
+@PreAuthorizeAllWithoutCustomer
 public class OrdersController {
     private final OrdersService ordersService;
 
