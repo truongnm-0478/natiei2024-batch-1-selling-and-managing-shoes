@@ -5,9 +5,10 @@ import group1.intern.bean.ShoppingCartInfo;
 import group1.intern.model.Account;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PaymentsService {
-    public void processPayments(List<ShoppingCartInfo> shoppingCartInfos, PayForm payForm, Account currentAccount, Integer totalPrice);
+    void processPayments(List<ShoppingCartInfo> shoppingCartInfos, PayForm payForm, Account currentAccount, Integer totalPrice);
 
-    public void singlePayment(int quantityID, Account currrentAccount, int quantity);
+    Map<String, ?> singlePayment(int quantityID, Account currrentAccount, int quantity);
 }

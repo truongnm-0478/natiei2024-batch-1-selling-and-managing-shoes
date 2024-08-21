@@ -24,6 +24,12 @@ function updateMaxQuantity() {
     }
 }
 
+function singlePaymentOnClick() {
+    const productId = document.getElementById('size').value;
+    const quantity = document.getElementById('quantity').value;
+    window.location.href = `/payments/${productId}/${quantity}`;
+}
+
 var swiper = new Swiper('.swiper-container', {
     slidesPerView: 4,
     spaceBetween: 10,

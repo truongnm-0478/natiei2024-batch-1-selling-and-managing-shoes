@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -31,6 +32,7 @@ public class RegisterController {
     public String registerAccount(
         @Valid @ModelAttribute("accountRegistration") AccountRegistration accountRegistration,
         BindingResult bindingResult,
+        RedirectAttributes redirectAttrs,
         Model model
     ) {
         if (bindingResult.hasErrors()) {
@@ -44,8 +46,7 @@ public class RegisterController {
             return "screens/auth/register";
         }
 
-        model.addAttribute("toastMessages", new ToastMessage("success", "Đăng kí thành công"));
-        return "screens/auth/register";
+        redirectAttrs.addFlashAttribute("toastMessages", new ToastMessage("success", "Đăng kí thành công"));
+        return "redirect:/login";
     }
-
 }

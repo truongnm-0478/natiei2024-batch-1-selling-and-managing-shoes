@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Map;
+
 public class WebUtils {
     /*
      * Http Session
@@ -25,6 +27,11 @@ public class WebUtils {
         public static void setAttribute(String name, Object value) {
             var session = getSession();
             session.setAttribute(name, value);
+        }
+
+        public static void setAttribute(Map<String, ?> data) {
+            var session = getSession();
+            data.forEach(session::setAttribute);
         }
 
         @SuppressWarnings("unchecked")
