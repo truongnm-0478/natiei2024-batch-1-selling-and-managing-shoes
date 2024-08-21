@@ -15,4 +15,7 @@ public interface ShoppingCartsService {
     Page<ShoppingCartInfo> getShoppingCartsByCustomerId(Integer customerId, Pageable pageable);
 
     void addProductToCart(Account account, ProductQuantity productQuantity, int quantity);
+
+    String updateProductInCart(int cartId, int accountId, int quantityId, int quantity, String action);
+
 }

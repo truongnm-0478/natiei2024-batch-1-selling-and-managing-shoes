@@ -23,7 +23,7 @@ public class ShoppingCart extends EntityBase {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_quantity_id")
     private ProductQuantity productQuantity;
 }

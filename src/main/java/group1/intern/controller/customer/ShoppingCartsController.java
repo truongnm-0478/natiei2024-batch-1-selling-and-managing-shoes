@@ -1,17 +1,13 @@
 package group1.intern.controller.customer;
 
 import group1.intern.annotation.CurrentAccount;
-import group1.intern.bean.ShoppingCartInfo;
-import group1.intern.bean.ToastMessage;
+import group1.intern.bean.*;
 import group1.intern.model.Account;
-import group1.intern.bean.CartForm;
 import group1.intern.service.ShoppingCartsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.NumberFormat;
@@ -20,15 +16,29 @@ import java.util.Locale;
 
 
 @Controller
+@RequestMapping("/carts")
+@SessionAttributes({"shoppingCartWrapper", "totalPrice"})
 public class ShoppingCartsController {
 
     @Autowired
     private ShoppingCartsService shoppingCartsService;
 
-    @GetMapping("/carts")
+    @ModelAttribute("totalPrice")
+    public Integer initTotalPrice() {
+        return 0;
+    }
+
+    @ModelAttribute("shoppingCartWrapper")
+    public ShoppingCartWrapper initShoppingCartWrapper() {
+        return new ShoppingCartWrapper();
+    }
+
+    @GetMapping
     public String index(
         Model model,
         @CurrentAccount Account account,
+        @ModelAttribute("shoppingCartWrapper") ShoppingCartWrapper shoppingCartWrapper,
+        @ModelAttribute("totalPrice") Integer totalPrice,
         RedirectAttributes redirectAttributes
     ) {
         if (account == null) {
@@ -37,6 +47,8 @@ public class ShoppingCartsController {
         }
 
         List<ShoppingCartInfo> shoppingCarts = shoppingCartsService.getShoppingCartsByCustomerId(account.getId());
+
+        shoppingCartWrapper.setShoppingCartInfos(shoppingCarts);
 
         int totalOriginPrice = 0;
         int finalPrice = 0;
@@ -53,6 +65,8 @@ public class ShoppingCartsController {
         String totalDiscountedPriceFormatted = numberFormat.format(totalDiscountedPrice) + " VND";
         String finalPriceFormatted = numberFormat.format(finalPrice) + " VND";
 
+        totalPrice = finalPrice;
+
         model.addAttribute("shoppingCarts", shoppingCarts);
         model.addAttribute("totalOriginPrice", totalOriginPriceFormatted);
         model.addAttribute("totalDiscountPrice", totalDiscountedPriceFormatted);
@@ -63,10 +77,12 @@ public class ShoppingCartsController {
         return "screens/shopping-carts/index";
     }
 
-    @PostMapping("/carts")
+    @PostMapping
     public String create(
         @ModelAttribute CartForm cart,
         @CurrentAccount Account account,
+        @ModelAttribute("totalPrice") Integer totalPrice,
+        @ModelAttribute("shoppingCartWrapper") ShoppingCartWrapper shoppingCartWrapper,
         Model model,
         RedirectAttributes redirectAttributes
     ) {
@@ -81,6 +97,9 @@ public class ShoppingCartsController {
         }
 
         shoppingCartsService.addProductToCart(account, cart.getProductQuantity(), cart.getQuantity());
+
+        List<ShoppingCartInfo> shoppingCarts = shoppingCartsService.getShoppingCartsByCustomerId(account.getId());
+        shoppingCartWrapper.setShoppingCartInfos(shoppingCarts);
 
         redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("success", "Đã thêm " + cart.getQuantity() + " sản phẩm vào giỏ hàng !"));
         return "redirect:/carts";

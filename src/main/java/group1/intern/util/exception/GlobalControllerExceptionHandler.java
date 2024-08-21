@@ -43,6 +43,13 @@ public class GlobalControllerExceptionHandler {
         return "error";
     }
 
+    // Unsupported action
+    @ExceptionHandler(IllegalArgumentException.class)
+    public String handleIllegalArgumentException(IllegalArgumentException e, Model model) {
+        model.addAttribute("message", "Unsupported action: " + e.getMessage());
+        return "error";
+    }
+
     // Exception
     @ExceptionHandler({Exception.class, HttpServerErrorException.InternalServerError.class, ServerError.class})
     public String handleException(Exception e, Model model) {

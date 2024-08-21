@@ -37,7 +37,8 @@
         <div th:if="${not #lists.isEmpty(shoppingCarts)}" class="col-xs-12 col-sm-12 col-md-12 col-lg-8 main-cart-left">
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 title-1">GIỎ HÀNG</div>
-                <div th:each="cartProduct, index :${shoppingCarts}" class="row w-full">
+                <div th:each="cartProduct, index :${shoppingCarts}"
+                     class="row w-full">
                     <div class="col-12 col-sm-12 col-md-8 col-lg-9 item-2">
                         <div class="media">
                             <div class="media-left">
@@ -59,32 +60,38 @@
                                 </div>
                                 <div class="row bottom">
                                     <div class="form-group">
-                                        <label for="select-size">Size</label>
-                                        <select class="form-control select-form" id="select-size">
-                                            <<option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>>
+                                        <label>Size</label>
+                                        <select
+                                            class="form-control select-form"
+                                            th:id="'select-size-' + ${index.count}"
+                                            th:data-account-id="${cartProduct.customerId}"
+                                            th:value="${cartProduct.size}"
+                                            th:data-cart-id="${cartProduct.id}">
+                                            <option th:each="quantity : ${cartProduct.quantities}"
+                                                    th:value="${quantity.getSize().getValue()}"
+                                                    th:data-quantity="${quantity.getQuantity()}"
+                                                    th:data-quantity-id="${quantity.getId()}"
+                                                    th:text="${quantity.getSize().getValue()}"></option>
                                         </select>
-
                                     </div>
                                     <div class="form-group">
-                                        <label for="select-quantity">Số lượng</label>
-                                        <select class="form-control select-form" id="select-quantity">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
+                                        <label>Số lượng</label>
+                                        <input type="number"
+                                               class="form-control select-form"
+                                               th:id="'select-quantity-' + ${index.count}"
+                                               min="1"
+                                               max="1"
+                                               th:value="${cartProduct.quantity}"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-sm-12 col-md-4 col-lg-3 item-2-1">
-                        <div th:text="${cartProduct.getTotalDiscountPriceFormated()}" class="price"></div>
+                        <div
+                            th:id="'total-price-' + ${cartProduct.id}"
+                            th:data-price="${cartProduct.getDiscountPrice()}"
+                            th:text="${cartProduct.getTotalDiscountPriceFormated()}" class="price"></div>
                         <div class="status">Còn hàng</div>
                         <div class="button">
                             <button class="btn btn-light addToWishList">
@@ -128,16 +135,16 @@
                 <li class="list-group-item divider-1"></li>
                 <li class="list-group-item text-1">
                     <span class="title-3">Đơn hàng</span>
-                    <span th:text="${totalOriginPrice}" class="title-3-1 totalPriceOfCart"></span>
+                    <span th:text="${totalOriginPrice}" id = "cart-total" class="title-3-1 totalPriceOfCart"></span>
                 </li>
                 <li class="list-group-item text-2">
                     <span class="title-3">Giảm</span>
-                    <span th:text="${totalDiscountPrice}" class="title-4-1 totalDiscountOfCart"></span>
+                    <span th:text="${totalDiscountPrice}" id = "cart-total-discount" class="title-4-1 totalDiscountOfCart"></span>
                 </li>
                 <li class="list-group-item divider-1"></li>
                 <li class="list-group-item">
                     <span class="title-5">TẠM TÍNH</span>
-                    <span th:text="${finalPrice}" class="title-5-1 tempPrice"></span>
+                    <span th:text="${finalPrice}" id = "cart-final-price" class="title-5-1 tempPrice"></span>
                 </li>
                 <li class="list-group-item">
                     <button data-href="shipping-infomation/" class="btn btn-cart to-checkout">
@@ -145,6 +152,21 @@
                     </button>
                 </li>
             </ul>
+        </div>
+    </div>
+    <div id = "loading-filter" class="loading-filter">
+        <div class="loading-filter-inner">
+            <div class="loading">
+                <svg version="1.1" id="loader-1" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+           <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+             s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+             c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"></path>
+                    <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+             C22.32,8.481,24.301,9.057,26.013,10.047z">
+                    <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="0.5s" repeatCount="indefinite"></animateTransform>
+                </path>
+           </svg>
+            </div>
         </div>
     </div>
 </div>
