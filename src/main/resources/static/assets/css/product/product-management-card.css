@@ -6,7 +6,6 @@
     overflow: hidden;
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
     background-color: var(--color-gray-light);
-    padding: 10px 0px;
     transition: transform 0.3s ease;
 }
 
@@ -32,6 +31,7 @@
     object-fit: contain;
     margin-right: 5px;
     width: 20%;
+    margin : 15px 0px
 }
 
 .pm-card-main-content-title {

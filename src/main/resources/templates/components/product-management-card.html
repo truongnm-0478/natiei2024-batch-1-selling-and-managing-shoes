@@ -10,7 +10,7 @@
             class="pm-card-wrapper d-flex position-relative my-2"
             th:fragment="product-management-card(id, name, image, originPrice, discount, style, material, gender, sumQuantity, color, category, price)"
         >
-            <a th:href="@{/seller/products/{id}(id=${id})}" class="pm-card-link">
+            <a th:href="@{/seller/products/{id}(id=${id})}" class="pm-card-link d-flex position-relative">
             <div class="pm-card-marker"></div>
             <div class="pm-card-content-wrapper d-flex position-relative">
                 <img alt="pm image" th:src="${image}" class="pm-image" />
@@ -128,12 +128,17 @@
                     </div>
                 </div>
                 <h6 class="pm-card-price position-absolute" th:text="${price}"></h6>
-                <a th:if="${#strings.toString(#ctx.session.current_user.role)  == 'ADMIN'}" href="#"
-                    ><img
+                <div th:if="${#ctx.session.current_user != null && #strings.toString(#ctx.session.current_user.role) == '0'}">
+                    <img
                         alt="delete icon"
+                        id="deleteButton"
                         class="pm-card-delete-button position-absolute"
                         src="/assets/images/icons/products-seller/delete.png"
-                /></a>
+                        th:data-product-id="${id}" 
+                        data-toggle="modal"
+                        data-target="#cancelConfirmModal"
+                    />
+                </div>                
             </div>
         </div>
     </body>

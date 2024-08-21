@@ -42,7 +42,7 @@ public class FilterServiceImpl implements FilterService {
                                 genderFilter,
                                 query,
                                 pageable);
-
+                
                 return productDetailsPage.map(productDetail -> ProductFilterInfo.builder()
                                 .id(productDetail.getId())
                                 .productId(productDetail.getProduct().getId())
@@ -64,4 +64,5 @@ public class FilterServiceImpl implements FilterService {
                                                 .sum())
                                 .build());
         }
+
 }

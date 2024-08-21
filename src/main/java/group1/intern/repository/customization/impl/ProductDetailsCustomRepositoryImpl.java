@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +70,9 @@ public class ProductDetailsCustomRepositoryImpl implements ProductDetailsCustomR
         if(!query.isEmpty()){
             whereElements.add(new WhereElements("product.name", "%"+query+"%", WhereClauseType.LIKE_IGNORE_CASE));
         }
+
+        whereElements.add(new WhereElements("deletedAt", null, WhereClauseType.IS_NULL));
+
         return baseRepository.fetchAllDataWithPagination(whereElements, pageable);
     }
 }

@@ -22,4 +22,5 @@ public interface ProductService {
     ProductDetail updateProductInfo(ProductDetailEdit productDetailEdit);
     List<ProductExcel> importProducts(MultipartFile file) throws Exception;
 
+    ProductDetail deleteProductDetailById(Integer id);
 }

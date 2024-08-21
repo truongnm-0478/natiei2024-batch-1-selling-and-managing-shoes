@@ -15,8 +15,10 @@ public enum WhereClauseType {
     LIKE("LIKE"),
     LIKE_IGNORE_CASE("LIKE"),
     IN("IN"),
-    NOT_IN("NOT IN");
-
+    NOT_IN("NOT IN"),
+    IS_NULL("IS NULL"),
+    IS_NOT_NULL("IS NOT NULL");
+    
     private final String value;
 
     public boolean isLikeType() {
@@ -25,5 +27,9 @@ public enum WhereClauseType {
 
     public boolean isLikeIgnoreCaseType() {
         return this == LIKE_IGNORE_CASE;
+    }
+
+    public boolean isNoNeedParamType(){
+        return this == IS_NULL || this == IS_NOT_NULL;
     }
 }

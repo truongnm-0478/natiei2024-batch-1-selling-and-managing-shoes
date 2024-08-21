@@ -43,9 +43,7 @@
                         id="product-style-select"
                         class="form-select product-header-selectors"
                     >
-                        <option value="-1" th:selected="${filterStyle == '-1'}">
-                            Tất cả
-                        </option>
+                        <option value="-1" th:selected="${filterStyle == '-1'}">Tất cả</option>
                         <option
                             th:each="style : ${styles}"
                             th:value="${style.id}"
@@ -62,12 +60,7 @@
                         id="product-material-select"
                         class="form-select product-header-selectors"
                     >
-                        <option
-                            value="-1"
-                            th:selected="${filterMaterial == '-1'}"
-                        >
-                            Tất cả
-                        </option>
+                        <option value="-1" th:selected="${filterMaterial == '-1'}">Tất cả</option>
                         <option
                             th:each="material : ${materials}"
                             th:value="${material.id}"
@@ -79,7 +72,10 @@
                 </div>
                 <div class="product-management-header-vr"></div>
                 <a href="#" class="btn product-management-add-button"
-                    ><img alt="plus icon" class="product-magement-add-icon" src="/assets/images/icons/products-seller/plus-icon.svg"
+                    ><img
+                        alt="plus icon"
+                        class="product-magement-add-icon"
+                        src="/assets/images/icons/products-seller/plus-icon.svg"
                 /></a>
             </div>
             <div class="product-management-hr"></div>
@@ -123,6 +119,46 @@
             </div>
 
             <!-- Modal -->
+            <div
+                class="modal fade"
+                id="cancelConfirmModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="cancelConfirmModalContent"
+                aria-hidden="true"
+            >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header justify-content-center align-items-center d-flex flex-column border-0">
+                            <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75" width="75" />
+                            <h5 class="modal-title mt-2 font-weight-bold text-orange" id="cancelConfirmModalContent">
+                                Xác nhận xóa sản phẩm
+                            </h5>
+                        </div>
+                        <div class="modal-body center d-flex flex-column border-0 py-0">
+                            <p class="text-center">Bạn có chắc chắn muốn xóa sản phẩm này không?</p>
+                        </div>
+                        <div class="modal-footer border-0 d-flex flex-row">
+                            <button
+                                type="button"
+                                class="btn btn-secondary row w-100 m-0 border-0 text-cancel"
+                                data-dismiss="modal"
+                            >
+                                Hủy
+                            </button>
+                            <div class="p-0 mx-2"></div>
+                            <button
+                                type="button"
+                                id="confirmDeleteButton"
+                                class="btn btn-primary border-0 row w-100 m-0 text-confirm"
+                            >
+                                Xác nhận
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="productModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
@@ -181,10 +217,9 @@
                     </form>
                 </div>
             </div>
-
+            
             <script type="text/javascript" src="/assets/js/products-admin.js"></script>
             <script type="text/javascript" src="/assets/js/product-create.js"></script>
-
         </div>
     </body>
 </html>
