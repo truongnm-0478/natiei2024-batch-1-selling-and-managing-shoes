@@ -13,46 +13,51 @@ import group1.intern.repository.OrdersRepository;
 import group1.intern.repository.ProductQuantitiesRepository;
 import group1.intern.repository.ShoppingCartsRepository;
 import group1.intern.service.PaymentsService;
-import group1.intern.util.util.WebUtils;
+import group1.intern.util.constant.CommonConstant;
+import group1.intern.util.exception.BadRequestException;
+import group1.intern.util.util.CommonUtils;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class PaymentsServiceImpl implements PaymentsService {
-    @Autowired
-    private ShoppingCartsRepository shoppingCartRepository;
-    @Autowired
-    private OrdersRepository ordersRepository;
-    @Autowired
-    private OrderDetailsRepository orderDetailsRepository;
-    @Autowired
-    private ProductQuantitiesRepository productQuantitiesRepository;
+    private final ShoppingCartsRepository shoppingCartRepository;
+    private final OrdersRepository ordersRepository;
+    private final OrderDetailsRepository orderDetailsRepository;
+    private final ProductQuantitiesRepository productQuantitiesRepository;
 
 
     @Override
     public void processPayments(List<ShoppingCartInfo> shoppingCartInfos, PayForm payForm, Account currentAccount, Integer totalPrice) {
-
         try {
-            // Tạo mới order
-            Order order = Order.builder()
+            if (CommonUtils.isEmptyOrNullList(shoppingCartInfos))
+                throw new BadRequestException("Không có sản phẩm trong giỏ hàng");
+
+            // Query 1: save order
+            var order = ordersRepository.save(Order.builder()
                 .account(currentAccount)
                 .totalPrice(totalPrice)
                 .phoneNumber(payForm.getPhoneNumber())
                 .address(payForm.getAddress() + ", " + payForm.getProvince() + ", " + payForm.getDistrict() + ", " + payForm.getWard())
                 .status(OrderStatus.WAIT)
-                .build();
-            ordersRepository.save(order);
-            for (ShoppingCartInfo cartInfo : shoppingCartInfos) {
-                // Tìm quantities product
-                ProductQuantity productQuantity = productQuantitiesRepository.findById(cartInfo.getProductQuantityId())
-                    .orElseThrow(() -> new RuntimeException("Product quantity not found"));
+                .build());
 
-                // Tạo order details
+            for (ShoppingCartInfo cartInfo : shoppingCartInfos) {
+                ProductQuantity productQuantity = productQuantitiesRepository.findById(cartInfo.getProductQuantityId())
+                    .orElseThrow(() -> new BadRequestException("Sản phẩm không tồn tại"));
+
+                // Check quantity
+                if (productQuantity.getQuantity() < cartInfo.getQuantity())
+                    throw new BadRequestException("Số lượng sản phẩm không đủ");
+
+                // Query 2: save order detail
                 orderDetailsRepository.save(OrderDetail.builder()
                     .productQuantity(productQuantity)
                     .price(cartInfo.getPrice())
@@ -60,38 +65,44 @@ public class PaymentsServiceImpl implements PaymentsService {
                     .order(order)
                     .build());
 
-                // Cập nhật số lượng sản phẩm
-                if (productQuantity.getQuantity() < cartInfo.getQuantity()) {
-                    throw new RuntimeException("Insufficient product quantity");
-                }
+                // Query 3: update product quantity
                 productQuantity.setQuantity(productQuantity.getQuantity() - cartInfo.getQuantity());
                 productQuantitiesRepository.save(productQuantity);
 
-                // Xóa trong shopping cart
-                if (cartInfo.getId() != null) {
+                // Query 4: delete shopping cart if exist
+                if (cartInfo.getId() != null)
                     shoppingCartRepository.deleteById(cartInfo.getId());
-                }
             }
+        } catch (BadRequestException e) {
+            throw e;
         } catch (Exception e) {
-            // Nếu có lỗi, ném ra một runtime exception để Spring rollback transaction
-            throw new RuntimeException("Payment processing failed: " + e.getMessage(), e);
+            throw new BadRequestException("Thanh toán thất bại");
         }
     }
 
     @Override
-    public void singlePayment(int quantityID, Account currrentAccount, int quantity) {
-        //Tim quantity product
-        ProductQuantity productQuantity = productQuantitiesRepository.findById(quantityID).orElse(null);
+    public Map<String, ?> singlePayment(int quantityID, Account currrentAccount, int quantity) {
+        // Tim quantity product
+        ProductQuantity productQuantity = productQuantitiesRepository.findById(quantityID).orElseThrow(() -> new BadRequestException("Sản phẩm không tồn tại"));
+        Integer discount = productQuantity.getProductDetail().getDiscount();
+        int price = discount != null && discount > 0
+            ? (productQuantity.getProductDetail().getPrice() * (100 - discount)) / 100
+            : productQuantity.getProductDetail().getPrice();
+
         List<ShoppingCartInfo> shoppingCartInfos = new ArrayList<>();
         shoppingCartInfos.add(ShoppingCartInfo.builder()
             .size(productQuantity.getSize().getValue())
             .name(productQuantity.getProductDetail().getProduct().getName())
             .style(productQuantity.getProductDetail().getStyle().getValue())
-            .price(productQuantity.getProductDetail().getPrice())
+            .price(price)
+            .discount(discount)
             .quantity(quantity)
             .productQuantityId(quantityID)
             .build());
-        WebUtils.Sessions.setAttribute("shoppingCartWrapper", new ShoppingCartWrapper(shoppingCartInfos));
-        WebUtils.Sessions.setAttribute("totalPrice", productQuantity.getProductDetail().getPrice());
+
+        return Map.of(
+            CommonConstant.SHOPPING_CART_WRAPPER, new ShoppingCartWrapper(shoppingCartInfos),
+            CommonConstant.TOTAL_PRICE, price * quantity
+        );
     }
 }

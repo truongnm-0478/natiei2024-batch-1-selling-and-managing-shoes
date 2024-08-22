@@ -28,7 +28,8 @@
                     <p>Bạn đang không có sản phẩm nào trong giỏ hàng!</p>
                 </div>
                 <div class="no-product-btn center">
-                    <button onclick="location.pathname='/products'" class="btn btn-lg back-to-product-list orange-button text-uppercase">
+                    <button onclick="location.pathname='/products'"
+                            class="btn btn-lg back-to-product-list orange-button text-uppercase">
                         Quay lại mua hàng
                     </button>
                 </div>
@@ -51,11 +52,14 @@
                             <div class="media-body">
                                 <div>
                                     <a th:href="${cartProduct.getProductURL()}">
-                                        <h4 th:text="${cartProduct.getName() + ' - ' + cartProduct.getStyle() }" class="media-heading"></h4>
+                                        <h4 th:text="${cartProduct.getName() + ' - ' + cartProduct.getStyle() }"
+                                            class="media-heading"></h4>
                                     </a>
                                     <h5 class="price">
-                                        <span class="saleoff"><strong th:text="${'Giá: ' + cartProduct.getDiscountPriceFormated()}"></strong></span>
-                                        <span th:if = "${cartProduct.discount != null and cartProduct.discount > 0}" class="normal" th:text="${cartProduct.getOriginPriceFormated()}"></span>
+                                        <span class="saleoff"><strong
+                                            th:text="${'Giá: ' + cartProduct.getDiscountPriceFormated()}"></strong></span>
+                                        <span th:if="${cartProduct.discount != null and cartProduct.discount > 0}"
+                                              class="normal" th:text="${cartProduct.getOriginPriceFormated()}"></span>
                                     </h5>
                                 </div>
                                 <div class="row bottom">
@@ -126,7 +130,8 @@
                 <li class="list-group-item title-1">NHẬP MÃ KHUYẾN MÃI</li>
                 <li class="list-group-item">
                     <div class="input-group">
-                        <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <input type="text" class="form-control" aria-label="Recipient's username"
+                               aria-describedby="basic-addon2">
                         <div class="input-group-append">
                             <button class="btn btn orange-button btn-apply" type="button">ÁP DỤNG</button>
                         </div>
@@ -135,35 +140,38 @@
                 <li class="list-group-item divider-1"></li>
                 <li class="list-group-item text-1">
                     <span class="title-3">Đơn hàng</span>
-                    <span th:text="${totalOriginPrice}" id = "cart-total" class="title-3-1 totalPriceOfCart"></span>
+                    <span th:text="${totalOriginPrice}" id="cart-total" class="title-3-1 totalPriceOfCart"></span>
                 </li>
                 <li class="list-group-item text-2">
                     <span class="title-3">Giảm</span>
-                    <span th:text="${totalDiscountPrice}" id = "cart-total-discount" class="title-4-1 totalDiscountOfCart"></span>
+                    <span th:text="${totalDiscountPrice}" id="cart-total-discount"
+                          class="title-4-1 totalDiscountOfCart"></span>
                 </li>
                 <li class="list-group-item divider-1"></li>
                 <li class="list-group-item">
                     <span class="title-5">TẠM TÍNH</span>
-                    <span th:text="${finalPrice}" id = "cart-final-price" class="title-5-1 tempPrice"></span>
+                    <span th:text="${finalPrice}" id="cart-final-price" class="title-5-1 tempPrice"></span>
                 </li>
                 <li class="list-group-item">
-                    <button data-href="shipping-infomation/" class="btn btn-cart to-checkout">
+                    <a data-href="shipping-infomation/" class="btn btn-cart to-checkout center" href="/carts?pay=true">
                         TIẾP TỤC THANH TOÁN
-                    </button>
+                    </a>
                 </li>
             </ul>
         </div>
     </div>
-    <div id = "loading-filter" class="loading-filter">
+    <div id="loading-filter" class="loading-filter">
         <div class="loading-filter-inner">
             <div class="loading">
-                <svg version="1.1" id="loader-1" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                <svg version="1.1" id="loader-1" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 40 40"
+                     enable-background="new 0 0 40 40" xml:space="preserve">
            <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
              s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
              c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"></path>
                     <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
              C22.32,8.481,24.301,9.057,26.013,10.047z">
-                    <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="0.5s" repeatCount="indefinite"></animateTransform>
+                    <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20"
+                                      to="360 20 20" dur="0.5s" repeatCount="indefinite"></animateTransform>
                 </path>
            </svg>
             </div>

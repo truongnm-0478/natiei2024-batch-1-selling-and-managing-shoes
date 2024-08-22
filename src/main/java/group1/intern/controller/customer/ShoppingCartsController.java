@@ -1,10 +1,15 @@
 package group1.intern.controller.customer;
 
 import group1.intern.annotation.CurrentAccount;
-import group1.intern.bean.*;
+import group1.intern.bean.CartForm;
+import group1.intern.bean.ShoppingCartInfo;
+import group1.intern.bean.ShoppingCartWrapper;
+import group1.intern.bean.ToastMessage;
 import group1.intern.model.Account;
 import group1.intern.service.ShoppingCartsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import group1.intern.util.constant.CommonConstant;
+import group1.intern.util.util.WebUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,28 +22,15 @@ import java.util.Locale;
 
 @Controller
 @RequestMapping("/carts")
-@SessionAttributes({"shoppingCartWrapper", "totalPrice"})
+@RequiredArgsConstructor
 public class ShoppingCartsController {
-
-    @Autowired
-    private ShoppingCartsService shoppingCartsService;
-
-    @ModelAttribute("totalPrice")
-    public Integer initTotalPrice() {
-        return 0;
-    }
-
-    @ModelAttribute("shoppingCartWrapper")
-    public ShoppingCartWrapper initShoppingCartWrapper() {
-        return new ShoppingCartWrapper();
-    }
+    private final ShoppingCartsService shoppingCartsService;
 
     @GetMapping
     public String index(
+        @RequestParam(value = "pay", required = false) Boolean pay,
         Model model,
         @CurrentAccount Account account,
-        @ModelAttribute("shoppingCartWrapper") ShoppingCartWrapper shoppingCartWrapper,
-        @ModelAttribute("totalPrice") Integer totalPrice,
         RedirectAttributes redirectAttributes
     ) {
         if (account == null) {
@@ -47,9 +39,6 @@ public class ShoppingCartsController {
         }
 
         List<ShoppingCartInfo> shoppingCarts = shoppingCartsService.getShoppingCartsByCustomerId(account.getId());
-
-        shoppingCartWrapper.setShoppingCartInfos(shoppingCarts);
-
         int totalOriginPrice = 0;
         int finalPrice = 0;
         int totalDiscountedPrice = 0;
@@ -60,12 +49,17 @@ public class ShoppingCartsController {
             totalDiscountedPrice += shoppingCart.getPrice() * shoppingCart.getDiscount() / 100;
         }
 
+        // Set shopping cart infos and total price to session
+        if (pay != null && pay) {
+            WebUtils.Sessions.setAttribute(CommonConstant.SHOPPING_CART_WRAPPER, new ShoppingCartWrapper(shoppingCarts));
+            WebUtils.Sessions.setAttribute(CommonConstant.TOTAL_PRICE, finalPrice);
+            return "redirect:/payments";
+        }
+
         NumberFormat numberFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String totalOriginPriceFormatted =  numberFormat.format(totalOriginPrice) + " VND";
+        String totalOriginPriceFormatted = numberFormat.format(totalOriginPrice) + " VND";
         String totalDiscountedPriceFormatted = numberFormat.format(totalDiscountedPrice) + " VND";
         String finalPriceFormatted = numberFormat.format(finalPrice) + " VND";
-
-        totalPrice = finalPrice;
 
         model.addAttribute("shoppingCarts", shoppingCarts);
         model.addAttribute("totalOriginPrice", totalOriginPriceFormatted);
@@ -81,9 +75,6 @@ public class ShoppingCartsController {
     public String create(
         @ModelAttribute CartForm cart,
         @CurrentAccount Account account,
-        @ModelAttribute("totalPrice") Integer totalPrice,
-        @ModelAttribute("shoppingCartWrapper") ShoppingCartWrapper shoppingCartWrapper,
-        Model model,
         RedirectAttributes redirectAttributes
     ) {
         if (account == null) {
@@ -99,8 +90,6 @@ public class ShoppingCartsController {
         shoppingCartsService.addProductToCart(account, cart.getProductQuantity(), cart.getQuantity());
 
         List<ShoppingCartInfo> shoppingCarts = shoppingCartsService.getShoppingCartsByCustomerId(account.getId());
-        shoppingCartWrapper.setShoppingCartInfos(shoppingCarts);
-
         redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("success", "Đã thêm " + cart.getQuantity() + " sản phẩm vào giỏ hàng !"));
         return "redirect:/carts";
     }

@@ -124,21 +124,21 @@
             <ul class="list-group rounded">
                 <li class="list-group-item title">ĐƠN HÀNG</li>
                 <li class="list-group-item divider"></li>
-                <div th:each="cartInfo : ${#ctx.session.shoppingCartWrapper.getShoppingCartInfos()}">
+                <div th:each="cartInfo : ${shoppingCartWrapper.getShoppingCartInfos()}">
                     <li class="list-group-item text-1">
                         <span class="title-6" th:text="${cartInfo.getName()} + '-'+ ${cartInfo.getStyle()}"></span>
                         <span class="title-6-1"><span class="price"
                                                       th:text="${cartInfo.getPrice()}"></span> VND</span>
                     </li>
                     <li class="list-group-item text-1-1">
-                        <span class="title-6-2">Size: XL</span>
+                        <span class="title-6-2" th:text="'Size: ' + ${cartInfo.getSize()}"></span>
                         <span class="title-6-3" th:text="'x ' + ${cartInfo.getQuantity()}"></span>
                     </li>
                 </div>
                 <li class="list-group-item divider-1"></li>
                 <li class="list-group-item text-1">
                     <span class="title-3">Đơn hàng</span>
-                    <span class="title-3-1"><span class="current-price" th:text="${#ctx.session.totalPrice}"></span> VND</span>
+                    <span class="title-3-1"><span class="current-price" th:text="${totalPrice}"></span> VND</span>
                 </li>
                 <li class="list-group-item text-2-2">
                     <span class="title-3">Giảm</span>
@@ -156,7 +156,7 @@
                 <li class="list-group-item">
                     <span class="title-5">TỔNG CỘNG</span>
                     <span class="title-5-2"><span class="total-price"
-                                                  th:text="${#ctx.session.totalPrice}"></span> VND</span>
+                                                  th:text="${totalPrice}"></span> VND</span>
                 </li>
                 <li class="list-group-item">
                     <button class="btn btn-cart btn-complete-detail rounded" type="button"
