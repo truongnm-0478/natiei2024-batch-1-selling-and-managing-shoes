@@ -1,4 +1,55 @@
+var cartID;
+
+function setCartID(id) {
+    cartID = id;
+}
+
+function deleteCartItemByID() {
+    const url = `/carts/${cartID}`;
+
+    fetch(url, {
+        method: 'DELETE'
+    })
+        .then(res => {
+            if(res.ok) {
+                window.location.href = `${window.location.pathname}?deleteSuccess=true`;
+            } else {
+                throw new Error('Có lỗi xảy ra khi xóa sản phẩm');
+            }
+        })
+        .then()
+        .catch(error => {
+            showToast('error', error.message());
+        });
+}
+
+function deleteAllCart() {
+    const url = `/carts/all`;
+
+    fetch(url, {
+        method: 'DELETE'
+    })
+        .then(res => {
+            if(res.ok) {
+                window.location.href = `${window.location.pathname}?deleteSuccess=true`;
+            } else {
+                throw new Error('Có lỗi xảy ra khi xóa giỏ hàng');
+            }
+        })
+        .then()
+        .catch(error => {
+            showToast('error', error.message());
+        });
+}
+
 document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('deleteSuccess')) {
+        showToast('success', 'Xóa sản phẩm khỏi giỏ hàng thành công !');
+        urlParams.delete('deleteSuccess');
+        window.history.replaceState({}, document.title, `${window.location.pathname}`);
+    }
+
     const sizeSelects = document.querySelectorAll('select[id^="select-size-"]');
     const quantityInputs = document.querySelectorAll('input[type="number"]');
     const allInputs = [...sizeSelects, ...quantityInputs];

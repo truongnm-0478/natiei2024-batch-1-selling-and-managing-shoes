@@ -19,7 +19,6 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
-
 @Controller
 @RequestMapping("/carts")
 @RequiredArgsConstructor
@@ -28,17 +27,13 @@ public class ShoppingCartsController {
 
     @GetMapping
     public String index(
+        @CurrentAccount Account account,
         @RequestParam(value = "pay", required = false) Boolean pay,
         Model model,
-        @CurrentAccount Account account,
         RedirectAttributes redirectAttributes
     ) {
-        if (account == null) {
-            redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("error", "Bạn cần đăng nhập để thêm vào giỏ hàng !"));
-            return "redirect:/login";
-        }
-
         List<ShoppingCartInfo> shoppingCarts = shoppingCartsService.getShoppingCartsByCustomerId(account.getId());
+
         int totalOriginPrice = 0;
         int finalPrice = 0;
         int totalDiscountedPrice = 0;
@@ -73,15 +68,10 @@ public class ShoppingCartsController {
 
     @PostMapping
     public String create(
-        @ModelAttribute CartForm cart,
         @CurrentAccount Account account,
+        @ModelAttribute CartForm cart,
         RedirectAttributes redirectAttributes
     ) {
-        if (account == null) {
-            redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("error", "Bạn cần đăng nhập để thêm vào giỏ hàng !"));
-            return "redirect:/login";
-        }
-
         if (cart.getProductQuantity() == null || cart.getQuantity() <= 0) {
             redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("error", "Vui lòng chọn size và số lượng !"));
             return "redirect:/carts";
@@ -90,7 +80,29 @@ public class ShoppingCartsController {
         shoppingCartsService.addProductToCart(account, cart.getProductQuantity(), cart.getQuantity());
 
         List<ShoppingCartInfo> shoppingCarts = shoppingCartsService.getShoppingCartsByCustomerId(account.getId());
+
         redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("success", "Đã thêm " + cart.getQuantity() + " sản phẩm vào giỏ hàng !"));
+        return "redirect:/carts";
+    }
+
+    @DeleteMapping("/{id}")
+    public String destroy(
+        @CurrentAccount Account account,
+        @PathVariable Integer id,
+        RedirectAttributes redirectAttributes
+    ) {
+        shoppingCartsService.deleteCartItemByID(id, account.getId());
+        redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("success", "Xóa sản phẩm khỏi giỏ hàng thành công !"));
+        return "redirect:/carts";
+    }
+
+    @DeleteMapping("/all")
+    public String deleteAllCart(
+        @CurrentAccount Account account,
+        RedirectAttributes redirectAttributes
+    ) {
+        shoppingCartsService.deleteAllCartItemsByAccountId(account.getId());
+        redirectAttributes.addFlashAttribute("toastMessages", new ToastMessage("success", "Xóa tất cả sản phẩm thành công !"));
         return "redirect:/carts";
     }
 }

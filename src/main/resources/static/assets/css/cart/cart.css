@@ -437,6 +437,21 @@
     margin-bottom: 100px;
 }
 
+.text-confirm {
+    color: var(--color-white) !important;
+    background: var(--color-orange-dark) !important;
+}
+
+.text-confirm:hover {
+    color: var(--color-white) !important;
+    background: var(--color-orange-dark) !important;
+}
+
+.text-confirm:active {
+    color: var(--color-white) !important;
+    background: var(--color-orange-dark) !important;
+}
+
 .loading-filter {
     display: none;
     position: fixed;

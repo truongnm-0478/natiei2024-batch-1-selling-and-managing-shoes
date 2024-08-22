@@ -3,7 +3,7 @@ package group1.intern.service;
 import group1.intern.bean.ShoppingCartInfo;
 import group1.intern.model.Account;
 import group1.intern.model.ProductQuantity;
-import group1.intern.model.ShoppingCart;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,8 +14,13 @@ public interface ShoppingCartsService {
 
     Page<ShoppingCartInfo> getShoppingCartsByCustomerId(Integer customerId, Pageable pageable);
 
-    void addProductToCart(Account account, ProductQuantity productQuantity, int quantity);
-
     String updateProductInCart(int cartId, int accountId, int quantityId, int quantity, String action);
 
+    void addProductToCart(Account account, ProductQuantity productQuantity, int quantity);
+
+    @Transactional
+    void deleteCartItemByID(int cartId, int accountId);
+
+    @Transactional
+    void deleteAllCartItemsByAccountId(int accountId);
 }

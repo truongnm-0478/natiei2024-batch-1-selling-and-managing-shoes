@@ -101,7 +101,11 @@
                             <button class="btn btn-light addToWishList">
                                 <img src="/assets/images/icons/cart/Heart.svg">
                             </button>
-                            <button class="btn btn-dark remove-product-in-cart">
+                            <button
+                                th:onclick="'setCartID(' + ${cartProduct.id} + ')'"
+
+                                data-toggle="modal" data-target="#confirmDeleteModal"
+                                class="btn btn-dark remove-product-in-cart">
                                 <img src="/assets/images/icons/cart/Trash_bin.svg">
                             </button>
                         </div>
@@ -114,7 +118,9 @@
 
             <div class="row">
                 <div class="col-6 col-sm-6 col-md-6 col-lg-6 title-3">
-                    <button class="btn btn-delall btn-clearAll">XÓA HẾT</button>
+                    <button
+                        data-toggle="modal" data-target="#confirmDeleteAllModal"
+                        class="btn btn-delall btn-clearAll">XÓA HẾT</button>
                 </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-6 title-3">
                     <button onclick="location.pathname='/products'" class="btn btn-cont">QUAY LẠI
@@ -177,6 +183,57 @@
             </div>
         </div>
     </div>
+
+    <!--  Confirm delete model  -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
+         aria-labelledby="confirmDeleteModalContent" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center align-items-center d-flex flex-column border-0">
+                    <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75"
+                         width="75">
+                    <h5 class="modal-title mt-2 font-weight-bold text-orange"
+                        id="confirmDeleteModalContent">Xóa sản phẩm khỏi giỏ hàng</h5>
+                </div>
+                <div class="modal-body center d-flex flex-column border-0 py-0">
+                    <p class="text-center">Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không ?</p>
+                </div>
+                <div class="modal-footer border-0 d-flex flex-row">
+                    <a href="#" class="btn btn-secondary row w-100 m-0 border-0 text-cancel"
+                       data-dismiss="modal">Hủy</a>
+                    <div class="p-0 mx-2"></div>
+                    <a href="#" data-dismiss="modal" class="btn btn-primary border-0 row w-100 m-0 text-confirm"
+                       onclick="deleteCartItemByID()">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Confirm delete all model  -->
+    <div class="modal fade" id="confirmDeleteAllModal" tabindex="-1" role="dialog"
+         aria-labelledby="confirmDeleteModalContent" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center align-items-center d-flex flex-column border-0">
+                    <img src="/assets/images/icons/Logo_Ananas.png" alt="confirm icon" height="75"
+                         width="75">
+                    <h5 class="modal-title mt-2 font-weight-bold text-orange"
+                        id="confirmDeleteModalAllContent">Xóa hết giỏ hàng</h5>
+                </div>
+                <div class="modal-body center d-flex flex-column border-0 py-0">
+                    <p class="text-center">Bạn có muốn xóa hết sản phẩm trong giỏ hàng không ?</p>
+                </div>
+                <div class="modal-footer border-0 d-flex flex-row">
+                    <a href="#" class="btn btn-secondary row w-100 m-0 border-0 text-cancel"
+                       data-dismiss="modal">Hủy</a>
+                    <div class="p-0 mx-2"></div>
+                    <a href="#" data-dismiss="modal" class="btn btn-primary border-0 row w-100 m-0 text-confirm"
+                       onclick="deleteAllCart()">Xác nhận</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>
