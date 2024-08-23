@@ -45,6 +45,7 @@ public class ProductDetailsCustomRepositoryImpl implements ProductDetailsCustomR
             List<Integer> listMaterialId,
             List<Integer> listColorId,
             int genderFilter, 
+            String query,
             Pageable pageable) {
 
 
@@ -64,6 +65,9 @@ public class ProductDetailsCustomRepositoryImpl implements ProductDetailsCustomR
             case 3:
                 whereElements.add(new WhereElements("gender", ProductGender.FEMALE, WhereClauseType.EQUAL));
                 break;
+        }
+        if(!query.isEmpty()){
+            whereElements.add(new WhereElements("product.name", "%"+query+"%", WhereClauseType.LIKE_IGNORE_CASE));
         }
         return baseRepository.fetchAllDataWithPagination(whereElements, pageable);
     }

@@ -84,13 +84,14 @@ public class ProductsController {
                 filterMaterial,
                 filterColors,
                 filterGender,
+                "",
                 PageRequest.of(page - 1, size));
 
         PaginationUtil paginationUtil = new PaginationUtil(
                 (int) productFilterPage.getTotalElements(),
                 size,
                 page,
-                5, // Number of pages to show around the current page
+                5, 
                 buildQueryString(filterStyleString, filterCategoryString, filterMaterialString,
                         filterColorString, filterGender));
 

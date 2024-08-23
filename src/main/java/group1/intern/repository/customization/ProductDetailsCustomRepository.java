@@ -17,5 +17,7 @@ public interface ProductDetailsCustomRepository
                         List<Integer> listCategoryId,
                         List<Integer> listMaterialId,
                         List<Integer> listColorId,
-                        int genderFilter, Pageable pageable);
+                        int genderFilter,
+                        String query, 
+                        Pageable pageable);
 }

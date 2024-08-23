@@ -28,9 +28,9 @@
                 </script>
             </div>
             <div id="admin-layout-main-content-wrapper">
-                <div th:replace="/components/admin-sidebar :: admin-sidebar"></div>
+                <div th:replace="~{/components/admin-sidebar :: admin-sidebar}"></div>
                 <div id="admin-layout-main-content">
-                    <div th:replace="/components/admin-header :: admin-header"></div>
+                    <div th:replace="~{/components/admin-header :: admin-header}"></div>
                     <div th:replace="${mainContent} ?: ~{}"></div>
                 </div>
             </div>

@@ -95,6 +95,7 @@ public class ProductsController {
     public String getProductManagement(
             @RequestParam(name = "filterStyle", required = false, defaultValue = "-1") String filterStyle,
             @RequestParam(name = "filterMaterial", required = false, defaultValue = "-1") String filterMaterial,
+            @RequestParam(name = "queryProduct", required = false, defaultValue = "") String query,
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
             @RequestParam(name = "size", required = false, defaultValue = "5") int size,
             Model model) {
@@ -115,6 +116,7 @@ public class ProductsController {
                 filterMaterials,
                 new ArrayList<>(),
                 1,
+                query,
                 PageRequest.of(page - 1, size));
 
         PaginationUtil paginationUtil = new PaginationUtil(
@@ -122,17 +124,16 @@ public class ProductsController {
                 size,
                 page,
                 5, // Number of pages to show around the current page
-                buildQueryString(filterStyle, filterMaterial));
+                buildQueryString(filterStyle, filterMaterial, query));
 
-        System.out.println(filterStyles);
-
-        model.addAttribute("totalPages", (int) productFilterPage.getTotalElements());
+        model.addAttribute("totalProducts", (int) productFilterPage.getTotalElements());
         model.addAttribute("productDetails", productFilterPage.getContent());
         model.addAttribute("pagination", paginationUtil);
         model.addAttribute("currentPagination", page);
 
         model.addAttribute("filterStyle", filterStyle);
         model.addAttribute("filterMaterial", filterMaterial);
+        model.addAttribute("queryProduct", query);
 
         model.addAttribute("styles", constantService.getListConstantsByType("Style"));
         model.addAttribute("materials", constantService.getListConstantsByType("Material"));
@@ -141,10 +142,11 @@ public class ProductsController {
         return "screens/seller/products/index";
     }
 
-    private String buildQueryString(String filterStyle, String filterMaterial) {
+    private String buildQueryString(String filterStyle, String filterMaterial, String query) {
         return UriComponentsBuilder.fromUriString("/seller/products")
                 .queryParam("filterStyle", filterStyle.equals("-1") ? null : filterStyle)
                 .queryParam("filterMaterial", filterMaterial.equals("-1") ? null : filterMaterial)
+                .queryParam("queryProduct", query)
                 .build()
                 .encode()
                 .toUriString();
