@@ -16,6 +16,7 @@ import group1.intern.model.ProductDetail;
 import group1.intern.model.ProductImage;
 import group1.intern.model.ProductQuantity;
 import group1.intern.service.ProductService;
+import group1.intern.util.exception.BadRequestException;
 import group1.intern.util.exception.NotFoundObjectException;
 import group1.intern.util.util.PaginationUtil;
 
@@ -28,8 +29,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -182,5 +185,20 @@ public class ProductsController {
         return "redirect:/seller/products/"+ id +"/edit";
     }
 
+    @PostMapping
+    public String importProducts(@RequestParam("file") MultipartFile file, Model model, RedirectAttributes redirectAttrs) {
+        if (file.isEmpty()) {
+            model.addAttribute("toastMessages", new ToastMessage("error", "Bạn chưa chọn file."));
+            return "screens/seller/products/index";
+        }
+        try {
+            productService.importProducts(file);
+            redirectAttrs.addFlashAttribute("toastMessages", new ToastMessage("success", "Nhập sản phẩm thành công!"));
+        } catch (Exception e) {
+            redirectAttrs.addFlashAttribute("toastMessages", new ToastMessage("error", e.getMessage()));
+        }
+
+        return "redirect:/seller/products";
+    }
 
 }
