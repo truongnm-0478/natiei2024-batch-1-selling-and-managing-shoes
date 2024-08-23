@@ -1,0 +1,448 @@
+.container-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 40px;
+}
+
+.account-container {
+    width: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-container {
+    width: 100%;
+    display: flex;
+    padding-top: 30px;
+    margin-top: 20px;
+    align-content: center;
+    gap: 30px;
+}
+
+.table-header-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-hr {
+    width: 100%;
+    height: 0.5px;
+    background-color: #ccc;
+    margin: 20px 0;
+}
+
+.filter-by-role {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 6px;
+}
+
+.account-management-search-input-container {
+    position: relative;
+    width: 45%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    border: 0.5px solid var(--color-blue-dark);
+    border-radius: 10px;
+    justify-content: center;
+}
+
+#account-management-search-input {
+    width: 98%;
+    font-size: 0.9rem;
+    padding: 5px 40px 5px 20px;
+    border-color: transparent;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#account-management-search-input:focus {
+    border-color: transparent;
+}
+
+.account-management-search-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    pointer-events: none;
+    right : 9%;
+}
+
+.account-management-header-vr {
+    width: 0.6px;
+    background-color: #ccc;
+    margin: 0 16px;
+}
+
+.shorter-select {
+    flex: 0.8 !important;
+}
+
+.account-management-sort-by-items {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.order-select button {
+    border-radius: 10px !important;
+}
+
+.account-management-sort-by-items h4 {
+    font-size: 0.9rem;
+    color: var(--color-blue-dark);
+    margin: 0 20px 0 0;
+}
+
+.account-header-selectors {
+    border-radius: 10px;
+    height: 40px;
+    font-size: 0.9rem;
+    border: 0.5px solid var(--color-blue-dark);
+    padding: 5px;
+    color: var(--color-gray-dark);
+    width: 56%;
+}
+
+.create-account-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.create-account-wrapper button {
+    border-radius: 10px !important;
+}
+
+.select-wrapper {
+    display: flex;
+    align-items: center;
+    width: 430px;
+    gap: 20px;
+}
+
+.filter-by-role button {
+    border-radius: 10px !important;
+}
+
+/* body css */
+.total-account-wrapper {
+    width: 100%;
+    margin: 30px 0;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.total-account-wrapper h1 {
+    font-size: 1.5rem;
+    color: var(--color-gray-medium);
+}
+
+.total-account-wrapper h1 span {
+    color: var(--color-blue-dark);
+}
+
+.account-list-wrapper {
+    row-gap: 50px;
+}
+
+.item-wrapper {
+    position: relative;
+    border-radius: 12px;
+    border: 1px solid var(--color-blue-dark);
+    padding: 20px 20px 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-avatar {
+    width: 50%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    object-position: center;
+}
+
+.account-name {
+    font-size: 1.5rem;
+    color: var(--color-blue-dark);
+    margin: 20px 0;
+}
+
+.information-wrapper {
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.information-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.information-title {
+    font-size: 1rem;
+    margin: 0 !important;
+    color: dodgerblue;
+}
+
+.information-content {
+    font-size: 1rem;
+    margin: 0 !important;
+}
+
+.information-gender {
+    object-fit: cover;
+    object-position: center;
+    width: 20px;
+    aspect-ratio: 1/1;
+}
+
+.account-role {
+    object-fit: cover;
+    object-position: center;
+    width: 40px;
+    aspect-ratio: 1/1;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.address-wrapper span {
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+.address-wrapper span:first-child {
+    color: dodgerblue;
+    font-weight: bold;
+}
+
+.active-button  {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.account-list-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+.item-test {
+    display: flex;
+    margin-bottom: 20px;
+}
+.item-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 15px 15px 60px;
+    position: relative;
+    border-radius: 12px;
+    border: 1px solid var(--color-blue-dark);
+}
+.account-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--color-blue-dark);
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3em;
+    max-height: 2.6em;
+}
+.information-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.information-row {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 5px;
+}
+.information-title {
+    flex-shrink: 0;
+    margin-right: 5px;
+    font-weight: bold;
+    color: dodgerblue;
+}
+.information-content {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.address-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.address-content {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.badge {
+    padding: 6px;
+    font-size: 0.9rem;
+}
+
+/* pagination css */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0;
+}
+
+.pagination-link {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border: 1px solid var(--color-blue-dark);
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--color-blue-dark);
+    font-size: 1em;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination-link:hover {
+    background-color: var(--color-blue-dark);
+    color: var(--color-white);
+    background-origin: var(--color-blue-dark);
+}
+
+.disabled-page {
+    color: var(--color-blue-dark);
+    background-color: var(--color-white);
+    border-color: var(--color-blue-dark);
+}
+
+.active-page {
+    background-color: var(--color-blue-dark);
+    color: var(--color-white);
+    border-color: var(--color-blue-dark);
+}
+
+/* table styling */
+.operation-wrapper {
+    display: flex;
+    gap: 15px;
+}
+
+.operation-wrapper button {
+    border-radius: 10px !important;
+}
+
+.operation-wrapper .btn.btn-danger{
+    background: #ffefef;
+}
+
+.operation-wrapper .btn.btn-danger i{
+    color: red;
+    font-weight: bold;
+}
+
+.operation-wrapper .btn.btn-success{
+    background: #e6ffe6;
+}
+
+.operation-wrapper .btn.btn-success i{
+    color: green;
+    font-weight: bold;
+}
+
+.operation-wrapper .btn.btn-primary {
+    background: #e6f2ff;
+}
+
+.operation-wrapper .btn.btn-primary i {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.operation-wrapper .btn:active i {
+    color: #fff !important;
+}
+
+/* modal body */
+.modal-body {
+    padding: 0 10px 0 30px;
+}
+
+.modal-body h3 {
+    color: var(--color-blue-dark);
+    margin-bottom: 20px;
+    font-size: 1.9rem;
+}
+.information-col {
+   padding-left: 40px;
+}
+
+.item-avatar-2{
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    object-position: center;
+}
+
+.information-row-2 {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+    overflow: hidden;
+}
+
+.information-heading {
+    color: dodgerblue;
+    width: 190px;
+    font-size: 1rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.information-content-2 {
+    font-size: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3em;
+    max-height: 2.6em;
+}
+
+.activate {
+    width: 100px;
+}
+
+.activate-button {
+    width: 100%;
+}
+
+
+
+
