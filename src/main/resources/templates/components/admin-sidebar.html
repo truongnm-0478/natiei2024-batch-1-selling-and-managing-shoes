@@ -12,11 +12,13 @@
 <div th:fragment="admin-sidebar">
     <nav class="sidebar" id="sidebar">
         <div class="d-lg-flex justify-content-between align-items-center d-none">
-            <img alt="website logo" src="/assets/images/icons/logo-website.svg" class="admin-page-sidebar-logo-website"/>
+            <img alt="website logo" src="/assets/images/icons/logo-website.svg"
+                 class="admin-page-sidebar-logo-website"/>
         </div>
         <hr class="admin-page-sidebar-hr d-none d-lg-block"/>
         <div id="sidebarToggle">
-            <img alt="toggle icon" id="toggleIconSidebar" src="/assets/images/icons/left-arrow-white.png" class="sidebar-toggle-icon"/>
+            <img alt="toggle icon" id="toggleIconSidebar" src="/assets/images/icons/left-arrow-white.png"
+                 class="sidebar-toggle-icon"/>
         </div>
         <ul th:with="current_user = ${#ctx.session.current_user}" th:unless="${#ctx.session.current_user == null}">
             <li>
@@ -39,19 +41,20 @@
             </li>
             <li>
                 <a
-                    th:href="@{/admin/bill-management}"
+                    th:href="@{/seller/orders}"
                     th:class="${currentPage == 'bill-management'} ? 'active-sidebar-button' : ''"
                 >
                     <img alt="icon bill management" src="/assets/images/icons/bill-icon.svg" class="sidebar-icons"/>
                     <span class="sidebar-text">Quản lý hóa đơn</span>
                 </a>
             </li>
-            <li >
+            <li>
                 <a
                     th:href="@{/admin/accounts}"
                     th:class="${currentPage == 'account-management'} ? 'active-sidebar-button' : ''"
                 >
-                    <img alt="icon account management" src="/assets/images/icons/account-icon.svg" class="sidebar-icons"/>
+                    <img alt="icon account management" src="/assets/images/icons/account-icon.svg"
+                         class="sidebar-icons"/>
                     <span class="sidebar-text">Quản lý tài khoản</span>
                 </a>
             </li>

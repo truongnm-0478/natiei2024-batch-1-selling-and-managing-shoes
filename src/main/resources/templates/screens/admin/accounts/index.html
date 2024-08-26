@@ -8,257 +8,271 @@
         ~{::#main-content}
     )}"
 >
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Ananas - Quản lý tài khoản</title>
-        <th:block id="static-resources">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-            <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
-            <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-            <link rel="stylesheet" href="/assets/css/admin/account-management.css"/>
-            <script src="/assets/js/account-manage.js"></script>
-        </th:block>
-    </head>
-    <body>
-        <div id="main-content" class="container-wrapper">
-            <div class="account-container">
-                <!--  Header  -->
-                <div class="header-container">
-                    <div class="filter-by-role">
-                        <button onclick="updateURL(undefined, 'customer')" th:class="${filter.role == 'customer'} ? 'btn btn-primary' : 'btn btn-outline-primary'">
-                            <i th:class="${filter.role == 'customer'} ? 'bi bi-person' : 'bi bi-person-fill'"></i>
-                            Khách hàng
-                        </button>
-                        <button onclick="updateURL(undefined, 'manager')" th:class="${filter.role == 'manager'} ? 'btn btn-primary' : 'btn btn-outline-primary'">
-                            <i th:class="${filter.role == 'manager'} ? 'bi bi-motherboard' : 'bi bi-motherboard-fill'"></i>
-                            Quản lý
-                        </button>
-                    </div>
-                    <div class="account-management-header-vr"></div>
-                    <div class="account-management-search-input-container">
-                        <input type="text" id="account-management-search-input" name="query" placeholder="Nhập vào họ tên hoặc email..." th:value="${filter.query}" onkeypress="checkEnterKey(event)">
-                        <img alt="search icon" src="/assets/images/icons/search.png" class="account-management-search-icon">
-                    </div>
-                    <div class="account-management-header-vr"></div>
-                    <div class="select-wrapper">
-                        <div class="account-management-sort-by-items">
-                            <h4>Sắp xếp theo</h4>
-                            <select class="form-select account-header-selectors" name="sortBy" onchange="updateURL()">
-                                <option value="id" th:selected="${filter.sortBy == 'id'}">ID người dùng</option>
-                                <option value="fullName" th:selected="${filter.sortBy == 'fullName'}">Họ và tên</option>
-                                <option value="email" th:selected="${filter.sortBy == 'email'}">Email</option>
-                                <option value="role" th:selected="${filter.sortBy == 'role'}">Vai trò</option>
-                                <option value="gender" th:selected="${filter.sortBy == 'gender'}">Giới tính</option>
-                                <option value="isActivated" th:selected="${filter.sortBy == 'isActivated'}">Trạng thái kích hoạt</option>
-                            </select>
-                        </div>
-<!--                        <div class="account-management-sort-by-items shorter-select">-->
-<!--                            <h4>Vai trò</h4>-->
-<!--                            <select class="form-select account-header-selectors" name="role" onchange="updateURL()">-->
-<!--                                <option value="all" th:selected="${filter.role == 'all'}">Tất cả vai trò</option>-->
-<!--                                <option value="CUSTOMER" th:selected="${filter.role == 'CUSTOMER'}">Khách hàng</option>-->
-<!--                                <option value="SELLER" th:selected="${filter.role == 'SELLER'}">Nhân viên bán hàng</option>-->
-<!--                                <option value="ADMIN" th:selected="${filter.role == 'ADMIN'}">Quản trị viên</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-                        <div class="order-select">
-                            <button th:if="${filter.order == 'asc'}" class="btn btn-info" id="sortAsc" data-order="asc" onclick="updateURL('desc')">
-                                <i class="bi bi-arrow-up"></i>
-                            </button>
-                            <button th:if="${filter.order == 'desc'}" class="btn btn-info" id="sortDesc" data-order="desc" onclick="updateURL('asc')">
-                                <i class="bi bi-arrow-down"></i>
-                            </button>
-                        </div>
-                    </div>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ananas - Quản lý tài khoản</title>
+    <th:block id="static-resources">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+              rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+        <link rel="stylesheet" href="/assets/css/admin/account-management.css"/>
+        <script src="/assets/js/account-manage.js"></script>
+    </th:block>
+</head>
+<body>
+<div id="main-content" class="container-wrapper">
+    <div class="account-container">
+        <!--  Header  -->
+        <div class="header-container">
+            <div class="filter-by-role">
+                <button onclick="updateURL(undefined, 'customer')"
+                        th:class="${filter.role == 'customer'} ? 'btn btn-primary' : 'btn btn-outline-primary'">
+                    <i th:class="${filter.role == 'customer'} ? 'bi bi-person' : 'bi bi-person-fill'"></i>
+                    Khách hàng
+                </button>
+                <button onclick="updateURL(undefined, 'manager')"
+                        th:class="${filter.role == 'manager'} ? 'btn btn-primary' : 'btn btn-outline-primary'">
+                    <i th:class="${filter.role == 'manager'} ? 'bi bi-motherboard' : 'bi bi-motherboard-fill'"></i>
+                    Quản lý
+                </button>
+            </div>
+            <div class="account-management-header-vr"></div>
+            <div class="account-management-search-input-container">
+                <input type="text" id="account-management-search-input" name="query"
+                       placeholder="Nhập vào họ tên hoặc email..." th:value="${filter.query}"
+                       onkeypress="checkEnterKey(event)">
+                <img alt="search icon" src="/assets/images/icons/search.png" class="account-management-search-icon">
+            </div>
+            <div class="account-management-header-vr"></div>
+            <div class="select-wrapper">
+                <div class="account-management-sort-by-items">
+                    <h4>Sắp xếp theo</h4>
+                    <select class="form-select account-header-selectors" name="sortBy" onchange="updateURL()">
+                        <option value="id" th:selected="${filter.sortBy == 'id'}">ID người dùng</option>
+                        <option value="fullName" th:selected="${filter.sortBy == 'fullName'}">Họ và tên</option>
+                        <option value="email" th:selected="${filter.sortBy == 'email'}">Email</option>
+                        <option value="role" th:selected="${filter.sortBy == 'role'}">Vai trò</option>
+                        <option value="gender" th:selected="${filter.sortBy == 'gender'}">Giới tính</option>
+                        <option value="isActivated" th:selected="${filter.sortBy == 'isActivated'}">Trạng thái kích
+                            hoạt
+                        </option>
+                    </select>
                 </div>
-                <div class="header-hr"></div>
-                <div class="total-account-wrapper center">
-                    <h1>Tìm thấy <span th:text="${resultCount}"></span> kết quả về người dùng trong hệ thống</h1>
+                <!--                        <div class="account-management-sort-by-items shorter-select">-->
+                <!--                            <h4>Vai trò</h4>-->
+                <!--                            <select class="form-select account-header-selectors" name="role" onchange="updateURL()">-->
+                <!--                                <option value="all" th:selected="${filter.role == 'all'}">Tất cả vai trò</option>-->
+                <!--                                <option value="CUSTOMER" th:selected="${filter.role == 'CUSTOMER'}">Khách hàng</option>-->
+                <!--                                <option value="SELLER" th:selected="${filter.role == 'SELLER'}">Nhân viên bán hàng</option>-->
+                <!--                                <option value="ADMIN" th:selected="${filter.role == 'ADMIN'}">Quản trị viên</option>-->
+                <!--                            </select>-->
+                <!--                        </div>-->
+                <div class="order-select">
+                    <button th:if="${filter.order == 'asc'}" class="btn btn-info" id="sortAsc" data-order="asc"
+                            onclick="updateURL('desc')">
+                        <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button th:if="${filter.order == 'desc'}" class="btn btn-info" id="sortDesc" data-order="desc"
+                            onclick="updateURL('asc')">
+                        <i class="bi bi-arrow-down"></i>
+                    </button>
                 </div>
-                <!-- Begin Page Content -->
-                <div class="container-fluid px-0">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 table-header-list">
-                            <h6 class="m-0 font-weight-bold text-primary">Danh sách người dùng</h6>
+            </div>
+        </div>
+        <div class="header-hr"></div>
+        <div class="total-account-wrapper center">
+            <h1>Tìm thấy <span th:text="${resultCount}"></span> kết quả về người dùng trong hệ thống</h1>
+        </div>
+        <!-- Begin Page Content -->
+        <div class="container-fluid px-0">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 table-header-list">
+                    <h6 class="m-0 font-weight-bold text-primary">Danh sách người dùng</h6>
 
-                            <div class="create-account-wrapper">
-                                <button class="btn btn-primary">Tạo tài khoản mới</button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Họ và tên</th>
-                                        <th>Vai trò</th>
-                                        <th>Giới tính</th>
-                                        <th>Ngày sinh</th>
-                                        <th>Tuổi</th>
-                                        <th>Địa chỉ</th>
-                                        <th>Email</th>
-                                        <th>SĐT</th>
-                                        <th>Thao tác</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="account : ${accounts}">
-                                    <td th:text="${account.id}"></td>
-                                        <td th:text="${account.fullName}"></td>
-                                        <td th:if="${account.role.name() == 'SELLER'}">
+                    <div class="create-account-wrapper">
+                        <a class="btn btn-primary" href="/admin/accounts/new">Tạo tài khoản mới</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Họ và tên</th>
+                                <th>Vai trò</th>
+                                <th>Giới tính</th>
+                                <th>Ngày sinh</th>
+                                <th>Tuổi</th>
+                                <th>Địa chỉ</th>
+                                <th>Email</th>
+                                <th>SĐT</th>
+                                <th>Thao tác</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="account : ${accounts}">
+                                <td th:text="${account.id}"></td>
+                                <td th:text="${account.fullName}"></td>
+                                <td th:if="${account.role.name() == 'SELLER'}">
                                             <span class="badge badge-primary">
                                                 Nhân viên bán hàng
                                             </span>
-                                        </td>
-                                        <td th:if="${account.role.name() == 'CUSTOMER'}">
+                                </td>
+                                <td th:if="${account.role.name() == 'CUSTOMER'}">
                                             <span class="badge badge-success">
                                                 Khách hàng
                                             </span>
-                                        </td>
-                                        <td th:if="${account.role.name() == 'ADMIN'}">
+                                </td>
+                                <td th:if="${account.role.name() == 'ADMIN'}">
                                             <span class="badge badge-danger">
                                                 Quản trị viên
                                             </span>
-                                        </td>
-                                        <td th:if = "${account.gender}">
-                                            <img src="/assets/images/icons/admin/otoko.png" class="information-gender" alt=""/>
-                                        </td>
-                                        <td th:if = "${!account.gender}">
-                                            <img src="/assets/images/icons/admin/onnna.png" class="information-gender" alt=""/>
-                                        </td>
-                                        <td th:text="${#temporals.format(account.dateOfBirth, 'yyyy/dd/MM')}"></td>
-                                        <td th:with="age=${account.dateOfBirth != null ? T(java.time.Period).between(account.dateOfBirth, T(java.time.LocalDate).now()).years : null}"
-                                            th:text="${age}"></td>
-                                        <td th:text="${account.address}"></td>
-                                        <td th:text="${account.email}"></td>
-                                        <td th:text="${account.phoneNumber}"></td>
-                                        <td>
-                                            <div class="operation-wrapper">
-                                                <button th:if="${account.isActivated}" class="btn btn-success"  th:onclick="'toggleActivation(' + ${account.id} + ', false)'">
-                                                    <i class="bi bi-unlock"></i>
-                                                </button>
-                                                <button th:if="${!account.isActivated}" class="btn btn-danger" th:onclick="'toggleActivation(' + ${account.id} + ', true)'">
-                                                    <i class="bi bi-lock"></i>
-                                                </button>
-                                                <button class="btn btn-primary"
-                                                        data-toggle="modal"
-                                                        data-target="#userInfoModal"
-                                                        th:data-id="${account.id}"
-                                                        th:data-displayname="${account.displayName}"
-                                                        th:data-fullname="${account.fullName}"
-                                                        th:data-avatar="${account.avatarUrl}"
-                                                        th:data-email="${account.email}"
-                                                        th:data-role="${account.role.name()}"
-                                                        th:data-phone="${account.phoneNumber}"
-                                                        th:data-gender="${account.gender ? 'Male' : 'Female'}"
-                                                        th:data-address="${account.address}"
-                                                        th:data-created="${#temporals.format(account.createdAt, 'yyyy/MM/dd')}"
-                                                        th:data-activated="${account.isActivated}">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                </td>
+                                <td th:if="${account.gender}">
+                                    <img src="/assets/images/icons/admin/otoko.png" class="information-gender" alt=""/>
+                                </td>
+                                <td th:if="${!account.gender}">
+                                    <img src="/assets/images/icons/admin/onnna.png" class="information-gender" alt=""/>
+                                </td>
+                                <td th:text="${#temporals.format(account.dateOfBirth, 'yyyy/dd/MM')}"></td>
+                                <td th:with="age=${account.dateOfBirth != null ? T(java.time.Period).between(account.dateOfBirth, T(java.time.LocalDate).now()).years : null}"
+                                    th:text="${age}"></td>
+                                <td th:text="${account.address}"></td>
+                                <td th:text="${account.email}"></td>
+                                <td th:text="${account.phoneNumber}"></td>
+                                <td>
+                                    <div class="operation-wrapper">
+                                        <button th:if="${account.isActivated}" class="btn btn-success"
+                                                th:onclick="'toggleActivation(' + ${account.id} + ', false)'">
+                                            <i class="bi bi-unlock"></i>
+                                        </button>
+                                        <button th:if="${!account.isActivated}" class="btn btn-danger"
+                                                th:onclick="'toggleActivation(' + ${account.id} + ', true)'">
+                                            <i class="bi bi-lock"></i>
+                                        </button>
+                                        <button class="btn btn-primary"
+                                                data-toggle="modal"
+                                                data-target="#userInfoModal"
+                                                th:data-id="${account.id}"
+                                                th:data-displayname="${account.displayName}"
+                                                th:data-fullname="${account.fullName}"
+                                                th:data-avatar="${account.avatarUrl}"
+                                                th:data-email="${account.email}"
+                                                th:data-role="${account.role.name()}"
+                                                th:data-phone="${account.phoneNumber}"
+                                                th:data-gender="${account.gender ? 'Male' : 'Female'}"
+                                                th:data-address="${account.address}"
+                                                th:data-created="${#temporals.format(account.createdAt, 'yyyy/MM/dd')}"
+                                                th:data-activated="${account.isActivated}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <!--  Pagination  -->
-                <div class="pagination">
-                    <a th:if="${paginationHelper.prevPageUrl != null}" th:href="${paginationHelper.prevPageUrl}" class="pagination-link"
-                    >Previous</a
-                    >
-                    <a
-                        th:each="pageNumber : ${paginationHelper.pageNumbers}"
-                        th:href="@{${paginationHelper.getPageUrl(pageNumber)}}"
-                        th:text="${pageNumber}"
-                        th:class="'pagination-link ' + (${filter.page == pageNumber} ? 'active-page' : 'disabled-page')"
-                    ></a>
-                    <a th:if="${paginationHelper.nextPageUrl != null}" th:href="${paginationHelper.nextPageUrl}" class="pagination-link"
-                    >Next</a
-                    >
-                </div>
+            </div>
+        </div>
+        <!--  Pagination  -->
+        <div class="pagination">
+            <a th:if="${paginationHelper.prevPageUrl != null}" th:href="${paginationHelper.prevPageUrl}"
+               class="pagination-link"
+            >Previous</a
+            >
+            <a
+                th:each="pageNumber : ${paginationHelper.pageNumbers}"
+                th:href="@{${paginationHelper.getPageUrl(pageNumber)}}"
+                th:text="${pageNumber}"
+                th:class="'pagination-link ' + (${filter.page == pageNumber} ? 'active-page' : 'disabled-page')"
+            ></a>
+            <a th:if="${paginationHelper.nextPageUrl != null}" th:href="${paginationHelper.nextPageUrl}"
+               class="pagination-link"
+            >Next</a
+            >
+        </div>
 
 
-                <!-- Modal Structure -->
-                <div class="modal fade" id="userInfoModal" tabindex="-1" role="dialog" aria-labelledby="userInfoModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="userInfoModalLabel">Thông tin tài khoản</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+        <!-- Modal Structure -->
+        <div class="modal fade" id="userInfoModal" tabindex="-1" role="dialog" aria-labelledby="userInfoModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="userInfoModalLabel">Thông tin tài khoản</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="w-100">
+                            <div class="center w-100 p-3 ">
+                                <h3 id="display-name" class="account-name"></h3>
                             </div>
-                            <div class="modal-body">
-                                <div class="w-100">
-                                    <div class="center w-100 p-3 ">
-                                        <h3 id="display-name" class="account-name"></h3>
+                            <div class="row w-100 row-wrapper">
+                                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                    <img id="avatar" src="" class="item-avatar-2" alt="avatar"/>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-8 col-lg-8 information-col">
+                                    <div class="information-row-2">
+                                        <div class="information-heading">Họ và tên :</div>
+                                        <div class="information-content-2" id="user-fullname"></div>
                                     </div>
-                                    <div class="row w-100 row-wrapper">
-                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
-                                            <img id="avatar" src="" class="item-avatar-2" alt="avatar" />
-                                        </div>
-                                        <div class="col-12 col-sm-12 col-md-8 col-lg-8 information-col">
-                                            <div class="information-row-2">
-                                                <div class="information-heading">Họ và tên :</div>
-                                                <div class="information-content-2" id="user-fullname"></div>
-                                            </div>
-                                            <div class="information-row-2">
-                                                <div class="information-heading">Email : </div>
-                                                <div class="information-content-2" id="user-email"></div>
-                                            </div>
-                                            <div class="information-row-2">
-                                                <div class="information-heading">Vai trò : </div>
-                                                <div class="information-content-2" id="user-role"></div>
-                                            </div>
-                                            <div class="information-row-2">
-                                                <div class="information-heading">Số điện thoại : </div>
-                                                <div class="information-content-2" id="user-phone"></div>
-                                            </div>
-                                            <div class="information-row-2">
-                                                <div class="information-heading">Giới tính : </div>
-                                                <div class="information-content-2" id="user-gender"></div>
-                                            </div>
-                                            <div class="information-row-2">
-                                                <div class="information-heading">Địa chỉ : </div>
-                                                <div class="information-content-2" id="user-address"></div>
-                                            </div>
-                                            <div class="information-row-2">
-                                                <div class="information-heading">Ngày tạo tài khoản : </div>
-                                                <div class="information-content-2" id="user-created"></div>
-                                            </div>
-                                            <div class="information-row-2">
-                                                <div class="information-heading">Kích hoạt tài khoản : </div>
-                                                <div class="activate">
-                                                    <input id="user-activated"
-                                                           type="checkbox"
-                                                           checked
-                                                           data-toggle="toggle"
-                                                           data-size="sm"
-                                                           data-style="activate-button"
-                                                           data-onstyle="success"
-                                                           data-offstyle="danger">
-                                                </div>
-                                            </div>
+                                    <div class="information-row-2">
+                                        <div class="information-heading">Email :</div>
+                                        <div class="information-content-2" id="user-email"></div>
+                                    </div>
+                                    <div class="information-row-2">
+                                        <div class="information-heading">Vai trò :</div>
+                                        <div class="information-content-2" id="user-role"></div>
+                                    </div>
+                                    <div class="information-row-2">
+                                        <div class="information-heading">Số điện thoại :</div>
+                                        <div class="information-content-2" id="user-phone"></div>
+                                    </div>
+                                    <div class="information-row-2">
+                                        <div class="information-heading">Giới tính :</div>
+                                        <div class="information-content-2" id="user-gender"></div>
+                                    </div>
+                                    <div class="information-row-2">
+                                        <div class="information-heading">Địa chỉ :</div>
+                                        <div class="information-content-2" id="user-address"></div>
+                                    </div>
+                                    <div class="information-row-2">
+                                        <div class="information-heading">Ngày tạo tài khoản :</div>
+                                        <div class="information-content-2" id="user-created"></div>
+                                    </div>
+                                    <div class="information-row-2">
+                                        <div class="information-heading">Kích hoạt tài khoản :</div>
+                                        <div class="activate">
+                                            <input id="user-activated"
+                                                   type="checkbox"
+                                                   checked
+                                                   data-toggle="toggle"
+                                                   data-size="sm"
+                                                   data-style="activate-button"
+                                                   data-onstyle="success"
+                                                   data-offstyle="danger">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
-
-
             </div>
-            <script src="/assets/js/account-manage.js"></script>
         </div>
-    </body>
+
+
+    </div>
+    <script src="/assets/js/account-manage.js"></script>
+</div>
+</body>
 </html>

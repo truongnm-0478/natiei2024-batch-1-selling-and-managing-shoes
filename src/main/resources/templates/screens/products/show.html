@@ -94,13 +94,29 @@
                     </div>
                 </div>
 
-                <button class="btn btn-block mb-2 text-uppercase btn-order py-3" type="submit">Thêm vào giỏ hàng
-                </button>
+                <div th:with="current_user = ${#ctx.session.current_user}">
+                    <a th:if="${current_user == null}"
+                       class="btn btn-block mb-2 text-uppercase btn-order py-3 center rounded-0 text-white"
+                       href="/login">
+                        Thêm vào giỏ hàng
+                    </a>
+                    <button th:unless="${current_user == null}" class="btn btn-block mb-2 text-uppercase btn-order py-3"
+                            type="submit">Thêm vào giỏ hàng
+                    </button>
+                </div>
             </form>
 
-            <button class="btn btn-block text-uppercase btn-pay py-3" onclick="singlePaymentOnClick()">
-                Thanh toán
-            </button>
+            <div th:with="current_user = ${#ctx.session.current_user}">
+                <a th:if="${current_user == null}"
+                   class="btn btn-block text-uppercase btn-pay py-3 center rounded-0 text-white"
+                   href="/login">
+                    Thanh toán
+                </a>
+                <button th:unless="${current_user == null}" class="btn btn-block text-uppercase btn-pay py-3"
+                        onclick="singlePaymentOnClick()">
+                    Thanh toán
+                </button>
+            </div>
 
             <div class="accordion" id="productAccordion">
                 <div class="card border-none">

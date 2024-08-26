@@ -44,8 +44,12 @@
                     </div>
                 </div>
             </li>
-            <li>
-                <a href="/carts">
+
+            <li th:with="current_user = ${#ctx.session.current_user}">
+                <a th:if="${current_user == null}" href="/login">
+                    <img alt="icon cart" src="/assets/images/icons/header/icon-cart-8.svg"/> Giỏ hàng
+                </a>
+                <a th:if="${current_user != null} and ${current_user.role == 1}" href="/carts">
                     <img alt="icon cart" src="/assets/images/icons/header/icon-cart-8.svg"/> Giỏ hàng
                 </a>
             </li>
@@ -68,27 +72,21 @@
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a href="/products" class="dropdown-toggle"
-                        >SẢN PHẨM <span class="caret"></span
-                        ></a>
+                        <a href="/products" class="dropdown-toggle">SẢN PHẨM </a>
                     </li>
-                    <li class="line"></li>
+                    <li class="line mx-2"></li>
                     <li class="dropdown">
-                        <a href="/products?gender=2" class="dropdown-toggle"
-                        >NAM <span class="caret"></span
-                        ></a>
+                        <a href="/products?gender=2" class="dropdown-toggle">NAM </a>
                     </li>
 
-                    <li class="line"></li>
+                    <li class="line mx-2"></li>
                     <li class="dropdown">
-                        <a href="/products?gender=3" class="dropdown-toggle"
-                        >NỮ <span class="caret"></span
-                        ></a>
+                        <a href="/products?gender=3" class="dropdown-toggle">NỮ </a>
                     </li>
 
-                    <li class="line"></li>
+                    <li class="line mx-2"></li>
                     <li><a href="#">SALE OFF</a></li>
-                    <li class="line"></li>
+                    <li class="line mx-2"></li>
                     <li class="not-flex">
                         <a href="#"
                         ><img alt="icon discover you" src="/assets/images/icons/header/DiscoverYOU.svg"

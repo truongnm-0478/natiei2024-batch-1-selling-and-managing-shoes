@@ -1,6 +1,7 @@
 package group1.intern.controller.customer;
 
 import group1.intern.annotation.CurrentAccount;
+import group1.intern.annotation.PreAuthorizeCustomer;
 import group1.intern.bean.CartForm;
 import group1.intern.bean.ShoppingCartInfo;
 import group1.intern.bean.ShoppingCartWrapper;
@@ -22,6 +23,7 @@ import java.util.Locale;
 @Controller
 @RequestMapping("/carts")
 @RequiredArgsConstructor
+@PreAuthorizeCustomer
 public class ShoppingCartsController {
     private final ShoppingCartsService shoppingCartsService;
 
@@ -29,8 +31,7 @@ public class ShoppingCartsController {
     public String index(
         @CurrentAccount Account account,
         @RequestParam(value = "pay", required = false) Boolean pay,
-        Model model,
-        RedirectAttributes redirectAttributes
+        Model model
     ) {
         List<ShoppingCartInfo> shoppingCarts = shoppingCartsService.getShoppingCartsByCustomerId(account.getId());
 

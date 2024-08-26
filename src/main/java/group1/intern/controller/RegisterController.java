@@ -2,9 +2,8 @@ package group1.intern.controller;
 
 import group1.intern.bean.AccountRegistration;
 import group1.intern.bean.ToastMessage;
+import group1.intern.model.Enum.AccountRole;
 import group1.intern.service.AuthService;
-import group1.intern.util.exception.BadRequestException;
-import group1.intern.util.exception.DuplicateEmailException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,8 +39,8 @@ public class RegisterController {
         }
 
         try {
-            authService.register(accountRegistration);
-        } catch (DuplicateEmailException | BadRequestException ex) {
+            authService.register(accountRegistration, AccountRole.CUSTOMER);
+        } catch (Exception ex) {
             model.addAttribute("toastMessages", new ToastMessage("error", ex.getMessage()));
             return "screens/auth/register";
         }
