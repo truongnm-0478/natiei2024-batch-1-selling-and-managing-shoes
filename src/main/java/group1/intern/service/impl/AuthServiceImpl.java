@@ -1,14 +1,13 @@
 package group1.intern.service.impl;
 
-import group1.intern.bean.AccountRegistration;
-import group1.intern.bean.Credential;
-import group1.intern.bean.LoginRequest;
+import group1.intern.bean.*;
 import group1.intern.model.Account;
 import group1.intern.model.Enum.AccountRole;
 import group1.intern.model.RefreshToken;
 import group1.intern.repository.AccountRepository;
 import group1.intern.repository.RefreshTokenRepository;
 import group1.intern.service.AuthService;
+import group1.intern.service.CloudinaryService;
 import group1.intern.service.JwtService;
 import group1.intern.util.exception.BadRequestException;
 import group1.intern.util.exception.DuplicateEmailException;
@@ -19,6 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     public Credential login(LoginRequest loginRequest) {
@@ -64,6 +67,62 @@ public class AuthServiceImpl implements AuthService {
             return accountRepository.save(account);
         } catch (Exception e) {
             throw new BadRequestException("Lưu tài khoản không thành công");
+        }
+    }
+
+    @Override
+    public Account updateProfile(ProfileInfo profileInfo) {
+        Account account = accountRepository.findById(profileInfo.getAccountId()).orElse(null);
+
+        if (account == null) {
+            return null;
+        } else {
+
+            // cap nhap cac thong tin profile ( ngoai tru email)
+            account.setFullName(profileInfo.getFullName());
+            account.setAddress(profileInfo.getAddress());
+            account.setPhoneNumber(profileInfo.getPhoneNumber());
+            account.setGender(profileInfo.getGender());
+            account.setDisplayName(profileInfo.getDisplayName());
+            account.setDateOfBirth(profileInfo.getDateOfBirth());
+
+            try {
+                return accountRepository.save(account);
+            } catch (Exception e) {
+                throw new BadRequestException("Cập nhập tài khoản không thành công");
+            }
+        }
+    }
+
+    @Override
+    public Account updatePassword(PasswordInfo passwordInfo) {
+        Account account = accountRepository.findById(passwordInfo.getAccountId()).orElse(null);
+        String encodedPassword = passwordEncoder.encode(passwordInfo.getPassword());
+        if (account == null) {
+            return null;
+        } else {
+            // cap nhap mat khau
+            account.setPassword(encodedPassword);
+            try {
+                return accountRepository.save(account);
+            } catch (Exception e) {
+                throw new BadRequestException("Cập nhập mật khẩu không thành công");
+            }
+        }
+    }
+
+    @Override
+    public Account updateAvatar(MultipartFile image, Account account) {
+
+        Map<String, Object> uploadResult = cloudinaryService.uploadFile(image);
+        String imageUrl = (String) uploadResult.get("url");
+        String publicId = (String) uploadResult.get("public_id");
+        account.setAvatarUrl(imageUrl);
+
+        try {
+            return accountRepository.save(account);
+        } catch (Exception e) {
+            throw new BadRequestException("Cập nhập ảnh đại diện không thành công");
         }
     }
 }

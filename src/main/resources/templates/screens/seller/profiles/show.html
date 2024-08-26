@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{./layouts/admin-layout :: admin-layout-fragment(
+        ~{::title},
+        ~{::#static-resources},
+        ~{::#main-content}
+    )}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Profile</title>
+     <th:block id="static-resources">
+        <link rel="stylesheet" href="/assets/css/profile.css">
+         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+         <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
+         <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    </th:block>
+</head>
+<body>
+<hr>
+<div class="container" id="main-content">
+    <div class="row">
+        <div class="col-sm-10 display-name"><h1 th:text="${profileInfo.displayName}" style="padding-left: 40px"></h1></div>
+        <div class="col-sm-2 profile-img">
+            <a href="/users" class="pull-right">
+                <img id="logo" title="profile image" src="/assets/images/icons/Logo_Ananas_Footer.svg">
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 avatar-img d-flex flex-column align-items-center"><!--left col-->
+            <form class="form" action="/profiles/change-image" method="post" id="imageForm" enctype="multipart/form-data">
+                <div class="text-center">
+                    <img th:src="${currentAccount.getAvatarUrl()}" class="avatar img-square img-thumbnail" alt="avatar">
+                    <h6>Upload a different photo...</h6>
+                    <input id="file" type="file" name="imageToAdd" class="text-center center-block file-upload">
+                </div></hr><br>
+            </form>
+        </div>
+        <div class="col-sm-9">
+            <ul class="nav nav-tabs tab">
+                <li th:classappend="${activeTab == 'home' ? 'active' : ''}"><a data-toggle="tab" href="#home">|Thông tin|</a></li>
+                <li th:classappend="${activeTab == 'password' ? 'active' : ''}"><a data-toggle="tab" href="#pw">|Mật khẩu|</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane" id="home" th:classappend="${activeTab == 'home' ? 'active' : ''}">
+                    <hr>
+                    <form class="form" action="/profiles/change-profile" method="post" id="registrationForm" th:object="${profileInfo}" onsubmit="return validateForm()">
+                        <div class="form-group">
+
+                            <div class="col-xs-10">
+                                <label for="full_name"><h4>Họ và tên</h4></label>
+                                <input type="text" class="form-control" name="full_name" id="full_name" placeholder="enter fullname" title="enter your full_name name if any." th:field="*{fullName}">
+                                <span id="fullNameError" class="error-message text-danger" ><span th:if="${#fields.hasErrors('fullName')}"
+                                                                                                  th:errors="*{fullName}"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" th:field="*{accountId}">
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-xs-10">
+                                <label for="display-name"><h4>Tên tài khoản</h4></label>
+                                <input type="text" class="form-control" id="display-name" placeholder="somewhere" title="enter a display name" th:field="*{displayName}">
+                                <span id="displayNameError" class="error-message text-danger"><span th:if="${#fields.hasErrors('displayName')}"
+                                                                                                    th:errors="*{displayName}"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-xs-10">
+                                <label for="gender"><h4>Giới tính</h4></label>
+                                <select class="form-control" name="gender" id="gender" th:field="*{gender}">
+                                    <option value="true">Nam</option>
+                                    <option value="false">Nữ</option>
+                                </select>
+                                <span id="genderError" class="error-message text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-xs-10">
+                                <label for="phone"><h4>Số điện thoại</h4></label>
+                                <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any." th:field="*{phoneNumber}">
+                                <span id="phoneNumberError" class="error-message text-danger"><span th:if="${#fields.hasErrors('phoneNumber')}"
+                                                                                                    th:errors="*{phoneNumber}"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-xs-10">
+                                <label for="email"><h4>Email</h4></label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email." th:field="*{email}" readonly>
+                                <span id="emailError" class="error-message text-danger"><span th:if="${#fields.hasErrors('email')}"
+                                                                                              th:errors="*{email}"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-xs-10">
+                                <label for="datepicker"><h4>Ngày sinh</h4></label>
+                                <input class="form-control" name="birth" id="datepicker" th:field="*{dateOfBirth}">
+                                <span id="dateOfBirthError" class="error-message text-danger"><span th:if="${#fields.hasErrors('dateOfBirth')}"
+                                                                                                    th:errors="*{dateOfBirth}"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-xs-10">
+                                <label for="location"><h4>Địa chỉ</h4></label>
+                                <input type="text" class="form-control" id="location" placeholder="somewhere" title="enter a location" th:field="*{address}">
+                                <span id="locationError" class="error-message text-danger"><span th:if="${#fields.hasErrors('address')}"
+                                                                                                 th:errors="*{address}"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-10">
+                                <br>
+                                <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                <hr>
+                </div>
+                <div class="tab-pane" id="pw" th:classappend="${activeTab == 'password' ? 'active' : ''}">
+                    <hr>
+                    <form class="form" action="/profiles/change-password" method="post" id="registrationForm2" th:object="${passwordInfo}" onsubmit="return validateForm2()">
+                        <div class="form-group">
+                            <input type="hidden" th:field="*{accountId}">
+                        </div>
+                        <div class="form-group">
+
+                        <div class="col-xs-10">
+                            <label for="password"><h4>Mật khẩu</h4></label>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password." th:field="*{password}">
+                            <span id="passwordError" class="error-message text-danger"><span th:if="${#fields.hasErrors('password')}"
+                                                                                             th:errors="*{password}"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-xs-10">
+                            <label for="confirm_password"><h4>Xác thực</h4></label>
+                            <input type="password" class="form-control" name="confirmPassword" id="confirm_password" placeholder="confirm_password" title="enter your password matching." th:field="*{confirmPassword}">
+                            <span id="confirmPasswordError" class="error-message text-danger"><span th:if="${#fields.hasErrors('confirmPassword')}"
+                                                                                             th:errors="*{confirmPassword}"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-10">
+                            <br>
+                            <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                            <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+    <script src="/assets/js/profile.js"></script>
+    <script>
+        $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap',
+            format: 'dd/mm/yyyy'
+        });
+    </script>
+</div>
+</body>
+</html>
