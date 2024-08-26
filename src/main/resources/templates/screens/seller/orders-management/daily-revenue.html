@@ -20,7 +20,7 @@
             var formattedDate = today.toISOString().split('T')[0];
             function fetchRevenueData() {
                 var date = document.getElementById('date-picker').value;
-                fetch(`/daily-revenue?date=` + date)
+                fetch(`/revenues/daily?date=` + date)
                     .then(response => response.json())
                     .then(data => {
                         document.getElementById('total-orders').textContent = data.orderCount;

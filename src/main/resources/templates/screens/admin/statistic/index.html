@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{/layouts/admin-layout :: admin-layout-fragment(
+        ~{::title},
+        ~{::#static-resources}, 
+        ~{::#main-content}
+    )}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Statistic</title>
+    <th:block id="statistic-management">
+        <link rel="stylesheet" href="/assets/css/statistic.css">
+    </th:block>
+</head>
+
+<body>
+    <div class="container" id="main-content">
+        <!-- Date Picker -->
+        <div class="row my-3">
+            <div class="col-md-3">
+                <input type="month" id="date-picker" class="form-control date-picker"
+                    th:value="${selectedDate != null ? selectedDate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM')) : ''}" />
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary"><i class="fas fa-file-export"></i> Xuất File</button>
+            </div>
+        </div>
+        <!-- Statistic Cards -->
+        <div class="row my-3">
+            <div class="col-md-4">
+                <div class="card statistic-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Số lượng đơn hàng</h5>
+                        <h3 id="orderCount" th:text="${revenueInfo.orderCount}">1000</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card statistic-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Doanh thu hiện tại</h5>
+                        <h3 id="currentRevenue" th:text="${#numbers.formatDecimal(revenueInfo.currentRevenue, 0, 0)}">
+                            80.000.000
+                            VNĐ</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card statistic-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Doanh thu dự tính</h5>
+                        <h3 id="predictedRevenue"
+                            th:text="${#numbers.formatDecimal(revenueInfo.predictedRevenue, 0, 0) }">100.000.000
+                            VNĐ</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Monthly Revenue Chart and Table -->
+        <div class="row chart-container">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Biểu đồ doanh thu trong tháng</div>
+                    <div class="card-body">
+                        <canvas id="monthlyRevenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Bảng doanh thu hàng tháng</div>
+                    <div class="card-body">
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            <table class="table table-hover" data-spy="scroll">
+                                <thead>
+                                    <tr>
+                                        <th>Ngày</th>
+                                        <th>Số lượng đơn hàng</th>
+                                        <th>Doanh thu</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dailyRevenueTable"></tbody>
+                            </table>
+                        </div>
+                        <h5>Tổng doanh thu tháng: <span id="totalMonthlyRevenue">0 VNĐ</span></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Yearly Revenue Chart -->
+        <div class="row my-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Biểu đồ doanh thu trong năm
+                    </div>
+                    <div class="card-body">
+                        <canvas id="yearlyRevenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Monthly Revenue Table -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Bảng doanh thu hàng năm</div>
+                    <div class="card-body">
+                        <div style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Tháng</th>
+                                        <th>Số lượng đơn hàng</th>
+                                        <th>Doanh thu</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="monthlyRevenueTable"></tbody>
+                            </table>
+                        </div>
+                        <h5>Tổng doanh thu năm: <span id="totalYearlyRevenue">0 VNĐ</span></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="/assets/js/statistic.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </div>
+</body>
+
+</html>
