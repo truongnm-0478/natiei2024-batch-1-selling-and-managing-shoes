@@ -11,6 +11,7 @@ import group1.intern.service.CloudinaryService;
 import group1.intern.service.JwtService;
 import group1.intern.util.exception.BadRequestException;
 import group1.intern.util.exception.DuplicateEmailException;
+import group1.intern.util.exception.ForbiddenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,10 +46,12 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Account register(AccountRegistration accountRegistration) {
-        if (accountRepository.findByEmail(accountRegistration.getEmail()).isPresent()) {
+    public Account register(AccountRegistration accountRegistration, AccountRole role) {
+        if (role == AccountRole.ADMIN)
+            throw new ForbiddenException("Không thể tạo tài khoản admin");
+
+        if (accountRepository.findByEmail(accountRegistration.getEmail()).isPresent())
             throw new DuplicateEmailException("Email đã tồn tại: " + accountRegistration.getEmail());
-        }
 
         String encodedPassword = passwordEncoder.encode(accountRegistration.getPassword());
 
@@ -56,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
             .email(accountRegistration.getEmail())
             .fullName(accountRegistration.getFullName())
             .password(encodedPassword)
-            .role(AccountRole.CUSTOMER)
+            .role(role)
             .address(accountRegistration.getAddress())
             .phoneNumber(accountRegistration.getPhoneNumber())
             .gender(true)

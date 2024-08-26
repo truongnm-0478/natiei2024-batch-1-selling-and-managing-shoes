@@ -1,30 +1,32 @@
 package group1.intern.controller.admin;
 
 import group1.intern.annotation.CurrentAccount;
+import group1.intern.annotation.PreAuthorizeAdmin;
 import group1.intern.bean.AccountActivateForm;
 import group1.intern.bean.AccountFilter;
+import group1.intern.bean.AccountRegistration;
+import group1.intern.bean.ToastMessage;
 import group1.intern.model.Account;
+import group1.intern.model.Enum.AccountRole;
 import group1.intern.service.AccountsService;
+import group1.intern.service.AuthService;
 import group1.intern.util.util.PaginationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import group1.intern.annotation.PreAuthorizeAdmin;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller("adminAccountsController")
 @PreAuthorizeAdmin
 @RequestMapping("/admin/accounts")
+@RequiredArgsConstructor
 public class AccountsController {
-
     private final AccountsService accountService;
-
-    @Autowired
-    public AccountsController(AccountsService accountService) {
-        this.accountService = accountService;
-    }
+    private final AuthService authService;
 
     @GetMapping
     public String index(
@@ -44,7 +46,7 @@ public class AccountsController {
         );
 
         model.addAttribute("accounts", accounts);
-        model.addAttribute("resultCount" , accounts.getTotalElements());
+        model.addAttribute("resultCount", accounts.getTotalElements());
         model.addAttribute("paginationHelper", paginationHelper);
         model.addAttribute("totalPages", accounts.getTotalPages());
         model.addAttribute("filter", filter);
@@ -57,8 +59,36 @@ public class AccountsController {
         @CurrentAccount Account account,
         @RequestBody AccountActivateForm accountActivateForm
     ) {
-
         accountService.toggleAccountActivation(accountActivateForm.getId(), accountActivateForm.isActivate());
+        return "redirect:/admin/accounts";
+    }
+
+    @GetMapping("/new")
+    public String showSellerAccountForm(Model model) {
+        model.addAttribute("sellerAccount", new AccountRegistration());
+        return "/screens/admin/accounts/new";
+    }
+
+    @PostMapping
+    public String createSellerAccount(
+        @Valid @ModelAttribute("sellerAccount") AccountRegistration sellerAccount,
+        BindingResult bindingResult,
+        Model model,
+        RedirectAttributes redirectAttrs
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("sellerAccount", sellerAccount);
+            return "/screens/admin/accounts/new";
+        }
+
+        try {
+            authService.register(sellerAccount, AccountRole.SELLER);
+        } catch (Exception ex) {
+            model.addAttribute("toastMessages", new ToastMessage("error", ex.getMessage()));
+            return "/screens/admin/accounts/new";
+        }
+
+        redirectAttrs.addFlashAttribute("toastMessages", new ToastMessage("success", "Tạo tài khoản seller thành công"));
         return "redirect:/admin/accounts";
     }
 }
