@@ -1,9 +1,6 @@
 package group1.intern.service;
 
-import group1.intern.bean.ProductDetailColors;
-import group1.intern.bean.ProductDetailEdit;
-import group1.intern.bean.ProductDetailInfo;
-import group1.intern.bean.ProductDetailInfoSeller;
+import group1.intern.bean.*;
 import group1.intern.model.ProductDetail;
 import group1.intern.model.ProductImage;
 import org.springframework.data.domain.Page;
@@ -23,5 +20,6 @@ public interface ProductService {
     List<String> findAllStyles();
     List<String> findAllMaterials();
     ProductDetail updateProductInfo(ProductDetailEdit productDetailEdit);
+    List<ProductExcel> importProducts(MultipartFile file) throws Exception;
 
 }

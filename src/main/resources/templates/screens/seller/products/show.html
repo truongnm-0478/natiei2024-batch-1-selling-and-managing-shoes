@@ -112,9 +112,7 @@
             <hr class="row divider my-4">
             <div class="row position-relative">
                 <div class="action pb-3">
-                    <button class="btn btn-warning">
-                        Sửa
-                    </button>
+                    <a th:href="@{/seller/products/{id}/edit(id=${productInfo.id})}"><button class="btn btn-warning">Sửa</button></a>
                     <button class="btn btn-danger">
                         Xoá
                     </button>

@@ -1,31 +1,37 @@
 package group1.intern.service.impl;
 
-import group1.intern.bean.ProductDetailColors;
-import group1.intern.bean.ProductDetailEdit;
-import group1.intern.bean.ProductDetailInfo;
-import group1.intern.bean.ProductDetailInfoSeller;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import group1.intern.bean.*;
 import group1.intern.model.*;
+import group1.intern.model.Embeddables.ProductDescription;
 import group1.intern.model.Enum.ProductGender;
 import group1.intern.repository.*;
 import group1.intern.repository.customization.ProductDetailsCustomRepository;
 import group1.intern.repository.customization.ProductQuantitiesCustomRepository;
 import group1.intern.repository.customization.ProductsCustomRepository;
 import group1.intern.service.CloudinaryService;
+import group1.intern.service.ExcelService;
 import group1.intern.service.ProductService;
 import group1.intern.util.CurrencyUtil;
+import group1.intern.util.exception.BadRequestException;
 import group1.intern.util.exception.NotFoundObjectException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +44,8 @@ public class ProductServiceImpl implements ProductService {
     private final ConstantsRepository constantsRepository;
     private final ProductQuantitiesRepository productQuantitiesRepository;
     private final ProductsRepository productsRepository;
+    private final ProductsCustomRepository productsCustomRepository;
+    private final ExcelService excelService;
 
     @Override
     public ProductDetailInfo getProductDetailById(Integer id) {
@@ -320,4 +328,194 @@ public class ProductServiceImpl implements ProductService {
         return productDetailRepository.save(productDetail);
     }
 
+    @Override
+    @Transactional
+    public List<ProductExcel> importProducts(MultipartFile file) throws Exception {
+
+        List<ProductExcel> productExcels = excelService.readerExcelFile(file, ProductExcel.class);
+        List<ProductDetail> productDetails = productDetailCustomRepository.findAllWithRelationship();
+
+        // Duyệt qua từng sản phẩm trong danh sách productExcels
+        for (ProductExcel productExcel : productExcels) {
+            // Tìm kiếm product detail tương ứng
+            ProductDetail existingProductDetail = productDetails.stream()
+                .filter(productDetail -> {
+                    Product product = productDetail.getProduct();
+                    return product.getName().equalsIgnoreCase(productExcel.getName()) &&
+                        product.getCategory().getValue().equalsIgnoreCase(productExcel.getCategory()) &&
+                        product.getMaterial().getValue().equalsIgnoreCase(productExcel.getMaterial()) &&
+                        productDetail.getGender().toString().equalsIgnoreCase(productExcel.getGender()) &&
+                        productDetail.getColor().getValue().equalsIgnoreCase(productExcel.getColor()) &&
+                        productDetail.getStyle().getValue().equalsIgnoreCase(productExcel.getStyle());
+                })
+                .findFirst()
+                .orElse(null);
+
+            if (existingProductDetail != null) {
+                String[] quantities = productExcel.getQuantity().split(", ");
+                List<Integer> quantityList = Arrays.stream(quantities)
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+                updateProductQuantities(existingProductDetail, quantityList);
+            } else {
+                addNewProductDetail(productExcel);
+            }
+        }
+
+        return productExcels;
+    }
+
+    private void updateProductQuantities(ProductDetail existingProductDetail, List<Integer> quantityList) {
+        List<ProductQuantity> existingQuantities = existingProductDetail.getQuantities();
+
+        // Kiểm tra nếu danh sách quantityList lớn hơn số lượng hiện có thì điều chỉnh lại
+        if (quantityList.size() != existingQuantities.size()) {
+            throw new IllegalArgumentException("Kích thước danh sách quantityList không khớp với số lượng kích thước hiện có.");
+        }
+
+        // Cập nhật số lượng cho từng ProductQuantity
+        for (int i = 0; i < existingQuantities.size(); i++) {
+            ProductQuantity productQuantity = existingQuantities.get(i);
+            int newQuantity = quantityList.get(i);
+            int updatedQuantity = productQuantity.getQuantity() + newQuantity;
+            productQuantity.setQuantity(updatedQuantity);
+        }
+
+        // Lưu thay đổi vào database
+        productQuantitiesRepository.saveAll(existingQuantities);
+    }
+
+    private void addNewProductDetail(ProductExcel productExcel) {
+
+        List<Constant> constants = constantsRepository.findAll();
+
+        List<Constant> sizeConstants = constants.stream()
+            .filter(constant -> "Size".equalsIgnoreCase(constant.getType()))
+            .collect(Collectors.toList());
+
+        List<Constant> colorConstants = constants.stream()
+            .filter(constant -> "Color".equalsIgnoreCase(constant.getType()))
+            .collect(Collectors.toList());
+
+
+        List<Constant> styleConstants = constants.stream()
+            .filter(constant -> "Style".equalsIgnoreCase(constant.getType()))
+            .collect(Collectors.toList());
+
+
+        List<Constant> categoryConstants = constants.stream()
+            .filter(constant -> "Category".equalsIgnoreCase(constant.getType()))
+            .collect(Collectors.toList());
+
+
+        List<Constant> materialConstants = constants.stream()
+            .filter(constant -> "Material".equalsIgnoreCase(constant.getType()))
+            .collect(Collectors.toList());
+
+        List<String> imageDescriptionUrls = List.of("https://ananas.vn/wp-content/uploads/Ananas_SizeChart.jpg");
+        ProductDescription productDescription = ProductDescription.builder()
+            .images(getImageUrls(imageDescriptionUrls))
+            .build();
+
+        // Tìm hoặc tạo sản phẩm
+        List<Product> products = productsCustomRepository.findAllWithRelationship();
+        Product existingProduct = products.stream()
+            .filter(p -> p.getName().equalsIgnoreCase(productExcel.getName()) &&
+                p.getCategory().getValue().equalsIgnoreCase(productExcel.getCategory()) &&
+                p.getMaterial().getValue().equalsIgnoreCase(productExcel.getMaterial()))
+            .findFirst()
+            .orElse(null);
+
+        if (existingProduct == null) {
+            existingProduct = Product.builder()
+                .name(productExcel.getName())
+                .category(categoryConstants.stream().filter(c -> c.getValue().equalsIgnoreCase(productExcel.getCategory())).findFirst().orElse(null))
+                .material(materialConstants.stream().filter(c -> c.getValue().equalsIgnoreCase(productExcel.getMaterial())).findFirst().orElse(null))
+                .build();
+            productsRepository.save(existingProduct);
+        }
+
+        // Xử lý màu sắc
+        Constant color = colorConstants.stream()
+            .filter(c -> c.getValue().equalsIgnoreCase(productExcel.getColor()))
+            .findFirst()
+            .orElseGet(() -> {
+                // Nếu không tìm thấy, tạo một Constant mới
+                Constant newColor = Constant.builder()
+                    .type("Color")
+                    .value(productExcel.getColor())
+                    .build();
+                constantsRepository.save(newColor);
+                return newColor;
+            });
+
+        // Xử lý kiểu dáng
+        Constant style = styleConstants.stream()
+            .filter(c -> c.getValue().equalsIgnoreCase(productExcel.getStyle()))
+            .findFirst()
+            .orElseGet(() -> {
+                // Nếu không tìm thấy, tạo một Constant mới
+                Constant newStyle = Constant.builder()
+                    .type("Style")
+                    .value(productExcel.getStyle())
+                    .build();
+                constantsRepository.save(newStyle);
+                return newStyle;
+            });
+
+        // Tạo ProductDetail
+        ProductDetail newProductDetail = ProductDetail.builder()
+            .originPrice(productExcel.getOriginPrice())
+            .discount(0)
+            .price(productExcel.getOriginPrice() * 10 / 100 + productExcel.getOriginPrice())
+            .gender(ProductGender.valueOf(productExcel.getGender().toUpperCase()))
+            .description(productDescription)
+            .product(existingProduct)
+            .color(color)
+            .style(style)
+            .build();
+        productDetailRepository.save(newProductDetail);
+
+
+        // Xử lý số lượng và kích thước
+        List<Integer> quantities = Arrays.stream(productExcel.getQuantity().split(", "))
+            .map(Integer::parseInt)
+            .collect(Collectors.toList());
+
+        // Duyệt qua tất cả các size để lưu quantity tương ứng
+        for (int i = 0; i < sizeConstants.size(); i++) {
+            Constant size = sizeConstants.get(i);
+            int quantity = quantities.size() > i ? quantities.get(i) : 0;
+
+            ProductQuantity productQuantity = ProductQuantity.builder()
+                .quantity(quantity)
+                .productDetail(newProductDetail)
+                .size(size)
+                .build();
+
+            productQuantitiesRepository.save(productQuantity);
+        }
+
+        // Xử lý hình ảnh
+        List<String> imageUrls = Arrays.asList(productExcel.getUrl().split(", "));
+        List<ProductImage> productImages = new ArrayList<>();
+
+        for (String imageUrl : imageUrls) {
+             // Nếu hình ảnh chưa tồn tại, tạo mới
+            ProductImage productImage = ProductImage.builder()
+                .url(imageUrl)
+                .productDetail(newProductDetail)
+                .build();
+            productImages.add(productImage);
+        }
+
+        // Lưu danh sách hình ảnh mới vào cơ sở dữ liệu
+        if (!productImages.isEmpty()) {
+            productImagesRepository.saveAll(productImages);
+        }
+    }
+
+    private static List<String> getImageUrls(List<String> imageUrls) {
+        return imageUrls;
+    }
 }
