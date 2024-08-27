@@ -1,26 +1,19 @@
 package group1.intern.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import group1.intern.bean.*;
 import group1.intern.model.*;
 import group1.intern.model.Embeddables.ProductDescription;
 import group1.intern.model.Enum.ProductGender;
 import group1.intern.repository.*;
 import group1.intern.repository.customization.ProductDetailsCustomRepository;
-import group1.intern.repository.customization.ProductQuantitiesCustomRepository;
 import group1.intern.repository.customization.ProductsCustomRepository;
 import group1.intern.service.CloudinaryService;
 import group1.intern.service.ExcelService;
 import group1.intern.service.ProductService;
 import group1.intern.util.CurrencyUtil;
-import group1.intern.util.exception.BadRequestException;
 import group1.intern.util.exception.NotFoundObjectException;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,10 +21,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -517,5 +511,16 @@ public class ProductServiceImpl implements ProductService {
 
     private static List<String> getImageUrls(List<String> imageUrls) {
         return imageUrls;
+    }
+    public ProductDetail deleteProductDetailById(Integer id) {
+        Optional<ProductDetail> productDetail = productDetailRepository.findById(id);
+
+        if(productDetail.isPresent())
+        {
+            ProductDetail productDetail2 = productDetail.get();
+            productDetail2.setDeletedAt(LocalDateTime.now());
+            return productDetailRepository.save(productDetail2);
+        }
+        return null;
     }
 }

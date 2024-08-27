@@ -1,20 +1,13 @@
 package group1.intern.controller.seller;
 
 import group1.intern.annotation.PreAuthorizeAllWithoutCustomer;
-import group1.intern.bean.ProductDetailColors;
-import group1.intern.bean.ProductDetailInfoSeller;
-import group1.intern.bean.ProductFilterInfo;
-import group1.intern.bean.ToastMessage;
+import group1.intern.model.ProductDetail;
 import group1.intern.service.ConstantService;
 import group1.intern.service.FilterService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import group1.intern.annotation.PreAuthorizeSeller;
 import group1.intern.bean.*;
-import group1.intern.model.ProductDetail;
 import group1.intern.model.ProductImage;
-import group1.intern.model.ProductQuantity;
 import group1.intern.service.ProductService;
 import group1.intern.util.exception.BadRequestException;
 import group1.intern.util.exception.NotFoundObjectException;
@@ -25,10 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -37,9 +26,7 @@ import java.util.ArrayList;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller("sellerProductsController")
 @PreAuthorizeAllWithoutCustomer
@@ -106,10 +93,10 @@ public class ProductsController {
         List<Integer> filterStyles = new ArrayList<>();
         List<Integer> filterMaterials = new ArrayList<>();
 
-        if(!filterStyle.isEmpty() && Integer.parseInt(filterStyle) != -1){
+        if (!filterStyle.isEmpty() && Integer.parseInt(filterStyle) != -1) {
             filterStyles.add(Integer.parseInt(filterStyle));
         }
-        if(!filterMaterial.isEmpty() && Integer.parseInt(filterMaterial) != -1){
+        if (!filterMaterial.isEmpty() && Integer.parseInt(filterMaterial) != -1) {
             filterMaterials.add(Integer.parseInt(filterMaterial));
         }
 
@@ -154,41 +141,43 @@ public class ProductsController {
                 .encode()
                 .toUriString();
     }
+
     @PostMapping("/{id}/update-images")
     public String updateProductImages(
-        @PathVariable("id") Integer id,
-        @RequestParam("imagesToAdd") List<MultipartFile> imagesToAdd,
-        @RequestParam("imagesToRemove") String imagesToRemove,
-        Model model) {
+            @PathVariable("id") Integer id,
+            @RequestParam("imagesToAdd") List<MultipartFile> imagesToAdd,
+            @RequestParam("imagesToRemove") String imagesToRemove,
+            Model model) {
 
         ObjectMapper objectMapper = new ObjectMapper();
         List<Integer> imagesToRemoveList;
         try {
-            imagesToRemoveList = objectMapper.readValue(imagesToRemove, new TypeReference<List<Integer>>() {});
+            imagesToRemoveList = objectMapper.readValue(imagesToRemove, new TypeReference<List<Integer>>() {
+            });
             productService.updateProductImages(id, imagesToAdd, imagesToRemoveList);
             model.addAttribute("toastMessages", new ToastMessage("success", "Cập nhật hình ảnh thành công!"));
         } catch (Exception e) {
             model.addAttribute("toastMessages", new ToastMessage("error", e.getMessage()));
         }
-        return "redirect:/seller/products/"+ id +"/edit";
+        return "redirect:/seller/products/" + id + "/edit";
     }
 
     @PostMapping("/{id}/update-info")
     public String saveProductEdit(
-        @PathVariable("id") Integer id,
-        @ModelAttribute("productInfo") ProductDetailEdit productDetailEdit,
-        Model model
-    ) {
+            @PathVariable("id") Integer id,
+            @ModelAttribute("productInfo") ProductDetailEdit productDetailEdit,
+            Model model) {
         try {
             ProductDetail productDetail = productService.updateProductInfo(productDetailEdit);
         } catch (Exception e) {
             model.addAttribute("toastMessages", new ToastMessage("error", e.getMessage()));
         }
-        return "redirect:/seller/products/"+ id +"/edit";
+        return "redirect:/seller/products/" + id + "/edit";
     }
 
     @PostMapping
-    public String importProducts(@RequestParam("file") MultipartFile file, Model model, RedirectAttributes redirectAttrs) {
+    public String importProducts(@RequestParam("file") MultipartFile file, Model model,
+            RedirectAttributes redirectAttrs) {
         if (file.isEmpty()) {
             model.addAttribute("toastMessages", new ToastMessage("error", "Bạn chưa chọn file."));
             return "screens/seller/products/index";
@@ -203,4 +192,14 @@ public class ProductsController {
         return "redirect:/seller/products";
     }
 
+    @DeleteMapping("/{id}")
+    public String deleteProductAdmin(
+            @PathVariable("id") Integer id) {
+        try {
+            productService.deleteProductDetailById(id);
+        } catch (NotFoundObjectException ex) {
+            System.out.println(ex);
+        }
+        return "redirect:/seller/products";
+    }
 }

@@ -37,14 +37,16 @@ public class CommonUtils {
 
     public static List<String> extractQueryParamsFromURL(String url, String... paramNames) {
         List<String> result = new ArrayList<>();
-        if (isEmptyOrNullList(paramNames)) return result;
+        if (isEmptyOrNullList(paramNames))
+            return result;
 
         // Use UriComponentsBuilder to parse the URI and extract query parameters
         URI uri = URI.create(url);
         var uriComponents = UriComponentsBuilder.fromUri(uri).build();
         for (var paramName : paramNames) {
             var value = uriComponents.getQueryParams().getFirst(paramName);
-            if (isNotEmptyOrNullString(value)) result.add(value);
+            if (isNotEmptyOrNullString(value))
+                result.add(value);
         }
         return result;
     }
@@ -53,27 +55,36 @@ public class CommonUtils {
      * JPA
      */
     public static String getSortClause(Sort sort, String prefix) {
-        if (sort == null || sort.isEmpty() || sort.isUnsorted()) return "";
+        if (sort == null || sort.isEmpty() || sort.isUnsorted())
+            return "";
         return " ORDER BY " + sort.stream().map(
-            order -> (isNotEmptyOrNullString(prefix) ? String.format("%s.%s", prefix, order.getProperty()) : order.getProperty()) + " " + order.getDirection()
-        ).reduce((a, b) -> a + ", " + b).orElse("");
+                order -> (isNotEmptyOrNullString(prefix) ? String.format("%s.%s", prefix, order.getProperty())
+                        : order.getProperty()) + " " + order.getDirection())
+                .reduce((a, b) -> a + ", " + b).orElse("");
     }
 
     public static String getWhereClause(List<WhereElements> whereElements, String prefix) {
-        if (whereElements == null || whereElements.isEmpty()) return "";
+        if (whereElements == null || whereElements.isEmpty())
+            return "";
         final String tmp = isNotEmptyOrNullString(prefix) ? prefix + "." : "";
         AtomicInteger index = new AtomicInteger(1);
         String clause = whereElements.stream().map(
                 e -> {
-                    var key = e.getType().isLikeIgnoreCaseType() ? String.format("LOWER(%s%s)", tmp, e.getKey()) : String.format("%s%s", tmp, e.getKey());
-                    return String.format("%s %s %s",
-                        key,
-                        e.getType().getValue(),
-                        "?" + index.getAndIncrement()
-                    );
-                }
-            )
-            .reduce((a, b) -> a + " AND " + b).orElse("");
+                    var key = e.getType().isLikeIgnoreCaseType() ? String.format("LOWER(%s%s)", tmp, e.getKey())
+                            : String.format("%s%s", tmp, e.getKey());
+
+                    var queryResult = e.getType().isNoNeedParamType()
+                            ? String.format("%s %s",
+                                    key,
+                                    e.getType().getValue())
+                            : String.format("%s %s %s",
+                                    key,
+                                    e.getType().getValue(),
+                                    "?" + index.getAndIncrement());
+
+                    return queryResult;
+                })
+                .reduce((a, b) -> a + " AND " + b).orElse("");
         return " WHERE " + clause;
     }
 
@@ -86,7 +97,8 @@ public class CommonUtils {
 
     public static String encodeObjectBase64(Object object) {
         var json = convertToJson(object);
-        if (json == null) return null;
+        if (json == null)
+            return null;
         return encodeBase64(json);
     }
 
@@ -186,7 +198,8 @@ public class CommonUtils {
      * @return String type snake case
      */
     public static String convertToSnakeCase(String input) {
-        if (isEmptyOrNullString(input)) return input;
+        if (isEmptyOrNullString(input))
+            return input;
         return input.replaceAll("([^_A-Z])([A-Z])", "$1_$2").toLowerCase();
     }
 
@@ -197,24 +210,26 @@ public class CommonUtils {
      * @return String type camel case
      */
     public static String convertToCamelCase(String input) {
-        if (isEmptyOrNullString(input)) return input;
+        if (isEmptyOrNullString(input))
+            return input;
         return input.replaceAll(
-            "_([a-z])",
-            String.valueOf(
-                Character.toUpperCase(
-                    input.charAt(input.indexOf("_") + 1))));
+                "_([a-z])",
+                String.valueOf(
+                        Character.toUpperCase(
+                                input.charAt(input.indexOf("_") + 1))));
     }
 
     /**
      * Convert capital case
      */
     public static String convertToCapitalCase(String input) {
-        if (isEmptyOrNullString(input)) return input;
+        if (isEmptyOrNullString(input))
+            return input;
         String snakeCase = convertToSnakeCase(input);
         String[] words = snakeCase.split("_");
         return Arrays.stream(words).map(
-            word -> word.substring(0, 1).toUpperCase() + word.substring(1)
-        ).reduce((a, b) -> a + " " + b).orElse("");
+                word -> word.substring(0, 1).toUpperCase() + word.substring(1)).reduce((a, b) -> a + " " + b)
+                .orElse("");
     }
 
     /*
@@ -299,6 +314,7 @@ public class CommonUtils {
         }
         return otp.toString();
     }
+
     public static String formatToVND(int amount) {
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
         numberFormat.setGroupingUsed(true);

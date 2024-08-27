@@ -52,6 +52,7 @@
                 <a
                     th:href="@{/admin/accounts}"
                     th:class="${currentPage == 'account-management'} ? 'active-sidebar-button' : ''"
+                    th:if="${current_user != null && #strings.toString(current_user) == '0'}"
                 >
                     <img alt="icon account management" src="/assets/images/icons/account-icon.svg"
                          class="sidebar-icons"/>
