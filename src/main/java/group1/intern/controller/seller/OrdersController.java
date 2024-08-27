@@ -36,6 +36,7 @@ public class OrdersController {
         Model model,
         @RequestParam(value = "page", required = false, defaultValue = "1") int page
     ) {
+        if (CommonUtils.isEmptyOrNullString(status)) return "redirect:/seller/orders?status=all";
         var statusEnum = CommonUtils.isNotEmptyOrNullString(status)
             ? Arrays.stream(OrderStatus.values()).filter(e -> e.name().equalsIgnoreCase(status)).findFirst().orElse(null)
             : null;

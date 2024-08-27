@@ -11,9 +11,11 @@
 <body>
 <div th:fragment="admin-sidebar">
     <nav class="sidebar" id="sidebar">
-        <div class="d-lg-flex justify-content-between align-items-center d-none">
-            <img alt="website logo" src="/assets/images/icons/logo-website.svg"
-                 class="admin-page-sidebar-logo-website"/>
+        <div class="d-lg-flex justify-content-between align-items-center d-none" style="cursor: pointer">
+            <a href="/admin/statistic">
+                <img alt="website logo" src="/assets/images/icons/logo-website.svg"
+                     class="admin-page-sidebar-logo-website"/>
+            </a>
         </div>
         <hr class="admin-page-sidebar-hr d-none d-lg-block"/>
         <div id="sidebarToggle">
@@ -41,14 +43,14 @@
             </li>
             <li>
                 <a
-                    th:href="@{/seller/orders}"
+                    href="/seller/orders?status=all"
                     th:class="${currentPage == 'bill-management'} ? 'active-sidebar-button' : ''"
                 >
                     <img alt="icon bill management" src="/assets/images/icons/bill-icon.svg" class="sidebar-icons"/>
                     <span class="sidebar-text">Quản lý hóa đơn</span>
                 </a>
             </li>
-            <li>
+            <li th:if="${current_user.role == 0}">
                 <a
                     th:href="@{/admin/accounts}"
                     th:class="${currentPage == 'account-management'} ? 'active-sidebar-button' : ''"
