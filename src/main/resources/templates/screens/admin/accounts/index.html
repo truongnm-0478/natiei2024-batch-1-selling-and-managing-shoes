@@ -144,7 +144,7 @@
                                 <td th:text="${account.email}"></td>
                                 <td th:text="${account.phoneNumber}"></td>
                                 <td>
-                                    <div class="operation-wrapper">
+                                    <div class="operation-wrapper" th:if="${account.getRole().name() != 'ADMIN'}">
                                         <button th:if="${account.isActivated}" class="btn btn-success"
                                                 th:onclick="'toggleActivation(' + ${account.id} + ', false)'">
                                             <i class="bi bi-unlock"></i>
@@ -269,8 +269,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
     <script src="/assets/js/account-manage.js"></script>
 </div>

@@ -4,6 +4,7 @@ import group1.intern.bean.AccountInfo;
 import group1.intern.bean.LoginRequest;
 import group1.intern.bean.ToastMessage;
 import group1.intern.model.Account;
+import group1.intern.model.Enum.AccountRole;
 import group1.intern.service.AuthService;
 import group1.intern.util.constant.CommonConstant;
 import group1.intern.util.util.CommonUtils;
@@ -26,8 +27,12 @@ public class LoginController {
 
     @GetMapping("/login")
     public String view(Model model) {
-        if (WebUtils.Sessions.getAttribute(CommonConstant.CURRENT_USER, AccountInfo.class) != null) {
-            return redirectPreviousUrl();
+        var currentAccount = WebUtils.Sessions.getAttribute(CommonConstant.CURRENT_USER, AccountInfo.class);
+        if (currentAccount != null) {
+            // Redirect to previous URL if current user role is customer
+            return currentAccount.getRole() == 1 ?
+                redirectPreviousUrl() :
+                "redirect:/admin/statistic";
         }
         model.addAttribute("loginRequest", new LoginRequest());
         return "screens/auth/login";
@@ -48,8 +53,10 @@ public class LoginController {
             var accountInfo = AccountInfo.fromAccount(account);
             WebUtils.Sessions.setAttribute(CommonConstant.CURRENT_USER, accountInfo);
 
-            // Redirect to previous URL
-            return redirectPreviousUrl();
+            // Redirect to previous URL if current user role is customer
+            return account.getRole() == AccountRole.CUSTOMER ?
+                redirectPreviousUrl() :
+                "redirect:/admin/statistic";
         } catch (BadCredentialsException ex) {
             model.addAttribute("toastMessages", new ToastMessage("error", "Địa chỉ email hoặc mật khẩu không chính xác!"));
             return "screens/auth/login";

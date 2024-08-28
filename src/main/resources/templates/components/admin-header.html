@@ -20,22 +20,27 @@
     </div>
     <div class="admin-header-vr"></div>
     <div
-        class="dropdown admin-header-account-info-wrapper"
+        class="admin-header-account-info-wrapper"
         th:with="current_user = ${#ctx.session.current_user}"
-        id="dropdownMenuButton"
-        data-toggle="dropdown"
-        aria-haspopup="true"
         th:unless="${#ctx.session.current_user == null}"
+        style="cursor:pointer;"
     >
-        <img
-            th:src="${current_user.avatarUrl} ? ${current_user.avatarUrl} : '/assets/images/icons/no-avatar-user.png'"
-            alt="Avatar"
-            class="avatar"
-        />
-        <p th:text="${current_user.displayName}"></p>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-            <a th:unless="${current_user.role == 0}" class="dropdown-item" href="/profiles">Thông tin cá nhân</a>
-            <a class="dropdown-item" href="/log-out">Đăng xuất</a>
+        <button class="btn btn-secondary p-0 m-0 bg-transparent border-0" role="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img
+                th:src="${current_user.avatarUrl} ? ${current_user.avatarUrl} : '/assets/images/icons/no-avatar-user.png'"
+                alt="Avatar"
+                class="avatar"
+            />
+            <span class="text-dark" th:text="${current_user.fullName}"></span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a th:unless="${current_user.role == 0}" style="font-size: 1rem"
+               class="dropdown-item text-dark py-2" href="/profiles">Thông
+                tin cá
+                nhân</a>
+            <div th:unless="${current_user.role == 0}" class="dropdown-divider"></div>
+            <a class="dropdown-item text-dark py-2" style="font-size: 1rem" href="/log-out">Đăng xuất</a>
         </div>
     </div>
 </div>

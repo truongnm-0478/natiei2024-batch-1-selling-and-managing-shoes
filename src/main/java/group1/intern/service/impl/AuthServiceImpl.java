@@ -58,6 +58,7 @@ public class AuthServiceImpl implements AuthService {
         Account account = Account.builder()
             .email(accountRegistration.getEmail())
             .fullName(accountRegistration.getFullName())
+            .displayName(accountRegistration.getFullName())
             .password(encodedPassword)
             .role(role)
             .address(accountRegistration.getAddress())

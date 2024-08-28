@@ -102,22 +102,21 @@ public class ProfilesController {
             }
             redirectAttrs.addFlashAttribute("toastMessages", new ToastMessage("success", "Cập nhập mật khẩu thành công"));
         }
-        // Logic để thay đổi mật khẩu tại đây
-
         return "redirect:/profiles";
     }
 
     @PostMapping("/change-image")
-    public String changeAvatar(@CurrentAccount Account currentAccount, @RequestParam("imageToAdd") MultipartFile imagesToAdd,
-                               RedirectAttributes redirectAttrs,
-                               Model model) {
+    public String changeAvatar(
+        @CurrentAccount Account currentAccount,
+        @RequestParam("imageToAdd") MultipartFile imagesToAdd,
+        RedirectAttributes redirectAttrs
+    ) {
         try {
             authService.updateAvatar(imagesToAdd, currentAccount);
+            redirectAttrs.addFlashAttribute("toastMessages", new ToastMessage("success", "Cập nhập ảnh đại diện thành công"));
         } catch (BadRequestException e) {
-            model.addAttribute("toastMessages", new ToastMessage("error", e.getMessage()));
-            return redirectRoute(currentAccount);
+            redirectAttrs.addFlashAttribute("toastMessages", new ToastMessage("error", e.getMessage()));
         }
-        redirectAttrs.addFlashAttribute("toastMessages", new ToastMessage("success", "Cập nhập ảnh đại diện thành công"));
         return "redirect:/profiles";
     }
 

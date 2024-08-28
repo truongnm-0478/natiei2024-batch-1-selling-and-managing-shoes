@@ -1,10 +1,10 @@
-$('#userInfoModal').on('click', '.toggle-group', function() {
+$('#userInfoModal').on('click', '.toggle-group', function () {
     var toggle = $(this);
     var modal = $('#userInfoModal');
     var accountId = modal.data('id');
     var isActivated = modal.data('activated');
 
-    setTimeout(function() {
+    setTimeout(function () {
         toggleActivation(accountId, !isActivated);
     }, 200);
 });
@@ -25,7 +25,7 @@ $('#userInfoModal').on('show.bs.modal', function (event) {
     var avatar = button.data('avatar');
     var displayName = button.data('displayname');
 
-    switch(role) {
+    switch (role) {
         case 'CUSTOMER':
             role = 'Khách hàng';
             break;
@@ -70,7 +70,7 @@ $('#userInfoModal').on('show.bs.modal', function (event) {
     if (activated) {
         modal.find('#user-activated').bootstrapToggle('on')
     } else {
-    modal.find('#user-activated').bootstrapToggle('off')
+        modal.find('#user-activated').bootstrapToggle('off')
     }
 
     modal.find('#avatar').attr('src', avatar);
@@ -86,7 +86,7 @@ function updateURL(order, role) {
 
     params.set('sortBy', sortBy);
 
-    if(role !== undefined) {
+    if (role !== undefined) {
         params.set('role', role);
     }
 
@@ -141,7 +141,7 @@ function toggleActivation(accountId, activate) {
 
             currentUrl.searchParams.set('message', activate ? 'Activated' : 'Deactivated');
 
-                window.location.href = currentUrl.toString();
+            window.location.href = currentUrl.toString();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -157,6 +157,8 @@ document.addEventListener('DOMContentLoaded', function () {
         showToast('success', 'Tài khoản đã được kích hoạt thành công.');
     } else if (message === 'Deactivated') {
         showToast('success', 'Tài khoản đã được vô hiệu hóa thành công.');
+    } else if (message === 'Deleted') {
+        showToast('success', 'Tài khoản đã được xóa thành công.');
     }
 
     if (message) {
@@ -165,4 +167,3 @@ document.addEventListener('DOMContentLoaded', function () {
         window.history.replaceState({}, '', newUrl);
     }
 });
-
