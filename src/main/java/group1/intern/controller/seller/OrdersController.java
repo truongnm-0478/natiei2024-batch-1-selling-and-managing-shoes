@@ -41,6 +41,7 @@ public class OrdersController {
             : null;
         var models = getOrders(null, statusEnum, page, 20);
         model.addAllAttributes(models);
+        model.addAttribute("currentPage", "bill-management");
 
         return "screens/seller/orders/index";
     }
